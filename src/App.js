@@ -8,7 +8,7 @@ import Reservas from "./pages/Reservas";
 import Financeiro from "./pages/Financeiro";
 
 import { UpdateQuarto, UpdateCliente } from "./components/Update";
-import { CriarQuarto, CriarCliente } from "./components/Create";
+import { CriarQuarto, CriarCliente, CriarReserva } from "./components/Create";
 
 function App() {
   return (
@@ -37,6 +37,7 @@ function App() {
               <Route path="/financeiro" element={<Financeiro />} />
               <Route path="/quartos/create" element={<CriarQuarto />} />
               <Route path="/clientes/create" element={<CriarCliente />} />
+              <Route path="/reservas/create" element={<CriarReserva />} />
               <Route path="/update-quarto/:id" element={<UpdateQuarto />} />
               <Route path="/update-cliente/:id" element={<UpdateCliente />} />
             </Routes>

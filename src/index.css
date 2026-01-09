@@ -340,3 +340,87 @@ form button:hover {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* reservas grid */
+.reservas-cards {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 40px;
+}
+
+.reservas-card {
+  width: 100%;
+  padding: 10px;
+  background: #fff;
+  box-sizing: border-box;
+  border-radius: 6px;
+  position: relative;
+}
+
+.reservas-card .numero {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: var(--secondary);
+  color: #fff;
+  border-radius: 6px;
+  width: 40px;
+  height: 0;
+  padding: 20px 0;
+  line-height: 0;
+  text-align: center;
+}
+
+.reservas-card .numero p {
+  margin: 0;
+}
+
+.reservas-card .buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
+/* Botões de ação unificados para todos os cards */
+.quartos-card .buttons i,
+.clientes-card .buttons i,
+.reservas-card .buttons i {
+  cursor: pointer;
+  color: #bbb;
+  transition: color 0.3s ease;
+  padding: 8px;
+  border-radius: 50%;
+  background: #f8f8f8;
+}
+
+.quartos-card .buttons i:hover,
+.clientes-card .buttons i:hover,
+.reservas-card .buttons i:hover {
+  background: #eee;
+  color: #333;
+}
+
+.quartos-card .buttons i.material-icons:first-child:hover,
+.clientes-card .buttons i.material-icons:first-child:hover,
+.reservas-card .buttons i.material-icons:first-child:hover {
+  color: var(--secondary);
+}
+
+.quartos-card .buttons i.material-icons:last-child:hover,
+.clientes-card .buttons i.material-icons:last-child:hover,
+.reservas-card .buttons i.material-icons:last-child:hover {
+  color: #e74c3c;
+}
+
+.criar-reserva {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.criar-reserva h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}

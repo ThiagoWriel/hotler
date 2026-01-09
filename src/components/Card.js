@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import supabase from "../config/supabaseClient";
 
 export const QuartosCard = ({ quarto, onDelete }) => {
-  const handleDeleteQuarto = async () => {
+  const handleDelete = async () => {
     const { data, error } = await supabase
       .from("quartos")
       .delete()
@@ -30,7 +30,7 @@ export const QuartosCard = ({ quarto, onDelete }) => {
         <Link to={"/update-quarto/" + quarto.id}>
           <i className="material-icons">edit</i>
         </Link>
-        <i className="material-icons" onClick={handleDeleteQuarto}>
+        <i className="material-icons" onClick={handleDelete}>
           delete
         </i>
       </div>
@@ -39,7 +39,7 @@ export const QuartosCard = ({ quarto, onDelete }) => {
 };
 
 export const ClientesCard = ({ cliente, onDelete }) => {
-  const handleDeleteCliente = async () => {
+  const handleDelete = async () => {
     const { data, error } = await supabase
       .from("clientes")
       .delete()
@@ -59,12 +59,47 @@ export const ClientesCard = ({ cliente, onDelete }) => {
       <p>{cliente.cpf}</p>
       <p>{cliente.telefone}</p>
       <p>{cliente.nascimento}</p>
-      <p>{cliente.obs}</p>
       <div className="buttons">
         <Link to={"/update-cliente/" + cliente.id}>
           <i className="material-icons">edit</i>
         </Link>
-        <i className="material-icons" onClick={handleDeleteCliente}>
+        <i className="material-icons" onClick={handleDelete}>
+          delete
+        </i>
+      </div>
+    </div>
+  );
+};
+
+export const ReservasCard = ({ reserva, onDelete }) => {
+  const handleDelete = async () => {
+    const { data, error } = await supabase
+      .from("reservas")
+      .delete()
+      .eq("id", reserva.id)
+      .select();
+
+    if (error) {
+      console.log(error);
+    }
+    if (data) {
+      onDelete(reserva.id);
+    }
+  };
+  return (
+    <div className="reservas-card">
+      <h3>{reserva.cliente_reserva}</h3>
+      <div className="numero">
+        <p>{reserva.quarto_reserva}</p>
+      </div>
+      <p>{reserva.checkin}</p>
+      <p>{reserva.checkout}</p>
+      <p>{reserva.estado_reserva}</p>
+      <div className="buttons">
+        <Link to={"/update-reserva/" + reserva.id}>
+          <i className="material-icons">edit</i>
+        </Link>
+        <i className="material-icons" onClick={handleDelete}>
           delete
         </i>
       </div>
