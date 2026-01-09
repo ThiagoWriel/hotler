@@ -7,7 +7,11 @@ import Clientes from "./pages/Clientes";
 import Reservas from "./pages/Reservas";
 import Financeiro from "./pages/Financeiro";
 
-import { UpdateQuarto, UpdateCliente } from "./components/Update";
+import {
+  UpdateQuarto,
+  UpdateCliente,
+  UpdateReserva,
+} from "./components/Update";
 import { CriarQuarto, CriarCliente, CriarReserva } from "./components/Create";
 
 function App() {
@@ -40,6 +44,7 @@ function App() {
               <Route path="/reservas/create" element={<CriarReserva />} />
               <Route path="/update-quarto/:id" element={<UpdateQuarto />} />
               <Route path="/update-cliente/:id" element={<UpdateCliente />} />
+              <Route path="/update-reserva/:id" element={<UpdateReserva />} />
             </Routes>
           </div>
         </main>
