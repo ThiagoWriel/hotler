@@ -13,29 +13,36 @@ import { CriarQuarto, CriarCliente } from "./components/Create";
 function App() {
   return (
     <BrowserRouter>
-      <div className="page">
-        <nav>
+      <div className="main-layout">
+        <aside className="sidebar">
           <div className="principal-title">
             <h1>Hotler</h1>
           </div>
-          <Link to="/">Dashboard</Link>
-          <Link to="/quartos">Quartos</Link>
-          <Link to="/clientes">Clientes</Link>
-          <Link to="/reservas">Reservas</Link>
-          <Link to="/financeiro">Financeiro</Link>
-        </nav>
+          <nav>
+            <Link to="/">Dashboard</Link>
+            <Link to="/quartos">Quartos</Link>
+            <Link to="/clientes">Clientes</Link>
+            <Link to="/reservas">Reservas</Link>
+            <Link to="/financeiro">Financeiro</Link>
+          </nav>
+        </aside>
+
+        <main className="main-content">
+          <div className="page">
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/quartos" element={<Quartos />} />
+              <Route path="/clientes" element={<Clientes />} />
+              <Route path="/reservas" element={<Reservas />} />
+              <Route path="/financeiro" element={<Financeiro />} />
+              <Route path="/quartos/create" element={<CriarQuarto />} />
+              <Route path="/clientes/create" element={<CriarCliente />} />
+              <Route path="/update-quarto/:id" element={<UpdateQuarto />} />
+              <Route path="/update-cliente/:id" element={<UpdateCliente />} />
+            </Routes>
+          </div>
+        </main>
       </div>
-      <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/quartos" element={<Quartos />} />
-        <Route path="/clientes" element={<Clientes />} />
-        <Route path="/reservas" element={<Reservas />} />
-        <Route path="/financeiro" element={<Financeiro />} />
-        <Route path="/quartos/create" element={<CriarQuarto />} />
-        <Route path="/clientes/create" element={<CriarCliente />} />
-        <Route path="/update-quarto/:id" element={<UpdateQuarto />} />
-        <Route path="/update-cliente/:id" element={<UpdateCliente />} />
-      </Routes>
     </BrowserRouter>
   );
 }
