@@ -6,6 +6,7 @@ import Quartos from "./pages/Quartos";
 import Clientes from "./pages/Clientes";
 import Reservas from "./pages/Reservas";
 import Financeiro from "./pages/Financeiro";
+import NotFound from "./pages/NotFound";
 
 import {
   UpdateQuarto,
@@ -22,13 +23,15 @@ function App() {
           <div className="principal-title">
             <h1>Hotler</h1>
           </div>
-          <nav>
-            <Link to="/">Dashboard</Link>
-            <Link to="/quartos">Quartos</Link>
-            <Link to="/clientes">Clientes</Link>
-            <Link to="/reservas">Reservas</Link>
-            <Link to="/financeiro">Financeiro</Link>
-          </nav>
+          <div className="links">
+            <nav>
+              <Link to="/">Dashboard</Link>
+              <Link to="/quartos">Quartos</Link>
+              <Link to="/clientes">Clientes</Link>
+              <Link to="/reservas">Reservas</Link>
+              <Link to="/financeiro">Financeiro</Link>
+            </nav>
+          </div>
         </aside>
 
         <main className="main-content">
@@ -45,6 +48,7 @@ function App() {
               <Route path="/update-quarto/:id" element={<UpdateQuarto />} />
               <Route path="/update-cliente/:id" element={<UpdateCliente />} />
               <Route path="/update-reserva/:id" element={<UpdateReserva />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </div>
         </main>

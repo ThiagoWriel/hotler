@@ -11,6 +11,7 @@ const UpdateQuarto = () => {
   const [estado, setEstado] = useState("");
   const [ocupado, setOcupado] = useState("");
   const [formError, setFormError] = useState(null);
+  const [isPending, setIsPending] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -20,6 +21,8 @@ const UpdateQuarto = () => {
       return;
     }
 
+    setIsPending(true);
+
     const { data, error } = await supabase
       .from("quartos")
       .update({ numero, tipo, estado, ocupado })
@@ -28,10 +31,12 @@ const UpdateQuarto = () => {
 
     if (error) {
       setFormError("Erro ao atualizar");
+      setIsPending(false);
     }
     if (data) {
       setFormError(null);
       navigate("/quartos");
+      setIsPending(false);
     }
   };
 
@@ -107,7 +112,11 @@ const UpdateQuarto = () => {
           <option value="sim">Sim</option>
           <option value="nao">Não</option>
         </select>
-        <button type="submit">Atualizar Quarto</button>
+        {isPending ? (
+          <button disabled>Carregando...</button>
+        ) : (
+          <button type="submit">Atualizar Quarto</button>
+        )}
 
         {formError && <p className="error">{formError}</p>}
       </form>
@@ -125,6 +134,7 @@ const UpdateCliente = () => {
   const [nascimento, setNascimento] = useState("");
   const [obs, setObs] = useState("");
   const [formError, setFormError] = useState(null);
+  const [isPending, setIsPending] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -134,6 +144,8 @@ const UpdateCliente = () => {
       return;
     }
 
+    setIsPending(true);
+
     const { data, error } = await supabase
       .from("clientes")
       .update({ nome, cpf, telefone, nascimento, obs })
@@ -142,10 +154,12 @@ const UpdateCliente = () => {
 
     if (error) {
       setFormError("Erro ao atualizar");
+      setIsPending(false);
     }
     if (data) {
       setFormError(null);
       navigate("/clientes");
+      setIsPending(false);
     }
   };
 
@@ -209,7 +223,11 @@ const UpdateCliente = () => {
           onChange={(e) => setObs(e.target.value)}
         />
 
-        <button type="submit">Atualizar Cliente</button>
+        {isPending ? (
+          <button disabled>Carregando...</button>
+        ) : (
+          <button type="submit">Atualizar Cliente</button>
+        )}
 
         {formError && <p className="error">{formError}</p>}
       </form>
@@ -218,6 +236,7 @@ const UpdateCliente = () => {
 };
 
 const UpdateReserva = () => {
+  const [isPending, setIsPending] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
   const [quarto_reserva, setQuartoReserva] = useState("");
@@ -253,6 +272,8 @@ const UpdateReserva = () => {
       return;
     }
 
+    setIsPending(true);
+
     const { data, error } = await supabase
       .from("reservas")
       .update({
@@ -272,10 +293,12 @@ const UpdateReserva = () => {
 
     if (error) {
       setFormError("Erro ao atualizar");
+      setIsPending(false);
     }
     if (data) {
       setFormError(null);
       navigate("/reservas");
+      setIsPending(false);
     }
   };
 
@@ -424,7 +447,11 @@ const UpdateReserva = () => {
           onChange={(e) => setObs(e.target.value)}
         />
 
-        <button type="submit">Atualizar Reserva</button>
+        {isPending ? (
+          <button disabled>Carregando...</button>
+        ) : (
+          <button type="submit">Atualizar Reserva</button>
+        )}
 
         {formError && <p className="error">{formError}</p>}
       </form>
