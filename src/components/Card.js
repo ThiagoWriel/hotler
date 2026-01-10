@@ -106,3 +106,69 @@ export const ReservasCard = ({ reserva, onDelete }) => {
     </div>
   );
 };
+
+export const FinanceiroCard = ({ financeiro, onDelete }) => {
+  const handleDelete = async () => {
+    const { data, error } = await supabase
+      .from("financeiro")
+      .delete()
+      .eq("id", financeiro.id)
+      .select();
+
+    if (error) {
+      console.log(error);
+    }
+    if (data) {
+      onDelete(financeiro.id);
+    }
+  };
+  return (
+    <div className="financeiro-card">
+      <h3> {financeiro.origem}</h3>
+      <h3> R$ {financeiro.valor},00</h3>
+      <p>{financeiro.data_transacao}</p>
+      <p>{financeiro.metodo}</p>
+      <div className="buttons">
+        <Link to={"/update-financeiro/" + financeiro.id}>
+          <i className="material-icons">edit</i>
+        </Link>
+        <i className="material-icons" onClick={handleDelete}>
+          delete
+        </i>
+      </div>
+    </div>
+  );
+};
+
+export const FinanceiroReservasCard = ({ reserva, onDelete }) => {
+  const handleDelete = async () => {
+    const { data, error } = await supabase
+      .from("reservas")
+      .delete()
+      .eq("id", reserva.id)
+      .select();
+
+    if (error) {
+      console.log(error);
+    }
+    if (data) {
+      onDelete(reserva.id);
+    }
+  };
+  return (
+    <div className="financeiro-card">
+      <h3>Reserva</h3>
+      <h3>R$ {reserva.preco},00</h3>
+      <p>{reserva.checkout}</p>
+      <p>{reserva.tipo_pagamento}</p>
+      <div className="buttons">
+        <Link to={"/update-reserva/" + reserva.id}>
+          <i className="material-icons">edit</i>
+        </Link>
+        <i className="material-icons" onClick={handleDelete}>
+          delete
+        </i>
+      </div>
+    </div>
+  );
+};

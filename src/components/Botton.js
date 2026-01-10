@@ -30,4 +30,19 @@ const CreateButtonReserva = () => {
   );
 };
 
-export { CreateButtonQuarto, CreateButtonCliente, CreateButtonReserva };
+const CreateButtonFinanceiro = () => {
+  return (
+    <div className="create-button-container">
+      <Link to="/financeiro/create">
+        <button className="create-button">Adicionar Movimentação</button>
+      </Link>
+    </div>
+  );
+};
+
+export {
+  CreateButtonQuarto,
+  CreateButtonCliente,
+  CreateButtonReserva,
+  CreateButtonFinanceiro,
+};

@@ -383,10 +383,40 @@ form button:hover {
   gap: 15px;
 }
 
+/* financeiro grid */
+.financeiro-cards {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 40px;
+}
+
+.financeiro-card {
+  width: 100%;
+  padding: 10px;
+  background: #fff;
+  box-sizing: border-box;
+  border-radius: 6px;
+  position: relative;
+}
+
+.financeiro-card h3 {
+  color: black; /* Optional, but nice to distinguish */
+  margin: 0 0 10px 0;
+}
+
+.financeiro-card .buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+}
+
 /* Botões de ação unificados para todos os cards */
 .quartos-card .buttons i,
 .clientes-card .buttons i,
-.reservas-card .buttons i {
+.reservas-card .buttons i,
+.financeiro-card .buttons i {
   cursor: pointer;
   color: #bbb;
   transition: color 0.3s ease;
@@ -397,20 +427,23 @@ form button:hover {
 
 .quartos-card .buttons i:hover,
 .clientes-card .buttons i:hover,
-.reservas-card .buttons i:hover {
+.reservas-card .buttons i:hover,
+.financeiro-card .buttons i:hover {
   background: #eee;
   color: #333;
 }
 
 .quartos-card .buttons i.material-icons:first-child:hover,
 .clientes-card .buttons i.material-icons:first-child:hover,
-.reservas-card .buttons i.material-icons:first-child:hover {
+.reservas-card .buttons i.material-icons:first-child:hover,
+.financeiro-card .buttons i.material-icons:first-child:hover {
   color: var(--secondary);
 }
 
 .quartos-card .buttons i.material-icons:last-child:hover,
 .clientes-card .buttons i.material-icons:last-child:hover,
-.reservas-card .buttons i.material-icons:last-child:hover {
+.reservas-card .buttons i.material-icons:last-child:hover,
+.financeiro-card .buttons i.material-icons:last-child:hover {
   color: #e74c3c;
 }
 
