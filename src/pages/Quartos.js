@@ -1,42 +1,11 @@
-import supabase from "../config/supabaseClient";
-import { useEffect, useState } from "react";
-
 //components
 import { QuartosCard } from "../components/Card";
 import { CreateButtonQuarto } from "../components/Botton";
+import useFetch from "../components/useFetch";
 
 const Quartos = () => {
-  const [fetchError, setFetchError] = useState(null);
-  const [hotler, setHotler] = useState(null);
-  const [orderBy, setOrderBy] = useState("numero");
-
-  const handleDeleteQuarto = (id) => {
-    setHotler((prevHotler) => {
-      return prevHotler.filter((q) => q.id !== id);
-    });
-  };
-
-  useEffect(() => {
-    const fetchHotler = async () => {
-      const { data, error } = await supabase
-        .from("quartos")
-        .select()
-        .order(orderBy, { ascending: true });
-
-      if (error) {
-        setFetchError("Nao conseguiu acessar os dados dos quartos");
-        setHotler(null);
-        console.log(error);
-      }
-      if (data) {
-        setHotler(data);
-        setFetchError(null);
-      }
-    };
-
-    fetchHotler();
-  }, [orderBy]);
-
+  const { isPending, fetchError, hotler, handleDelete, setOrderBy } =
+    useFetch("quartos");
   return (
     <div className="page quartos">
       <div className="header-pages">
@@ -44,6 +13,7 @@ const Quartos = () => {
         <CreateButtonQuarto />
       </div>
       {fetchError && <p>{fetchError}</p>}
+      <div className="loading">{isPending && <p>Carregando...</p>}</div>
       {hotler && (
         <div className="quartos">
           <div className="order-by">
@@ -58,7 +28,7 @@ const Quartos = () => {
               <QuartosCard
                 key={quarto.id}
                 quarto={quarto}
-                onDelete={handleDeleteQuarto}
+                onDelete={handleDelete}
               />
             ))}
           </div>

@@ -1,37 +1,10 @@
-import supabase from "../config/supabaseClient";
-import { useEffect, useState } from "react";
-
 //components
 import { ReservasCard } from "../components/Card";
 import { CreateButtonReserva } from "../components/Botton";
+import useFetch from "../components/useFetch";
 
 const Reservas = () => {
-  const [fetchError, setFetchError] = useState(null);
-  const [hotler, setHotler] = useState(null);
-
-  const handleDeleteReserva = (id) => {
-    setHotler((prevHotler) => {
-      return prevHotler.filter((q) => q.id !== id);
-    });
-  };
-
-  useEffect(() => {
-    const fetchHotler = async () => {
-      const { data, error } = await supabase.from("reservas").select();
-
-      if (error) {
-        setFetchError("Nao conseguiu acessar os dados dos quartos");
-        setHotler(null);
-        console.log(error);
-      }
-      if (data) {
-        setHotler(data);
-        setFetchError(null);
-      }
-    };
-
-    fetchHotler();
-  });
+  const { isPending, fetchError, hotler, handleDelete } = useFetch("reservas");
 
   return (
     <div className="page reservas">
@@ -40,6 +13,7 @@ const Reservas = () => {
         <CreateButtonReserva />
       </div>
       {fetchError && <p>{fetchError}</p>}
+      <div className="loading">{isPending && <p>Carregando...</p>}</div>
       {hotler && (
         <div className="reservas">
           <div className="reservas-cards">
@@ -47,7 +21,7 @@ const Reservas = () => {
               <ReservasCard
                 key={reserva.id}
                 reserva={reserva}
-                onDelete={handleDeleteReserva}
+                onDelete={handleDelete}
               />
             ))}
           </div>

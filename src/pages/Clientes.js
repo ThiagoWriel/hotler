@@ -1,41 +1,11 @@
-import supabase from "../config/supabaseClient";
-import { useEffect, useState } from "react";
-
 //components
 import { ClientesCard } from "../components/Card";
 import { CreateButtonCliente } from "../components/Botton";
+import useFetch from "../components/useFetch";
 
 const Clientes = () => {
-  const [fetchError, setFetchError] = useState(null);
-  const [hotler, setHotler] = useState(null);
-  const [orderBy, setOrderBy] = useState("nome");
-
-  const handleDeleteCliente = (id) => {
-    setHotler((prevHotler) => {
-      return prevHotler.filter((c) => c.id !== id);
-    });
-  };
-
-  useEffect(() => {
-    const fetchHotler = async () => {
-      const { data, error } = await supabase
-        .from("clientes")
-        .select()
-        .order(orderBy, { ascending: true });
-
-      if (error) {
-        setFetchError("Nao conseguiu acessar os dados dos clientes");
-        setHotler(null);
-        console.log(error);
-      }
-      if (data) {
-        setHotler(data);
-        setFetchError(null);
-      }
-    };
-
-    fetchHotler();
-  }, [orderBy]);
+  const { isPending, fetchError, hotler, handleDelete, setOrderBy } =
+    useFetch("clientes");
 
   return (
     <div className="page clientes">
@@ -44,6 +14,7 @@ const Clientes = () => {
         <CreateButtonCliente />
       </div>
       {fetchError && <p>{fetchError}</p>}
+      <div className="loading">{isPending && <p>Carregando...</p>}</div>
       {hotler && (
         <div className="clientes">
           <div className="order-by">
@@ -59,7 +30,7 @@ const Clientes = () => {
               <ClientesCard
                 key={cliente.id}
                 cliente={cliente}
-                onDelete={handleDeleteCliente}
+                onDelete={handleDelete}
               />
             ))}
           </div>
