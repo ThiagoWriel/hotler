@@ -21,15 +21,33 @@ function App() {
       <div className="main-layout">
         <aside className="sidebar">
           <div className="principal-title">
+            <i className="material-icons" style={{ fontSize: "2.5rem" }}>
+              holiday_village
+            </i>
             <h1>Hotler</h1>
           </div>
           <div className="links">
             <nav>
-              <Link to="/">Dashboard</Link>
-              <Link to="/quartos">Quartos</Link>
-              <Link to="/clientes">Clientes</Link>
-              <Link to="/reservas">Reservas</Link>
-              <Link to="/financeiro">Financeiro</Link>
+              <Link to="/">
+                <i className="material-icons">dashboard</i>
+                Dashboard
+              </Link>
+              <Link to="/quartos">
+                <i className="material-icons">hotel</i>
+                Quartos
+              </Link>
+              <Link to="/clientes">
+                <i className="material-icons">people</i>
+                Clientes
+              </Link>
+              <Link to="/reservas">
+                <i className="material-icons">event_note</i>
+                Reservas
+              </Link>
+              <Link to="/financeiro">
+                <i className="material-icons">attach_money</i>
+                Financeiro
+              </Link>
             </nav>
           </div>
         </aside>

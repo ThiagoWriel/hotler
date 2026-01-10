@@ -20,9 +20,22 @@ export const QuartosCard = ({ quarto, onDelete }) => {
 
   return (
     <div className="quartos-card">
-      <h3>{quarto.tipo}</h3>
-      <p>{quarto.estado}</p>
-      <p>{quarto.ocupado}</p>
+      <div className="card-header">
+        <i className="material-icons card-icon">hotel</i>
+        <h3>{quarto.tipo}</h3>
+      </div>
+
+      <div className="card-body">
+        <div className="card-row">
+          <i className="material-icons">cleaning_services</i>
+          <span>{quarto.estado}</span>
+        </div>
+        <div className="card-row">
+          <i className="material-icons">person</i>
+          <span>{quarto.ocupado}</span>
+        </div>
+      </div>
+
       <div className="numero">
         <p>{quarto.numero}</p>
       </div>
@@ -55,10 +68,26 @@ export const ClientesCard = ({ cliente, onDelete }) => {
   };
   return (
     <div className="clientes-card">
-      <h3>{cliente.nome}</h3>
-      <p>{cliente.cpf}</p>
-      <p>{cliente.telefone}</p>
-      <p>{cliente.nascimento}</p>
+      <div className="card-header">
+        <i className="material-icons card-icon">person</i>
+        <h3>{cliente.nome}</h3>
+      </div>
+
+      <div className="card-body">
+        <div className="card-row">
+          <i className="material-icons">badge</i>
+          <span>CPF: {cliente.cpf}</span>
+        </div>
+        <div className="card-row">
+          <i className="material-icons">phone</i>
+          <span>{cliente.telefone}</span>
+        </div>
+        <div className="card-row">
+          <i className="material-icons">cake</i>
+          <span>{cliente.nascimento}</span>
+        </div>
+      </div>
+
       <div className="buttons">
         <Link to={"/update-cliente/" + cliente.id}>
           <i className="material-icons">edit</i>
@@ -88,13 +117,30 @@ export const ReservasCard = ({ reserva, onDelete }) => {
   };
   return (
     <div className="reservas-card">
-      <h3>{reserva.cliente_reserva}</h3>
+      <div className="card-header">
+        <i className="material-icons card-icon">event_note</i>
+        <h3>{reserva.cliente_reserva}</h3>
+      </div>
+
+      <div className="card-body">
+        <div className="card-row">
+          <i className="material-icons">login</i>
+          <span>Check-in: {reserva.checkin}</span>
+        </div>
+        <div className="card-row">
+          <i className="material-icons">logout</i>
+          <span>Check-out: {reserva.checkout}</span>
+        </div>
+        <div className="card-row">
+          <i className="material-icons">info</i>
+          <span>Status: {reserva.estado_reserva}</span>
+        </div>
+      </div>
+
       <div className="numero">
         <p>{reserva.quarto_reserva}</p>
       </div>
-      <p>{reserva.checkin}</p>
-      <p>{reserva.checkout}</p>
-      <p>{reserva.estado_reserva}</p>
+
       <div className="buttons">
         <Link to={"/update-reserva/" + reserva.id}>
           <i className="material-icons">edit</i>
@@ -124,10 +170,25 @@ export const FinanceiroCard = ({ financeiro, onDelete }) => {
   };
   return (
     <div className="financeiro-card">
-      <h3> {financeiro.origem}</h3>
-      <h3> R$ {financeiro.valor},00</h3>
-      <p>{financeiro.data_transacao}</p>
-      <p>{financeiro.metodo}</p>
+      <div className="card-header">
+        <i className="material-icons card-icon">attach_money</i>
+        <h3>{financeiro.origem}</h3>
+      </div>
+
+      <div className="card-body">
+        <div className="card-row price-row">
+          <span>R$ {financeiro.valor},00</span>
+        </div>
+        <div className="card-row">
+          <i className="material-icons">calendar_today</i>
+          <span>{financeiro.data_transacao}</span>
+        </div>
+        <div className="card-row">
+          <i className="material-icons">credit_card</i>
+          <span>{financeiro.metodo}</span>
+        </div>
+      </div>
+
       <div className="buttons">
         <Link to={"/update-financeiro/" + financeiro.id}>
           <i className="material-icons">edit</i>
@@ -157,10 +218,25 @@ export const FinanceiroReservasCard = ({ reserva, onDelete }) => {
   };
   return (
     <div className="financeiro-card">
-      <h3>Reserva</h3>
-      <h3>R$ {reserva.preco},00</h3>
-      <p>{reserva.checkout}</p>
-      <p>{reserva.tipo_pagamento}</p>
+      <div className="card-header">
+        <i className="material-icons card-icon">book_online</i>
+        <h3>Reserva</h3>
+      </div>
+
+      <div className="card-body">
+        <div className="card-row price-row">
+          <span>R$ {reserva.preco},00</span>
+        </div>
+        <div className="card-row">
+          <i className="material-icons">event</i>
+          <span>{reserva.checkout} (Checkout)</span>
+        </div>
+        <div className="card-row">
+          <i className="material-icons">payments</i>
+          <span>{reserva.tipo_pagamento}</span>
+        </div>
+      </div>
+
       <div className="buttons">
         <Link to={"/update-reserva/" + reserva.id}>
           <i className="material-icons">edit</i>
