@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import supabase from "../config/supabaseClient";
 
 export const QuartosCard = ({ quarto, onDelete }) => {
@@ -40,7 +40,7 @@ export const QuartosCard = ({ quarto, onDelete }) => {
         <p>{quarto.numero}</p>
       </div>
       <div className="buttons">
-        <Link to={"/update-quarto/" + quarto.id}>
+        <Link href={"/update-quarto/" + quarto.id}>
           <i className="material-icons">edit</i>
         </Link>
         <i className="material-icons" onClick={handleDelete}>
@@ -89,7 +89,7 @@ export const ClientesCard = ({ cliente, onDelete }) => {
       </div>
 
       <div className="buttons">
-        <Link to={"/update-cliente/" + cliente.id}>
+        <Link href={"/update-cliente/" + cliente.id}>
           <i className="material-icons">edit</i>
         </Link>
         <i className="material-icons" onClick={handleDelete}>
@@ -142,7 +142,7 @@ export const ReservasCard = ({ reserva, onDelete }) => {
       </div>
 
       <div className="buttons">
-        <Link to={"/update-reserva/" + reserva.id}>
+        <Link href={"/update-reserva/" + reserva.id}>
           <i className="material-icons">edit</i>
         </Link>
         <i className="material-icons" onClick={handleDelete}>
@@ -190,7 +190,7 @@ export const FinanceiroCard = ({ financeiro, onDelete }) => {
       </div>
 
       <div className="buttons">
-        <Link to={"/update-financeiro/" + financeiro.id}>
+        <Link href={"/update-financeiro/" + financeiro.id}>
           <i className="material-icons">edit</i>
         </Link>
         <i className="material-icons" onClick={handleDelete}>
@@ -238,7 +238,7 @@ export const FinanceiroReservasCard = ({ reserva, onDelete }) => {
       </div>
 
       <div className="buttons">
-        <Link to={"/update-reserva/" + reserva.id}>
+        <Link href={"/update-reserva/" + reserva.id}>
           <i className="material-icons">edit</i>
         </Link>
         <i className="material-icons" onClick={handleDelete}>

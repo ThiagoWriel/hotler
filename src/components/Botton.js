@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom";
+import Link from "next/link";
 
 const CreateButtonQuarto = () => {
   return (
     <div className="create-button-container">
-      <Link to="/quartos/create">
+      <Link href="/quartos/create">
         <button className="create-button">Adicionar Quarto</button>
       </Link>
     </div>
@@ -13,7 +13,7 @@ const CreateButtonQuarto = () => {
 const CreateButtonCliente = () => {
   return (
     <div className="create-button-container">
-      <Link to="/clientes/create">
+      <Link href="/clientes/create">
         <button className="create-button">Adicionar Cliente</button>
       </Link>
     </div>
@@ -23,7 +23,7 @@ const CreateButtonCliente = () => {
 const CreateButtonReserva = () => {
   return (
     <div className="create-button-container">
-      <Link to="/reservas/create">
+      <Link href="/reservas/create">
         <button className="create-button">Adicionar Reserva</button>
       </Link>
     </div>
@@ -33,7 +33,7 @@ const CreateButtonReserva = () => {
 const CreateButtonFinanceiro = () => {
   return (
     <div className="create-button-container">
-      <Link to="/financeiro/create">
+      <Link href="/financeiro/create">
         <button className="create-button">Adicionar Movimentação</button>
       </Link>
     </div>

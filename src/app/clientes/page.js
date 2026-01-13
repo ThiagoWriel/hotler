@@ -1,19 +1,21 @@
+"use client";
+
 //components
-import { ClientesCard } from "../components/Card";
-import { CreateButtonCliente } from "../components/Botton";
-import useFetch from "../components/useFetch";
+import { ClientesCard } from "../../components/Card";
+import { CreateButtonCliente } from "../../components/Botton";
+import useFetch from "../../components/useFetch";
 
 const Clientes = () => {
   const { isPending, fetchError, hotler, handleDelete, setOrderBy } =
     useFetch("clientes");
 
   return (
-    <div className="page clientes">
+    <div className="clientes">
       <div className="header-pages">
         <h2>Clientes</h2>
         <CreateButtonCliente />
       </div>
-      {fetchError && <p>{fetchError}</p>}
+      {fetchError && <p className="error">{fetchError}</p>}
       <div className="loading">{isPending && <p>Carregando...</p>}</div>
       {hotler && (
         <div className="clientes">

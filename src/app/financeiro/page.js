@@ -1,6 +1,8 @@
-import { CreateButtonFinanceiro } from "../components/Botton";
-import { FinanceiroCard, FinanceiroReservasCard } from "../components/Card";
-import useFetch from "../components/useFetch";
+"use client";
+
+import { CreateButtonFinanceiro } from "../../components/Botton";
+import { FinanceiroCard, FinanceiroReservasCard } from "../../components/Card";
+import useFetch from "../../components/useFetch";
 
 const Financeiro = () => {
   const {
@@ -18,13 +20,13 @@ const Financeiro = () => {
   } = useFetch("reservas");
 
   return (
-    <div className="page financeiro">
+    <div className="financeiro">
       <div className="header-pages">
         <h2>Financeiro</h2>
         <CreateButtonFinanceiro />
       </div>
-      {fetchErrorFinanceiro && <p>{fetchErrorFinanceiro}</p>}
-      {fetchErrorReservas && <p>{fetchErrorReservas}</p>}
+      {fetchErrorFinanceiro && <p className="error">{fetchErrorFinanceiro}</p>}
+      {fetchErrorReservas && <p className="error">{fetchErrorReservas}</p>}
       <div className="loading">
         {(isPendingFinanceiro || isPendingReservas) && <p>Carregando...</p>}
       </div>

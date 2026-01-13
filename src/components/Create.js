@@ -1,9 +1,11 @@
+"use client";
+
 import { useState, useEffect } from "react";
 import supabase from "../config/supabaseClient";
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
 const CriarQuarto = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [numero, setNumero] = useState("");
   const [tipo, setTipo] = useState("");
   const [estado, setEstado] = useState("");
@@ -34,7 +36,8 @@ const CriarQuarto = () => {
     if (data) {
       console.log(data);
       setFormError(null);
-      navigate("/quartos");
+      router.push("/quartos");
+      router.refresh();
     }
   };
 
@@ -100,7 +103,7 @@ const CriarQuarto = () => {
 };
 
 const CriarCliente = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [nome, setNome] = useState("");
   const [cpf, setCpf] = useState("");
   const [telefone, setTelefone] = useState("");
@@ -133,7 +136,8 @@ const CriarCliente = () => {
     if (data) {
       console.log(data);
       setFormError(null);
-      navigate("/clientes");
+      router.push("/clientes");
+      router.refresh();
     }
   };
 
@@ -186,7 +190,7 @@ const CriarCliente = () => {
 };
 
 const CriarReserva = () => {
-  const navigate = useNavigate();
+  const router = useRouter();
   const [quarto_reserva, setQuartoReserva] = useState("");
   const [cliente_reserva, setClienteReserva] = useState("");
   const [checkin, setCheckin] = useState("");
@@ -259,7 +263,8 @@ const CriarReserva = () => {
     if (data) {
       console.log(data);
       setFormError(null);
-      navigate("/reservas");
+      router.push("/reservas");
+      router.refresh();
     }
   };
 

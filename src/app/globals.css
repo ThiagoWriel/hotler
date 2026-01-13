@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap");
 
 /* Variáveis de Tema - Design System Moderno e Amigável */
 :root {
@@ -45,7 +45,7 @@
   --primary: var(--primary-600);
   --primary-hover: var(--primary-700);
   --secondary: var(--secondary-600);
-  
+
   --bg-app: var(--gray-50);
   --bg-sidebar: var(--primary-900); /* Dark green sidebar for premium feel */
   --sidebar-text: #ffffff;
@@ -54,7 +54,7 @@
 
   --bg-card: #ffffff;
   --bg-input: var(--gray-50);
-  
+
   --text-main: var(--gray-900);
   --text-secondary: var(--gray-500);
   --border-color: var(--gray-200);
@@ -63,27 +63,29 @@
   --radius-sm: 6px;
   --radius-md: 12px; /* Rounder = Friendlier */
   --radius-lg: 20px;
-  
+
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1),
+    0 8px 10px -6px rgb(0 0 0 / 0.1);
 }
 
 :root[data-theme="dark"] {
   --primary: var(--primary-500);
   --primary-hover: var(--primary-400);
-  
+
   --bg-app: var(--gray-950);
   --bg-sidebar: #000000;
-  
+
   --bg-card: var(--gray-900);
   --bg-input: var(--gray-800);
-  
+
   --text-main: var(--gray-50);
   --text-secondary: var(--gray-400);
   --border-color: var(--gray-800);
-  
+
   --shadow-sm: none;
   --shadow-md: none;
 }
@@ -91,12 +93,14 @@
 body {
   margin: 0;
   color: var(--text-main);
-  font-family: 'Inter', 'Poppins', sans-serif;
+  font-family: "Inter", "Poppins", sans-serif;
   background: var(--bg-app);
   -webkit-font-smoothing: antialiased;
 }
 
-h1,h2,h3 {
+h1,
+h2,
+h3 {
   margin: 0;
   color: var(--text-main);
 }
@@ -143,7 +147,8 @@ h1,h2,h3 {
   font-weight: 500;
 }
 
-.sidebar nav a:hover, .sidebar nav a.active {
+.sidebar nav a:hover,
+.sidebar nav a.active {
   background: var(--sidebar-hover);
   color: var(--sidebar-text);
   transform: translateX(4px);
@@ -167,8 +172,14 @@ h1,h2,h3 {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(15px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Headers */
@@ -202,7 +213,7 @@ h1,h2,h3 {
 }
 
 .principal-title h1 {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 2.2rem;
   color: white;
@@ -210,14 +221,20 @@ h1,h2,h3 {
 }
 
 /* Cards (Generic) */
-.quartos-cards, .clientes-cards, .reservas-cards, .financeiro-cards {
+.quartos-cards,
+.clientes-cards,
+.reservas-cards,
+.financeiro-cards {
   margin-top: 30px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 30px;
 }
 
-.quartos-card, .clientes-card, .reservas-card, .financeiro-card {
+.quartos-card,
+.clientes-card,
+.reservas-card,
+.financeiro-card {
   width: 100%;
   padding: 20px;
   background: var(--bg-card);
@@ -231,14 +248,19 @@ h1,h2,h3 {
   flex-direction: column;
 }
 
-.quartos-card:hover, .clientes-card:hover, .reservas-card:hover, .financeiro-card:hover {
+.quartos-card:hover,
+.clientes-card:hover,
+.reservas-card:hover,
+.financeiro-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
   border-color: var(--primary-300);
 }
 
 /* Badges / Numeros */
-.quartos-card .numero, .clientes-card .numero, .reservas-card .numero {
+.quartos-card .numero,
+.clientes-card .numero,
+.reservas-card .numero {
   position: absolute;
   top: 15px;
   right: 15px;
@@ -272,7 +294,9 @@ form label {
   font-size: 0.95rem;
 }
 
-form input, form textarea, form select {
+form input,
+form textarea,
+form select {
   display: block;
   width: 100%;
   padding: 12px 16px;
@@ -287,7 +311,9 @@ form input, form textarea, form select {
   color: var(--text-main);
 }
 
-form input:focus, form textarea:focus, form select:focus {
+form input:focus,
+form textarea:focus,
+form select:focus {
   outline: none;
   border-color: var(--primary);
   background-color: var(--bg-card);
@@ -295,7 +321,8 @@ form input:focus, form textarea:focus, form select:focus {
 }
 
 /* Botões */
-form button, .create-button {
+form button,
+.create-button {
   background: var(--primary);
   color: #fff;
   border: 0;
@@ -306,15 +333,18 @@ form button, .create-button {
   cursor: pointer;
   font-size: 1rem;
   transition: all 0.2s ease;
-  box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-form button { width: 100%; }
+form button {
+  width: 100%;
+}
 
-form button:hover, .create-button:hover {
+form button:hover,
+.create-button:hover {
   background: var(--primary-hover);
   transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
 }
 
 .create-button-container {
@@ -400,9 +430,15 @@ form button:hover, .create-button:hover {
 }
 
 @keyframes pulse {
-  0% { opacity: 0.6; }
-  50% { opacity: 1; }
-  100% { opacity: 0.6; }
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
 }
 
 /* New Card Internal Loading & Layout Styles */
@@ -475,7 +511,7 @@ form button:hover, .create-button:hover {
     position: sticky;
     top: 0;
     padding: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   }
 
   .principal-title {
@@ -542,14 +578,14 @@ form button:hover, .create-button:hover {
   }
 
   /* Grids to Single Column */
-  .quartos-cards, 
-  .clientes-cards, 
-  .reservas-cards, 
+  .quartos-cards,
+  .clientes-cards,
+  .reservas-cards,
   .financeiro-cards {
     grid-template-columns: 1fr;
     gap: 20px;
   }
-  
+
   /* Forms */
   form {
     padding: 20px;
@@ -563,7 +599,7 @@ form button:hover, .create-button:hover {
   .order-by {
     flex-wrap: wrap;
   }
-  
+
   .order-by button {
     flex: 1;
   }

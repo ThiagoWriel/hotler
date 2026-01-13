@@ -1,18 +1,20 @@
+"use client";
+
 //components
-import { QuartosCard } from "../components/Card";
-import { CreateButtonQuarto } from "../components/Botton";
-import useFetch from "../components/useFetch";
+import { QuartosCard } from "../../components/Card";
+import { CreateButtonQuarto } from "../../components/Botton";
+import useFetch from "../../components/useFetch";
 
 const Quartos = () => {
   const { isPending, fetchError, hotler, handleDelete, setOrderBy } =
     useFetch("quartos");
   return (
-    <div className="page quartos">
+    <div className="quartos">
       <div className="header-pages">
         <h2>Quartos</h2>
         <CreateButtonQuarto />
       </div>
-      {fetchError && <p>{fetchError}</p>}
+      {fetchError && <p className="error">{fetchError}</p>}
       <div className="loading">{isPending && <p>Carregando...</p>}</div>
       {hotler && (
         <div className="quartos">

@@ -1,10 +1,12 @@
-import { useParams, useNavigate } from "react-router-dom";
+"use client";
+
+import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import supabase from "../config/supabaseClient";
 
 const UpdateQuarto = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const [numero, setNumero] = useState("");
   const [tipo, setTipo] = useState("");
@@ -35,7 +37,8 @@ const UpdateQuarto = () => {
     }
     if (data) {
       setFormError(null);
-      navigate("/quartos");
+      router.push("/quartos");
+      router.refresh();
       setIsPending(false);
     }
   };
@@ -48,7 +51,7 @@ const UpdateQuarto = () => {
         .eq("id", id)
         .single();
       if (error) {
-        navigate("/quartos", { replace: true });
+        router.push("/quartos");
       }
       if (data) {
         setNumero(data.numero);
@@ -58,7 +61,7 @@ const UpdateQuarto = () => {
       }
     };
     fetchQuarto();
-  }, [id, navigate]);
+  }, [id, router]);
 
   return (
     <div className="page-quartos">
@@ -126,7 +129,7 @@ const UpdateQuarto = () => {
 
 const UpdateCliente = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const [nome, setNome] = useState("");
   const [cpf, setCpf] = useState("");
@@ -158,7 +161,8 @@ const UpdateCliente = () => {
     }
     if (data) {
       setFormError(null);
-      navigate("/clientes");
+      router.push("/clientes");
+      router.refresh();
       setIsPending(false);
     }
   };
@@ -171,7 +175,7 @@ const UpdateCliente = () => {
         .eq("id", id)
         .single();
       if (error) {
-        navigate("/clientes", { replace: true });
+        router.push("/clientes");
       }
       if (data) {
         setNome(data.nome);
@@ -182,7 +186,7 @@ const UpdateCliente = () => {
       }
     };
     fetchCliente();
-  }, [id, navigate]);
+  }, [id, router]);
 
   return (
     <div className="page-clientes">
@@ -238,7 +242,7 @@ const UpdateCliente = () => {
 const UpdateReserva = () => {
   const [isPending, setIsPending] = useState(false);
   const { id } = useParams();
-  const navigate = useNavigate();
+  const router = useRouter();
   const [quarto_reserva, setQuartoReserva] = useState("");
   const [cliente_reserva, setClienteReserva] = useState("");
   const [checkin, setCheckin] = useState("");
@@ -297,7 +301,8 @@ const UpdateReserva = () => {
     }
     if (data) {
       setFormError(null);
-      navigate("/reservas");
+      router.push("/reservas");
+      router.refresh();
       setIsPending(false);
     }
   };
@@ -310,7 +315,7 @@ const UpdateReserva = () => {
         .eq("id", id)
         .single();
       if (error) {
-        navigate("/reservas", { replace: true });
+        router.push("/reservas");
       }
       if (data) {
         setQuartoReserva(data.quarto_reserva);
@@ -337,7 +342,7 @@ const UpdateReserva = () => {
       if (quartosData) setQuartosList(quartosData);
     };
     fetchReserva();
-  }, [id, navigate]);
+  }, [id, router]);
 
   return (
     <div className="page-reservas">
