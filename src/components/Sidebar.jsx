@@ -16,7 +16,10 @@ export default function Sidebar() {
       </div>
       <div className="links">
         <nav>
-          <Link href="/" className={pathname === "/" ? "active" : ""}>
+          <Link
+            href="/dashboard"
+            className={pathname === "/dashboard" ? "active" : ""}
+          >
             <i className="material-icons">dashboard</i>
             Dashboard
           </Link>

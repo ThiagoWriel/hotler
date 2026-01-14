@@ -248,3 +248,12 @@ export const FinanceiroReservasCard = ({ reserva, onDelete }) => {
     </div>
   );
 };
+
+export const DashboardCard = ({ dashboard }) => {
+  return (
+    <div className="dashboard-card">
+      <h2>{dashboard.title}</h2>
+      <p>{dashboard.value}</p>
+    </div>
+  );
+};
