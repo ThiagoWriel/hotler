@@ -24,8 +24,6 @@ const Clientes = () => {
             <button onClick={() => setOrderBy("nome")}>Nome</button>
             <button onClick={() => setOrderBy("cpf")}>CPF</button>
             <button onClick={() => setOrderBy("telefone")}>Telefone</button>
-            <button onClick={() => setOrderBy("nascimento")}>Nascimento</button>
-            <button onClick={() => setOrderBy("obs")}>Observações</button>
           </div>
           <div className="clientes-cards">
             {hotler.map((cliente) => (

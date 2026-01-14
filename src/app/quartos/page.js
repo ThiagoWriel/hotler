@@ -6,7 +6,7 @@ import { CreateButtonQuarto } from "../../components/Botton";
 import useFetch from "../../components/useFetch";
 
 const Quartos = () => {
-  const { isPending, fetchError, hotler, handleDelete, setOrderBy } =
+  const { isPending, fetchError, hotler, handleDelete, setOrderBy, orderBy } =
     useFetch("quartos");
   return (
     <div className="quartos">
@@ -20,10 +20,30 @@ const Quartos = () => {
         <div className="quartos">
           <div className="order-by">
             <p>Ordenar por: </p>
-            <button onClick={() => setOrderBy("numero")}>Numero</button>
-            <button onClick={() => setOrderBy("tipo")}>Tipo</button>
-            <button onClick={() => setOrderBy("estado")}>Estado</button>
-            <button onClick={() => setOrderBy("ocupado")}>Ocupado</button>
+            <button
+              className={orderBy === "numero" ? "active" : ""}
+              onClick={() => setOrderBy("numero")}
+            >
+              Numero
+            </button>
+            <button
+              className={orderBy === "tipo" ? "active" : ""}
+              onClick={() => setOrderBy("tipo")}
+            >
+              Tipo
+            </button>
+            <button
+              className={orderBy === "estado" ? "active" : ""}
+              onClick={() => setOrderBy("estado")}
+            >
+              Estado
+            </button>
+            <button
+              className={orderBy === "ocupado" ? "active" : ""}
+              onClick={() => setOrderBy("ocupado")}
+            >
+              Ocupado
+            </button>
           </div>
           <div className="quartos-cards">
             {hotler.map((quarto) => (

@@ -56,25 +56,43 @@ export default function Dashboard() {
       {fetchError && <p className="error">{fetchError}</p>}
       {quartos && clientes && reservas && financeiro && (
         <div className="dashboard">
-          <div className="dashboard-cards-quartos">
+          <div className="dashboard-cards">
             <DashboardCard
-              dashboard={{ title: "Quartos", value: quartos.length }}
+              dashboard={{
+                title: "Quartos",
+                value: quartos.length,
+                icon: "hotel",
+              }}
             />
-            <div className="dashboard-card-clientes">
-              <h2>Clientes</h2>
-              <p>{clientes.length}</p>
-            </div>
-            <div className="dashboard-card-reservas">
-              <h2>Reservas</h2>
-              <p>{reservas.length}</p>
-            </div>
-            <div className="dashboard-card-financeiro">
-              <h2>Financeiro</h2>
-              <p>{financeiro.length}</p>
-            </div>
+            <DashboardCard
+              dashboard={{
+                title: "Hóspedes",
+                value: clientes.length,
+                icon: "person",
+              }}
+            />
+            <DashboardCard
+              dashboard={{
+                title: "Reservas Ativas",
+                value: reservas.length,
+                icon: "event_note",
+              }}
+            />
+            <DashboardCard
+              dashboard={{
+                title: "Receita",
+                value:
+                  "R$ " +
+                  (financeiro.reduce((acc, item) => acc + item.valor, 0) +
+                    reservas.reduce((acc, item) => acc + item.preco, 0)) +
+                  ",00",
+                icon: "attach_money",
+              }}
+            />
           </div>
+          <br />
+          <hr />
           <div className="reservas">
-            <h2>Reservas</h2>
             <div className="reservas-cards">
               {reservas.map((reserva) => (
                 <ReservasCard
