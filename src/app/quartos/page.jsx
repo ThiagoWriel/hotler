@@ -3,7 +3,7 @@
 //components
 import { QuartosCard } from "../../components/Card";
 import { CreateButtonQuarto } from "../../components/Botton";
-import useFetch from "../../components/useFetch";
+import useFetch from "../../hooks/useFetch";
 
 const Quartos = () => {
   const { isPending, fetchError, hotler, handleDelete, setOrderBy, orderBy } =

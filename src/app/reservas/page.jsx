@@ -3,7 +3,7 @@
 //components
 import { ReservasCard } from "../../components/Card";
 import { CreateButtonReserva } from "../../components/Botton";
-import useFetch from "../../components/useFetch";
+import useFetch from "../../hooks/useFetch";
 
 const Reservas = () => {
   const { isPending, fetchError, hotler, handleDelete } = useFetch("reservas");

@@ -824,3 +824,41 @@ form button:hover,
     line-height: 1.5;
   }
 }
+
+/* Search Bar Styles */
+.search-bar {
+  position: relative;
+  max-width: 400px;
+  margin: 0 auto 30px; /* Center horizontally */
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 16px;
+  padding-right: 48px; /* Space for the icon */
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  background-color: var(--input-background);
+  color: var(--foreground);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background-color: var(--card);
+  box-shadow: 0 0 0 4px var(--accent);
+}
+
+.search-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted-foreground);
+  pointer-events: none;
+  font-size: 24px;
+}

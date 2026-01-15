@@ -3,7 +3,7 @@
 //components
 import { ClientesCard } from "../../components/Card";
 import { CreateButtonCliente } from "../../components/Botton";
-import useFetch from "../../components/useFetch";
+import useFetch from "../../hooks/useFetch";
 
 const Clientes = () => {
   const { isPending, fetchError, hotler, handleDelete, setOrderBy } =

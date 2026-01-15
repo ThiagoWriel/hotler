@@ -1,5 +1,5 @@
 "use client";
-import useFetch from "../../components/useFetch";
+import useFetch from "../../hooks/useFetch";
 import { ReservasCard } from "../../components/Card";
 import { DashboardCard } from "../../components/Card";
 
@@ -87,6 +87,26 @@ export default function Dashboard() {
                     reservas.reduce((acc, item) => acc + item.preco, 0)) +
                   ",00",
                 icon: "attach_money",
+              }}
+            />
+            <DashboardCard
+              dashboard={{
+                title: "Check-in Hoje",
+                value: reservas.filter(
+                  (reserva) =>
+                    reserva.checkin === new Date().toISOString().split("T")[0]
+                ).length,
+                icon: "event_note",
+              }}
+            />
+            <DashboardCard
+              dashboard={{
+                title: "Check-out Hoje",
+                value: reservas.filter(
+                  (reserva) =>
+                    reserva.checkout === new Date().toISOString().split("T")[0]
+                ).length,
+                icon: "event_note",
               }}
             />
           </div>
