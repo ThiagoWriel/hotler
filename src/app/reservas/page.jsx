@@ -5,6 +5,7 @@ import { useState } from "react";
 //components
 import { ReservasCard } from "../../components/Card";
 import { ReservasList } from "../../components/List";
+import CalendarView from "../../components/CalendarView";
 import { CreateButtonReserva } from "../../components/Botton";
 import Search from "../../components/Search";
 import ViewToggle from "../../components/ViewToggle";
@@ -13,6 +14,7 @@ import useSearch from "../../hooks/useSearch";
 
 const Reservas = () => {
   const { isPending, fetchError, hotler, handleDelete } = useFetch("reservas");
+  const { hotler: quartosData } = useFetch("quartos");
 
   const [searchTerm, setSearchTerm] = useState("");
   const [viewMode, setViewMode] = useState("cards");
@@ -33,13 +35,20 @@ const Reservas = () => {
             <div className="order-by">
               <p>Ordenar por: </p>
             </div>
-            <ViewToggle viewMode={viewMode} setViewMode={setViewMode} />
-          </div>
-          <div className="search">
-            <Search value={searchTerm} onChange={setSearchTerm} />
+            <ViewToggle
+              viewMode={viewMode}
+              setViewMode={setViewMode}
+              showCalendar={true}
+            />
           </div>
 
-          {viewMode === "cards" ? (
+          {viewMode !== "calendar" && (
+            <div className="search">
+              <Search value={searchTerm} onChange={setSearchTerm} />
+            </div>
+          )}
+
+          {viewMode === "cards" && (
             <div className="reservas-cards">
               {filteredData.map((reserva) => (
                 <ReservasCard
@@ -49,7 +58,9 @@ const Reservas = () => {
                 />
               ))}
             </div>
-          ) : (
+          )}
+
+          {viewMode === "list" && (
             <div className="reservas-list">
               {filteredData.map((reserva) => (
                 <ReservasList
@@ -59,6 +70,10 @@ const Reservas = () => {
                 />
               ))}
             </div>
+          )}
+
+          {viewMode === "calendar" && quartosData && (
+            <CalendarView reservas={hotler} quartos={quartosData} />
           )}
         </div>
       )}

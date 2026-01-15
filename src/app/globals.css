@@ -5,7 +5,7 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ========================================
-   CSS VARIABLES - LIGHT MODE
+   1. CSS VARIABLES
    ======================================== */
 :root {
   --font-size: 16px;
@@ -48,684 +48,8 @@
   --sidebar-ring: #f97316;
 }
 
-body {
-  margin: 0;
-  color: var(--text-main);
-  font-family: "Inter", "Poppins", sans-serif;
-  background: var(--background);
-  -webkit-font-smoothing: antialiased;
-}
-
-h1,
-h2,
-h3 {
-  margin: 0;
-  color: var(--foreground);
-}
-
-/* Layout Grid */
-.main-layout {
-  display: flex;
-  min-height: 100vh;
-}
-
-/* Sidebar Styles */
-.sidebar {
-  width: 250px;
-  background: var(--sidebar);
-  color: var(--sidebar-foreground);
-  display: flex;
-  flex-direction: column;
-  padding: 20px 20px;
-  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.05);
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  box-sizing: border-box;
-  z-index: 10;
-}
-
-.sidebar nav {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin-top: 40px;
-}
-
-.sidebar nav a {
-  color: var(--muted-foreground);
-  text-decoration: none;
-  font-size: 1rem;
-  padding: 14px 20px;
-  border-radius: var(--radius-md);
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 12px; /* Space between icon and text */
-  font-weight: 500;
-}
-
-.sidebar nav a:hover,
-.sidebar nav a.active {
-  background: var(--sidebar-accent);
-  color: var(--sidebar-accent-foreground);
-  transform: translateX(4px);
-}
-
-/* Main Content Area */
-.main-content {
-  flex: 1;
-  background: var(--background);
-  overflow-y: auto;
-  padding-bottom: 40px;
-}
-
-.page {
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 40px;
-  width: 100%;
-  box-sizing: border-box;
-  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Headers */
-.header-pages {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 40px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--border);
-}
-
-.header-pages h2 {
-  font-size: 2rem;
-  font-weight: 700;
-  letter-spacing: -0.5px;
-  color: var(--foreground);
-}
-
-.principal-title {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 15px;
-  background: linear-gradient(135deg, var(--primary), #eab308); /* Fallback gradient or just primary */
-  padding: 20px 40px;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
-  margin-bottom: 30px;
-  color: var(--primary-foreground);
-}
-
-.principal-title h1 {
-  font-family: "Poppins", sans-serif;
-  font-weight: 700;
-  font-size: 2.2rem;
-  color: var(--primary-foreground);
-  margin: 0;
-}
-
-/* Cards (Generic) */
-
-.quartos-cards,
-.clientes-cards,
-.reservas-cards,
-.financeiro-cards,
-.dashboard-cards {
-  margin-top: 30px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 30px;
-}
-
-.quartos-card,
-.clientes-card,
-.reservas-card,
-.financeiro-card,
-.dashboard-card {
-  width: 100%;
-  padding: 20px;
-  background: var(--card);
-  box-sizing: border-box;
-  border-radius: var(--radius-md);
-  box-shadow: var(--shadow-sm);
-  border: 1px solid var(--border);
-  transition: all 0.3s ease;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-
-.quartos-card:hover,
-.clientes-card:hover,
-.reservas-card:hover,
-.financeiro-card:hover,
-.dashboard-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg);
-  border-color: var(--primary);
-}
-
-/* Badges / Numeros */
-.quartos-card .numero,
-.clientes-card .numero,
-.reservas-card .numero {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background: var(--accent);
-  color: var(--primary);
-  font-weight: 1000;
-  border-radius: var(--radius-sm);
-  padding: 12px 15px;
-  font-size: 2rem;
-  width: 50px;
-  height: 50px;
-  line-height: 0.75;
-}
-
-/* Formulários */
-form {
-  background: var(--card);
-  padding: 40px;
-  max-width: 500px;
-  margin: 40px auto;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-xl);
-  border: 1px solid var(--border);
-}
-
-form label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: var(--foreground);
-  font-size: 0.95rem;
-}
-
-form input,
-form textarea,
-form select {
-  display: block;
-  width: 100%;
-  padding: 12px 16px;
-  box-sizing: border-box;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  margin-bottom: 24px;
-  font-family: inherit;
-  font-size: 0.95rem;
-  transition: all 0.2s ease;
-  background-color: var(--input-background);
-  color: var(--foreground);
-}
-
-form input:focus,
-form textarea:focus,
-form select:focus {
-  outline: none;
-  border-color: var(--primary);
-  background-color: var(--card);
-  box-shadow: 0 0 0 4px var(--accent);
-}
-
-/* Botões */
-form button,
-.create-button {
-  background: var(--primary);
-  color: var(--primary-foreground);
-  border: 0;
-  border-radius: var(--radius-md);
-  padding: 12px 24px;
-  font-family: "Inter", sans-serif;
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-}
-
-form button {
-  width: 100%;
-}
-
-form button:hover,
-.create-button:hover {
-  background: var(--primary); /* Hover effect is usually slightly different but simplifying to same for now or opacity */
-  opacity: 0.9;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-}
-
-.create-button-container {
-  display: flex;
-  justify-content: flex-start;
-}
-
-/* Action Buttons in Cards */
-.buttons {
-  margin-top: auto;
-  padding-top: 20px;
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-.buttons i {
-  cursor: pointer;
-  color: var(--muted-foreground);
-  transition: all 0.2s ease;
-  padding: 8px;
-  border-radius: 50%;
-  background: var(--muted);
-}
-
-.buttons i:hover {
-  background: var(--accent);
-  transform: scale(1.1);
-}
-
-.buttons i.material-icons:first-child:hover {
-  color: var(--secondary);
-  background: var(--accent);
-}
-
-.buttons i.material-icons:last-child:hover {
-  color: #ef4444; /* Tailwind Red 500 */
-  background: #fef2f2;
-}
-
-/* Order By */
-.order-by {
-  margin: 20px 0;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  justify-content: center;
-}
-
-.controls-row .order-by {
-  margin: 0;
-  justify-content: flex-start;
-}
-
-.order-by button {
-  background: var(--card);
-  color: var(--muted-foreground);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
-  border-radius: var(--radius-md);
-  padding: 8px 16px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.order-by button:hover {
-  background: var(--muted);
-  color: var(--primary);
-  border-color: var(--primary);
-}
-
-.order-by button.active {
-  background: var(--muted);
-  color: var(--primary);
-  border-color: var(--primary);
-  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
-  font-weight: 600;
-}
-
-/* Error */
-.error {
-  margin-top: 15px;
-  padding: 12px;
-  background-color: #fef2f2;
-  color: #991b1b;
-  border: 1px solid #fecaca;
-  border-radius: var(--radius-md);
-  text-align: center;
-  font-size: 0.9rem;
-}
-
-/* Loading State */
-.loading {
-  text-align: center;
-  margin: 40px 0;
-  color: var(--muted-foreground);
-  font-size: 1.1rem;
-  font-weight: 500;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% {
-    opacity: 0.6;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0.6;
-  }
-}
-
-/* New Card Internal Loading & Layout Styles */
-.card-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 20px;
-  padding-bottom: 12px;
-  border-bottom: 1px solid var(--border);
-}
-
-.card-header h3 {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--foreground);
-  margin: 0;
-}
-
-.card-icon {
-  background: var(--accent);
-  color: var(--primary);
-  padding: 8px;
-  border-radius: var(--radius-sm);
-  font-size: 20px;
-}
-
-.card-body {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  flex: 1; /* Pushes buttons to bottom */
-}
-
-.card-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--muted-foreground);
-  font-size: 0.95rem;
-}
-
-.card-row i {
-  font-size: 18px;
-  color: var(--muted-foreground);
-  width: 24px; /* Fixed width for alignment */
-  text-align: center;
-}
-
-.price-row {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: var(--primary);
-  margin: 10px 0;
-}
-
-.price-row span {
-  display: block;
-}
-
-/* Dashboard Card Specific Styles */
-.dashboard-card-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.dashboard-card-info {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.dashboard-card-label {
-  color: var(--muted-foreground);
-  font-size: 0.9rem;
-  font-weight: 500;
-}
-
-.dashboard-card-value {
-  font-size: 1.75rem;
-  font-weight: 700;
-  color: var(--foreground);
-  margin: 0;
-  line-height: 1;
-}
-
-.dashboard-card-icon-container {
-  width: 48px;
-  height: 48px;
-  border-radius: var(--radius-md);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--primary);
-}
-
-.dashboard-card-icon {
-  color: #ffffff; /* Icons are always white in the colored box */
-  font-size: 24px;
-}
-
-
-/* Mobile Responsiveness */
-@media (max-width: 768px) {
-  .main-layout {
-    flex-direction: column;
-  }
-
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: sticky;
-    top: 0;
-    padding: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  }
-
-  .principal-title {
-    padding: 10px;
-    margin-bottom: 15px;
-    flex-direction: row;
-    justify-content: center;
-  }
-
-  .principal-title h1 {
-    font-size: 1.5rem;
-  }
-
-  .sidebar nav {
-    flex-direction: row;
-    overflow-x: auto;
-    gap: 10px;
-    margin-top: 0;
-    padding-bottom: 5px;
-    -webkit-overflow-scrolling: touch; /* Smooth scroll on iOS */
-  }
-
-  .sidebar nav::-webkit-scrollbar {
-    height: 0px;
-    background: transparent; /* Hide scrollbar */
-  }
-
-  .sidebar nav a {
-    padding: 8px 16px;
-    white-space: nowrap;
-    background: rgba(255, 255, 255, 0.1);
-    font-size: 0.9rem;
-    flex-shrink: 0;
-  }
-
-  .main-content {
-    overflow-y: visible; /* Let body handle scroll */
-  }
-
-  .page {
-    padding: 20px 15px;
-  }
-
-  /* Adjust Headers */
-  .header-pages {
-    flex-direction: column;
-    gap: 15px;
-    align-items: stretch;
-    text-align: center;
-  }
-
-  .header-pages h2 {
-    font-size: 1.75rem;
-  }
-
-  .create-button-container {
-    justify-content: stretch;
-    width: 100%;
-  }
-
-  .create-button {
-    width: 100%;
-    justify-content: center;
-  }
-
-  /* Grids to Single Column */
-  .quartos-cards,
-  .clientes-cards,
-  .reservas-cards,
-  .financeiro-cards {
-    grid-template-columns: 1fr;
-    gap: 20px;
-  }
-
-  /* Forms */
-  form {
-    padding: 20px;
-    margin: 20px 0;
-    width: 100%;
-    box-shadow: none;
-    border: 1px solid var(--border);
-  }
-
-  /* Order By */
-  .order-by {
-    flex-wrap: wrap;
-  }
-
-  .order-by button {
-    flex: 1;
-  }
-}
-
-/* Login Page Styles */
-.login-page {
-  display: flex;
-  min-height: 100vh;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: var(--background);
-}
-
-.login-container {
-  width: 100%;
-  max-width: 450px;
-  background: var(--card);
-  padding: 40px;
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-xl);
-  border: 1px solid var(--border);
-  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.login-title {
-  font-size: 2rem;
-  font-weight: 700;
-  text-align: center;
-  margin-bottom: 30px;
-  color: var(--foreground);
-}
-
-.login-form {
-  padding: 0;
-  margin: 0;
-  box-shadow: none;
-  border: none;
-  background: transparent;
-  width: 100%;
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 600;
-  color: var(--text-main);
-}
-
-.login-input {
-  width: 100%;
-  padding: 12px 16px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  font-size: 1rem;
-  background-color: var(--input-background);
-  color: var(--foreground);
-  transition: all 0.2s ease;
-  box-sizing: border-box;
-}
-
-.login-input:focus {
-  outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 4px var(--accent);
-}
-
-.login-button {
-  width: 100%;
-  padding: 14px;
-  background: var(--primary);
-  color: white;
-  border: none;
-  border-radius: var(--radius-md);
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  margin-top: 10px;
-}
-
-.login-button:hover {
-  background: var(--primary);
-  opacity: 0.9;
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-.login-button:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-  transform: none;
-}
-
 /* ========================================
-   TAILWIND THEME CONFIGURATION
+   2. TAILWIND THEME CONFIGURATION
    ======================================== */
 @theme inline {
   --color-background: var(--background);
@@ -769,7 +93,7 @@ form button:hover,
 }
 
 /* ========================================
-   BASE STYLES
+   3. BASE STYLES & TYPOGRAPHY
    ======================================== */
 @layer base {
   * {
@@ -780,9 +104,6 @@ form button:hover,
     @apply bg-background text-foreground;
   }
 
-  /**
-  * Default typography styles for HTML elements.
-  */
   html {
     font-size: var(--font-size);
   }
@@ -830,90 +151,312 @@ form button:hover,
   }
 }
 
-/* Search Bar Styles */
-.search-bar {
-  position: relative;
-  max-width: 400px;
-  margin: 0 auto 30px; /* Center horizontally */
+body {
+  margin: 0;
+  color: var(--text-main);
+  font-family: "Inter", "Poppins", sans-serif;
+  background: var(--background);
+  -webkit-font-smoothing: antialiased;
 }
 
-.search-input {
-  width: 100%;
-  padding: 12px 16px;
-  padding-right: 48px; /* Space for the icon */
-  box-sizing: border-box;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  font-family: inherit;
-  font-size: 0.95rem;
-  transition: all 0.2s ease;
-  background-color: var(--input-background);
+h1, h2, h3 {
+  margin: 0;
   color: var(--foreground);
 }
 
-.search-input:focus {
-  outline: none;
-  border-color: var(--primary);
-  background-color: var(--card);
-  box-shadow: 0 0 0 4px var(--accent);
-}
-
-.search-icon {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--muted-foreground);
-  pointer-events: none;
-  font-size: 24px;
-}
-
-/* View Toggle Styles */
-.view-toggle {
+/* ========================================
+   4. LAYOUT - Main Structure
+   ======================================== */
+.main-layout {
   display: flex;
-  gap: 5px;
-  background: var(--card);
-  padding: 4px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border);
+  min-height: 100vh;
 }
 
-.view-toggle-button {
+.main-content {
+  flex: 1;
+  background: var(--background);
+  overflow-y: auto;
+  padding-bottom: 40px;
+}
+
+.page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px;
+  width: 100%;
+  box-sizing: border-box;
+  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ========================================
+   5. LAYOUT - Sidebar
+   ======================================== */
+.sidebar {
+  width: 250px;
+  background: var(--sidebar);
+  color: var(--sidebar-foreground);
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  box-sizing: border-box;
+  z-index: 10;
+}
+
+.sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 40px;
+}
+
+.sidebar nav a {
+  color: var(--muted-foreground);
+  text-decoration: none;
+  font-size: 1rem;
+  padding: 14px 20px;
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 500;
+}
+
+.sidebar nav a:hover,
+.sidebar nav a.active {
+  background: var(--sidebar-accent);
+  color: var(--sidebar-accent-foreground);
+  transform: translateX(4px);
+}
+
+/* ========================================
+   6. HEADERS
+   ======================================== */
+.header-pages {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.header-pages h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--foreground);
+}
+
+.principal-title {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px;
-  background: transparent;
-  border: none;
-  border-radius: var(--radius-sm);
-  cursor: pointer;
-  color: var(--muted-foreground);
-  transition: all 0.2s ease;
+  gap: 15px;
+  background: linear-gradient(135deg, var(--primary), #eab308);
+  padding: 20px 40px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 30px;
+  color: var(--primary-foreground);
 }
 
-.view-toggle-button:hover {
-  background: var(--muted);
-  color: var(--primary);
+.principal-title h1 {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 2.2rem;
+  color: var(--primary-foreground);
+  margin: 0;
 }
 
-.view-toggle-button.active {
+/* ========================================
+   7. CARDS - Base Styles (Consolidated)
+   ======================================== */
+/* Card Containers */
+.quartos-cards,
+.clientes-cards,
+.reservas-cards,
+.financeiro-cards,
+.dashboard-cards {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+/* Base Card Style */
+.quartos-card,
+.clientes-card,
+.reservas-card,
+.financeiro-card,
+.dashboard-card {
+  width: 100%;
+  padding: 20px;
+  background: var(--card);
+  box-sizing: border-box;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+  transition: all 0.3s ease;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.quartos-card:hover,
+.clientes-card:hover,
+.reservas-card:hover,
+.financeiro-card:hover,
+.dashboard-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary);
+}
+
+/* Card Badge/Number */
+.quartos-card .numero,
+.clientes-card .numero,
+.reservas-card .numero {
+  position: absolute;
+  top: 15px;
+  right: 15px;
   background: var(--accent);
   color: var(--primary);
+  font-weight: 1000;
+  border-radius: var(--radius-sm);
+  padding: 12px 15px;
+  font-size: 2rem;
+  width: 50px;
+  height: 50px;
+  line-height: 0.75;
 }
 
-.view-toggle-button i {
+/* Card Internal Layout */
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.card-header h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--foreground);
+  margin: 0;
+}
+
+.card-icon {
+  background: var(--accent);
+  color: var(--primary);
+  padding: 8px;
+  border-radius: var(--radius-sm);
   font-size: 20px;
 }
 
-/* List View Styles */
-.quartos-list {
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.card-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted-foreground);
+  font-size: 0.95rem;
+}
+
+.card-row i {
+  font-size: 18px;
+  color: var(--muted-foreground);
+  width: 24px;
+  text-align: center;
+}
+
+.price-row {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin: 10px 0;
+}
+
+.price-row span {
+  display: block;
+}
+
+/* ========================================
+   8. CARDS - Dashboard Specific
+   ======================================== */
+.dashboard-card-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.dashboard-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dashboard-card-label {
+  color: var(--muted-foreground);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.dashboard-card-value {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--foreground);
+  margin: 0;
+  line-height: 1;
+}
+
+.dashboard-card-icon-container {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary);
+}
+
+.dashboard-card-icon {
+  color: #ffffff;
+  font-size: 24px;
+}
+
+/* ========================================
+   9. LIST VIEW - Base Styles (Consolidated)
+   ======================================== */
+/* List Containers */
+.quartos-list,
+.clientes-list,
+.reservas-list,
+.financeiro-list {
   margin-top: 30px;
   display: flex;
   flex-direction: column;
   gap: 12px;
 }
 
-.quartos-list-item {
+/* Base List Item */
+.quartos-list-item,
+.clientes-list-item,
+.reservas-list-item,
+.financeiro-list-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -925,11 +468,15 @@ form button:hover,
   transition: all 0.2s ease;
 }
 
-.quartos-list-item:hover {
+.quartos-list-item:hover,
+.clientes-list-item:hover,
+.reservas-list-item:hover,
+.financeiro-list-item:hover {
   border-color: var(--primary);
   box-shadow: var(--shadow-md);
 }
 
+/* List Item Components */
 .list-info {
   display: flex;
   align-items: center;
@@ -988,6 +535,12 @@ form button:hover,
   font-size: 18px;
 }
 
+.list-price {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* List Actions (same style as card actions) */
 .list-actions {
   display: flex;
   gap: 8px;
@@ -1016,7 +569,226 @@ form button:hover,
   background: #fef2f2;
 }
 
-/* Controls Row (Order By + View Toggle) */
+/* ========================================
+   10. BUTTONS - Base Styles
+   ======================================== */
+/* Card Action Buttons */
+.buttons {
+  margin-top: auto;
+  padding-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.buttons i {
+  cursor: pointer;
+  color: var(--muted-foreground);
+  transition: all 0.2s ease;
+  padding: 8px;
+  border-radius: 50%;
+  background: var(--muted);
+}
+
+.buttons i:hover {
+  background: var(--accent);
+  transform: scale(1.1);
+}
+
+.buttons i.material-icons:first-child:hover {
+  color: var(--secondary);
+  background: var(--accent);
+}
+
+.buttons i.material-icons:last-child:hover {
+  color: #ef4444;
+  background: #fef2f2;
+}
+
+/* Create Button */
+.create-button {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border: 0;
+  border-radius: var(--radius-md);
+  padding: 12px 24px;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.create-button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.create-button-container {
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* ========================================
+   11. FORMS
+   ======================================== */
+form {
+  background: var(--card);
+  padding: 40px;
+  max-width: 500px;
+  margin: 40px auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--border);
+}
+
+form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--foreground);
+  font-size: 0.95rem;
+}
+
+form input,
+form textarea,
+form select {
+  display: block;
+  width: 100%;
+  padding: 12px 16px;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  margin-bottom: 24px;
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  background-color: var(--input-background);
+  color: var(--foreground);
+}
+
+form input:focus,
+form textarea:focus,
+form select:focus {
+  outline: none;
+  border-color: var(--primary);
+  background-color: var(--card);
+  box-shadow: 0 0 0 4px var(--accent);
+}
+
+form button {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border: 0;
+  border-radius: var(--radius-md);
+  padding: 12px 24px;
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+form button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+/* ========================================
+   12. SEARCH BAR
+   ======================================== */
+.search-bar {
+  position: relative;
+  max-width: 400px;
+  margin: 0 auto 30px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 16px;
+  padding-right: 48px;
+  box-sizing: border-box;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+  background-color: var(--input-background);
+  color: var(--foreground);
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background-color: var(--card);
+  box-shadow: 0 0 0 4px var(--accent);
+}
+
+.search-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--muted-foreground);
+  pointer-events: none;
+  font-size: 24px;
+}
+
+/* ========================================
+   13. VIEW TOGGLE & CONTROLS
+   ======================================== */
+.view-toggle {
+  display: flex;
+  gap: 5px;
+  background: var(--card);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.view-toggle-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--muted-foreground);
+  transition: all 0.2s ease;
+}
+
+.view-toggle-button:hover {
+  background: var(--muted);
+  color: var(--primary);
+}
+
+.view-toggle-button.active {
+  background: var(--accent);
+  color: var(--primary);
+}
+
+.view-toggle-button i {
+  font-size: 20px;
+}
+
 .controls-row {
   display: flex;
   justify-content: space-between;
@@ -1024,45 +796,306 @@ form button:hover,
   margin: 20px 0;
 }
 
-/* List View Styles for All Pages */
-.clientes-list,
-.reservas-list,
-.financeiro-list {
-  margin-top: 30px;
+/* Order By */
+.order-by {
+  margin: 20px 0;
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
 }
 
-.clientes-list-item,
-.reservas-list-item,
-.financeiro-list-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px;
+.controls-row .order-by {
+  margin: 0;
+  justify-content: flex-start;
+}
+
+.order-by button {
   background: var(--card);
-  border-radius: var(--radius-md);
+  color: var(--muted-foreground);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
+  border-radius: var(--radius-md);
+  padding: 8px 16px;
+  cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.clientes-list-item:hover,
-.reservas-list-item:hover,
-.financeiro-list-item:hover {
+.order-by button:hover {
+  background: var(--muted);
+  color: var(--primary);
   border-color: var(--primary);
+}
+
+.order-by button.active {
+  background: var(--muted);
+  color: var(--primary);
+  border-color: var(--primary);
+  box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+  font-weight: 600;
+}
+
+/* ========================================
+   14. LOGIN PAGE
+   ======================================== */
+.login-page {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--background);
+}
+
+.login-container {
+  width: 100%;
+  max-width: 450px;
+  background: var(--card);
+  padding: 40px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--border);
+  animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.login-title {
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 30px;
+  color: var(--foreground);
+}
+
+.login-form {
+  padding: 0;
+  margin: 0;
+  box-shadow: none;
+  border: none;
+  background: transparent;
+  width: 100%;
+}
+
+.login-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  background-color: var(--input-background);
+  color: var(--foreground);
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+}
+
+.login-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--accent);
+}
+
+.login-button {
+  width: 100%;
+  padding: 14px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-top: 10px;
+}
+
+.login-button:hover {
+  opacity: 0.9;
+  transform: translateY(-2px);
   box-shadow: var(--shadow-md);
 }
 
-/* Price styling in list */
-.list-price {
-  color: var(--primary);
-  font-weight: 700;
+.login-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
 }
 
-/* Mobile Responsiveness for List View */
+.not-found {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  text-align: center;
+  gap: 1.5rem;
+  padding: 2rem;
+}
+
+.not-found h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.not-found p {
+  font-size: 1.125rem;
+  color: var(--muted-foreground);
+}
+
+.not-found a {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.not-found a:hover {
+  background: var(--primary);
+  opacity: 0.9;
+}
+
+/* ========================================
+   15. UTILITY STATES
+   ======================================== */
+/* Error */
+.error {
+  margin-top: 15px;
+  padding: 12px;
+  background-color: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-md);
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* Loading State */
+.loading {
+  text-align: center;
+  margin: 40px 0;
+  color: var(--muted-foreground);
+  font-size: 1.1rem;
+  font-weight: 500;
+  animation: pulse 2s infinite;
+}
+
+/* ========================================
+   16. ANIMATIONS
+   ======================================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulse {
+  0% { opacity: 0.6; }
+  50% { opacity: 1; }
+  100% { opacity: 0.6; }
+}
+
+/* ========================================
+   17. RESPONSIVE - Mobile (Consolidated)
+   ======================================== */
 @media (max-width: 768px) {
+  /* Layout */
+  .main-layout {
+    flex-direction: column;
+  }
+
+  .main-content {
+    overflow-y: visible;
+  }
+
+  .page {
+    padding: 20px 15px;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 100%;
+    height: auto;
+    position: sticky;
+    top: 0;
+    padding: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .sidebar nav {
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 10px;
+    margin-top: 0;
+    padding-bottom: 5px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sidebar nav::-webkit-scrollbar {
+    height: 0px;
+    background: transparent;
+  }
+
+  .sidebar nav a {
+    padding: 8px 16px;
+    white-space: nowrap;
+    background: rgba(255, 255, 255, 0.1);
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  /* Principal Title */
+  .principal-title {
+    padding: 10px;
+    margin-bottom: 15px;
+    flex-direction: row;
+    justify-content: center;
+  }
+
+  .principal-title h1 {
+    font-size: 1.5rem;
+  }
+
+  /* Headers */
+  .header-pages {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .header-pages h2 {
+    font-size: 1.75rem;
+  }
+
+  /* Buttons */
+  .create-button-container {
+    justify-content: stretch;
+    width: 100%;
+  }
+
+  .create-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Cards Grid */
+  .quartos-cards,
+  .clientes-cards,
+  .reservas-cards,
+  .financeiro-cards {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  /* List View */
   .quartos-list-item,
   .clientes-list-item,
   .reservas-list-item,
@@ -1087,8 +1120,361 @@ form button:hover,
     justify-content: flex-end;
   }
 
+  /* Controls */
   .controls-row {
     flex-direction: column;
     gap: 15px;
   }
+
+  .order-by {
+    flex-wrap: wrap;
+  }
+
+  .order-by button {
+    flex: 1;
+  }
+
+  /* Forms */
+  form {
+    padding: 20px;
+    margin: 20px 0;
+    width: 100%;
+    box-shadow: none;
+    border: 1px solid var(--border);
+  }
 }
+
+/* ========================================
+   18. CALENDAR VIEW
+   ======================================== */
+
+/* Container principal */
+.calendar-view {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Controles do calendário */
+.calendar-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.calendar-date-picker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.calendar-date-picker label {
+  font-weight: 500;
+  color: var(--muted-foreground);
+  font-size: 0.9rem;
+}
+
+.calendar-date-picker input[type="date"] {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--input-background);
+  color: var(--foreground);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.calendar-date-picker input[type="date"]:hover,
+.calendar-date-picker input[type="date"]:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+
+.calendar-legend {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--muted-foreground);
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+}
+
+.legend-reserved {
+  background: var(--primary);
+}
+
+.legend-available {
+  background: var(--muted);
+  border: 1px dashed var(--border);
+}
+
+/* Container de scroll */
+.calendar-scroll-container {
+  overflow-x: auto;
+  overflow-y: auto;
+  max-height: 600px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--card);
+}
+
+.calendar-scroll-container::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+
+.calendar-scroll-container::-webkit-scrollbar-track {
+  background: var(--muted);
+  border-radius: 5px;
+}
+
+.calendar-scroll-container::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 5px;
+}
+
+.calendar-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #ea580c;
+}
+
+/* Grid do calendário */
+.calendar-grid {
+  display: flex;
+  flex-direction: column;
+  min-width: max-content;
+}
+
+/* Linha de meses */
+.calendar-month-row {
+  display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--card);
+}
+
+.calendar-room-header {
+  min-width: 120px;
+  max-width: 120px;
+  padding: 12px 16px;
+  font-weight: 600;
+  color: var(--foreground);
+  background: var(--card);
+  position: sticky;
+  left: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.calendar-month-cell {
+  padding: 10px 16px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--primary);
+  background: var(--accent);
+  text-align: center;
+  text-transform: capitalize;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+}
+
+/* Linha de dias */
+.calendar-days-row {
+  display: flex;
+  position: sticky;
+  top: 42px;
+  z-index: 3;
+  background: var(--card);
+}
+
+.calendar-day-cell {
+  min-width: 80px;
+  max-width: 80px;
+  padding: 8px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  background: var(--card);
+}
+
+.calendar-day-cell .day-name {
+  font-size: 0.7rem;
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+}
+
+.calendar-day-cell .day-number {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.calendar-day-today {
+  background: var(--accent);
+}
+
+.calendar-day-today .day-number {
+  color: var(--primary);
+}
+
+/* Linhas dos quartos */
+.calendar-room-row {
+  display: flex;
+}
+
+.calendar-room-cell {
+  min-width: 120px;
+  max-width: 120px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: var(--card);
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.calendar-room-cell .room-number {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--foreground);
+}
+
+.calendar-room-cell .room-type {
+  font-size: 0.75rem;
+  color: var(--muted-foreground);
+  text-transform: capitalize;
+}
+
+/* Células do calendário */
+.calendar-cell {
+  min-width: 80px;
+  max-width: 80px;
+  min-height: 50px;
+  padding: 4px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  position: relative;
+}
+
+.calendar-cell-available {
+  background: var(--card);
+}
+
+.calendar-cell-available:hover {
+  background: var(--muted);
+}
+
+.calendar-cell-reserved {
+  background: var(--primary);
+  cursor: default;
+}
+
+.calendar-cell-checkin {
+  border-top-left-radius: var(--radius-sm);
+  border-bottom-left-radius: var(--radius-sm);
+}
+
+.calendar-cell-checkout {
+  border-top-right-radius: var(--radius-sm);
+  border-bottom-right-radius: var(--radius-sm);
+}
+
+.calendar-cell-today {
+  box-shadow: inset 0 0 0 2px var(--primary);
+}
+
+.calendar-cell-today.calendar-cell-available {
+  background: var(--accent);
+}
+
+/* Reserva dentro da célula */
+.calendar-reservation {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  height: 100%;
+  justify-content: center;
+}
+
+.calendar-reservation .reservation-name {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--primary-foreground);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 70px;
+}
+
+.calendar-reservation .reservation-guests {
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Responsivo para calendário */
+@media (max-width: 768px) {
+  .calendar-controls {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .calendar-scroll-container {
+    max-height: 450px;
+  }
+
+  .calendar-room-header,
+  .calendar-room-cell {
+    min-width: 80px;
+    max-width: 80px;
+    padding: 8px;
+  }
+
+  .calendar-day-cell,
+  .calendar-cell {
+    min-width: 60px;
+    max-width: 60px;
+  }
+
+  .calendar-room-cell .room-number {
+    font-size: 0.95rem;
+  }
+
+  .calendar-reservation .reservation-name {
+    max-width: 50px;
+    font-size: 0.6rem;
+  }
+}
+

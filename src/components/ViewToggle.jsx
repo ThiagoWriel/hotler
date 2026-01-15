@@ -1,4 +1,4 @@
-const ViewToggle = ({ viewMode, setViewMode }) => {
+const ViewToggle = ({ viewMode, setViewMode, showCalendar = false }) => {
   return (
     <div className="view-toggle">
       <button
@@ -15,6 +15,17 @@ const ViewToggle = ({ viewMode, setViewMode }) => {
       >
         <i className="material-icons">view_list</i>
       </button>
+      {showCalendar && (
+        <button
+          className={`view-toggle-button ${
+            viewMode === "calendar" ? "active" : ""
+          }`}
+          onClick={() => setViewMode("calendar")}
+          title="Visualização em Calendário"
+        >
+          <i className="material-icons">calendar_month</i>
+        </button>
+      )}
     </div>
   );
 };
