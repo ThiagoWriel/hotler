@@ -191,6 +191,27 @@ const CriarCliente = () => {
 
 const CriarReserva = () => {
   const router = useRouter();
+
+  // Lê parâmetros da URL (quarto e checkin vindos do calendário)
+  const [urlQuarto, setUrlQuarto] = useState("");
+  const [urlCheckin, setUrlCheckin] = useState("");
+
+  useEffect(() => {
+    // Lê parâmetros da URL no cliente
+    const params = new URLSearchParams(window.location.search);
+    const quartoParam = params.get("quarto");
+    const checkinParam = params.get("checkin");
+
+    if (quartoParam) {
+      setUrlQuarto(quartoParam);
+      setQuartoReserva(quartoParam);
+    }
+    if (checkinParam) {
+      setUrlCheckin(checkinParam);
+      setCheckin(checkinParam);
+    }
+  }, []);
+
   const [quarto_reserva, setQuartoReserva] = useState("");
   const [cliente_reserva, setClienteReserva] = useState("");
   const [checkin, setCheckin] = useState("");

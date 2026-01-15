@@ -836,7 +836,74 @@ form button:hover {
 }
 
 /* ========================================
-   14. LOGIN PAGE
+   14. DATE FILTER
+   ======================================== */
+.filter-section {
+  margin-bottom: 20px;
+}
+
+.date-filter {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+  background: var(--card);
+  padding: 16px 20px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+
+.date-filter-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.date-filter-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--foreground);
+  white-space: nowrap;
+}
+
+.date-filter-input {
+  padding: 10px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: 0.9rem;
+  background-color: var(--input-background);
+  color: var(--foreground);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  min-width: 140px;
+}
+
+.date-filter-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background-color: var(--card);
+  box-shadow: 0 0 0 4px var(--accent);
+}
+
+.date-filter-input:hover {
+  border-color: var(--primary);
+}
+
+/* Date filter separator arrow */
+.date-filter-separator {
+  display: flex;
+  align-items: center;
+  color: var(--muted-foreground);
+}
+
+.date-filter-separator i {
+  font-size: 20px;
+}
+
+/* ========================================
+   15. LOGIN PAGE
    ======================================== */
 .login-page {
   display: flex;
@@ -1266,10 +1333,19 @@ form button:hover {
 /* Linha de meses */
 .calendar-month-row {
   display: flex;
-  position: sticky;
-  top: 0;
-  z-index: 3;
   background: var(--card);
+}
+
+/* Placeholder na linha de meses (mesmo tamanho da coluna de quartos) */
+.calendar-room-header-placeholder {
+  min-width: 120px;
+  max-width: 120px;
+  background: var(--card);
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  left: 0;
+  z-index: 4;
 }
 
 .calendar-room-header {
@@ -1305,7 +1381,7 @@ form button:hover {
 .calendar-days-row {
   display: flex;
   position: sticky;
-  top: 42px;
+  top: 0;
   z-index: 3;
   background: var(--card);
 }

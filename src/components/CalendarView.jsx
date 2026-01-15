@@ -9,20 +9,27 @@ import { useRouter } from "next/navigation";
  * Props:
  * - reservas: Array de reservas com campos (cliente_reserva, checkin, checkout, quarto_reserva, pessoas, estado_reserva)
  * - quartos: Array de quartos com campos (numero, tipo, estado)
- * - daysToShow: Número de dias a exibir (padrão: 90 dias)
+ * - daysToShow: Número de dias a exibir no futuro (padrão: 90 dias)
+ * - daysPast: Número de dias no passado para exibir (padrão: 30 dias)
  */
-const CalendarView = ({ reservas = [], quartos = [], daysToShow = 90 }) => {
+const CalendarView = ({
+  reservas = [],
+  quartos = [],
+  daysToShow = 90,
+  daysPast = 30,
+}) => {
   const router = useRouter();
   const scrollContainerRef = useRef(null);
   const [selectedDate, setSelectedDate] = useState("");
 
-  // Gera array de dias a partir de hoje
+  // Gera array de dias incluindo dias passados e futuros
   const generateDays = () => {
     const days = [];
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    for (let i = 0; i < daysToShow; i++) {
+    // Começa X dias no passado
+    for (let i = -daysPast; i < daysToShow; i++) {
       const date = new Date(today);
       date.setDate(today.getDate() + i);
       days.push(date);
@@ -92,7 +99,8 @@ const CalendarView = ({ reservas = [], quartos = [], daysToShow = 90 }) => {
     const dateStr = formatDateForComparison(date);
 
     return reservas.find((reserva) => {
-      if (reserva.quarto_reserva !== quartoNumero) return false;
+      // Compara como string para garantir compatibilidade
+      if (String(reserva.quarto_reserva) !== String(quartoNumero)) return false;
       if (reserva.estado_reserva === "cancelada") return false;
 
       const checkinDate = formatDateForComparison(reserva.checkin);
@@ -123,9 +131,9 @@ const CalendarView = ({ reservas = [], quartos = [], daysToShow = 90 }) => {
     if (!reserva) {
       const formattedDate = formatDateForComparison(date);
       // Navega para criar reserva com quarto e data pré-selecionados
-      router.push(
-        `/reservas/create?quarto=${quartoNumero}&checkin=${formattedDate}`
-      );
+      const url = `/reservas/create?quarto=${quartoNumero}&checkin=${formattedDate}`;
+      console.log("Navegando para:", url);
+      router.push(url);
     }
   };
 
@@ -134,15 +142,22 @@ const CalendarView = ({ reservas = [], quartos = [], daysToShow = 90 }) => {
     const targetDate = new Date(e.target.value);
     setSelectedDate(e.target.value);
 
-    // Encontra o índice do dia no array
+    // Encontra o índice do dia no array (considerando dias passados)
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const diffTime = targetDate.getTime() - today.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
-    if (diffDays >= 0 && diffDays < daysToShow && scrollContainerRef.current) {
+    // O índice no array é diffDays + daysPast (pois começamos daysPast dias atrás)
+    const arrayIndex = diffDays + daysPast;
+
+    if (
+      arrayIndex >= 0 &&
+      arrayIndex < days.length &&
+      scrollContainerRef.current
+    ) {
       // Calcula a posição de scroll (80px por coluna + 120px da coluna de quartos)
-      const scrollPosition = 120 + diffDays * 80 - 200;
+      const scrollPosition = arrayIndex * 80 - 200;
       scrollContainerRef.current.scrollTo({
         left: Math.max(0, scrollPosition),
         behavior: "smooth",
@@ -150,20 +165,28 @@ const CalendarView = ({ reservas = [], quartos = [], daysToShow = 90 }) => {
     }
   };
 
-  // Scroll para o dia atual ao montar
+  // Scroll para o dia atual ao montar (posição = daysPast * 80px - um pouco de margem)
   useEffect(() => {
     if (scrollContainerRef.current) {
-      // Pequeno delay para garantir que o DOM está pronto
       setTimeout(() => {
-        scrollContainerRef.current.scrollTo({ left: 0, behavior: "instant" });
+        // Scroll para o dia atual (que está na posição daysPast do array)
+        const scrollPosition = daysPast * 80 - 200;
+        scrollContainerRef.current.scrollTo({
+          left: Math.max(0, scrollPosition),
+          behavior: "instant",
+        });
       }, 100);
     }
-  }, []);
+  }, [daysPast]);
 
   // Ordena quartos por número
   const sortedQuartos = [...(quartos || [])].sort(
     (a, b) => a.numero - b.numero
   );
+
+  // Calcula os limites de data para o date picker
+  const minDate = formatDateForComparison(days[0]);
+  const maxDate = formatDateForComparison(days[days.length - 1]);
 
   return (
     <div className="calendar-view">
@@ -176,7 +199,8 @@ const CalendarView = ({ reservas = [], quartos = [], daysToShow = 90 }) => {
             id="calendar-goto"
             value={selectedDate}
             onChange={handleDatePickerChange}
-            min={formatDateForComparison(new Date())}
+            min={minDate}
+            max={maxDate}
           />
         </div>
         <div className="calendar-legend">
@@ -196,12 +220,12 @@ const CalendarView = ({ reservas = [], quartos = [], daysToShow = 90 }) => {
         <div className="calendar-grid">
           {/* Header dos meses */}
           <div className="calendar-month-row">
-            <div className="calendar-room-header"></div>
+            <div className="calendar-room-header-placeholder"></div>
             {monthGroups.map((group, index) => (
               <div
                 key={index}
                 className="calendar-month-cell"
-                style={{ gridColumn: `span ${group.count}` }}
+                style={{ width: `${group.count * 80}px` }}
               >
                 {group.month}
               </div>

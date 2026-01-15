@@ -8,9 +8,11 @@ import { ReservasList } from "../../components/List";
 import CalendarView from "../../components/CalendarView";
 import { CreateButtonReserva } from "../../components/Botton";
 import Search from "../../components/Search";
+import DateFilter from "../../components/DateFilter";
 import ViewToggle from "../../components/ViewToggle";
 import useFetch from "../../hooks/useFetch";
 import useSearch from "../../hooks/useSearch";
+import useDateFilter from "../../hooks/useDateFilter";
 
 const Reservas = () => {
   const { isPending, fetchError, hotler, handleDelete } = useFetch("reservas");
@@ -18,8 +20,17 @@ const Reservas = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [viewMode, setViewMode] = useState("cards");
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
-  const { filteredData } = useSearch(hotler, searchTerm);
+  // Filtro de data aplicado primeiro, depois o filtro de busca
+  const { filteredData: dateFiltered } = useDateFilter(
+    hotler,
+    startDate,
+    endDate,
+    "checkin"
+  );
+  const { filteredData } = useSearch(dateFiltered, searchTerm);
 
   return (
     <div className="reservas">
@@ -43,9 +54,19 @@ const Reservas = () => {
           </div>
 
           {viewMode !== "calendar" && (
-            <div className="search">
-              <Search value={searchTerm} onChange={setSearchTerm} />
-            </div>
+            <>
+              <div className="filter-section">
+                <DateFilter
+                  startDate={startDate}
+                  endDate={endDate}
+                  onStartDateChange={setStartDate}
+                  onEndDateChange={setEndDate}
+                />
+              </div>
+              <div className="search">
+                <Search value={searchTerm} onChange={setSearchTerm} />
+              </div>
+            </>
           )}
 
           {viewMode === "cards" && (
