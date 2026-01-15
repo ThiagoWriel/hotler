@@ -358,6 +358,11 @@ form button:hover,
   justify-content: center;
 }
 
+.controls-row .order-by {
+  margin: 0;
+  justify-content: flex-start;
+}
+
 .order-by button {
   background: var(--card);
   color: var(--muted-foreground);
@@ -861,4 +866,229 @@ form button:hover,
   color: var(--muted-foreground);
   pointer-events: none;
   font-size: 24px;
+}
+
+/* View Toggle Styles */
+.view-toggle {
+  display: flex;
+  gap: 5px;
+  background: var(--card);
+  padding: 4px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.view-toggle-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--muted-foreground);
+  transition: all 0.2s ease;
+}
+
+.view-toggle-button:hover {
+  background: var(--muted);
+  color: var(--primary);
+}
+
+.view-toggle-button.active {
+  background: var(--accent);
+  color: var(--primary);
+}
+
+.view-toggle-button i {
+  font-size: 20px;
+}
+
+/* List View Styles */
+.quartos-list {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.quartos-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: var(--card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.quartos-list-item:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-md);
+}
+
+.list-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: 1;
+}
+
+.list-icon-container {
+  width: 44px;
+  height: 44px;
+  background: var(--accent);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.list-icon-container i {
+  color: var(--primary);
+  font-size: 22px;
+}
+
+.list-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.list-title {
+  font-weight: 600;
+  color: var(--foreground);
+  font-size: 1rem;
+}
+
+.list-subtitle {
+  color: var(--muted-foreground);
+  font-size: 0.85rem;
+}
+
+.list-data {
+  display: flex;
+  gap: 24px;
+  flex: 1;
+  justify-content: center;
+}
+
+.list-data-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted-foreground);
+  font-size: 0.9rem;
+}
+
+.list-data-item i {
+  font-size: 18px;
+}
+
+.list-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.list-actions i {
+  cursor: pointer;
+  color: var(--muted-foreground);
+  transition: all 0.2s ease;
+  padding: 8px;
+  border-radius: 50%;
+  background: var(--muted);
+}
+
+.list-actions i:hover {
+  background: var(--accent);
+  transform: scale(1.1);
+}
+
+.list-actions i.material-icons:first-child:hover {
+  color: var(--secondary);
+}
+
+.list-actions i.material-icons:last-child:hover {
+  color: #ef4444;
+  background: #fef2f2;
+}
+
+/* Controls Row (Order By + View Toggle) */
+.controls-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+}
+
+/* List View Styles for All Pages */
+.clientes-list,
+.reservas-list,
+.financeiro-list {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.clientes-list-item,
+.reservas-list-item,
+.financeiro-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: var(--card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  transition: all 0.2s ease;
+}
+
+.clientes-list-item:hover,
+.reservas-list-item:hover,
+.financeiro-list-item:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow-md);
+}
+
+/* Price styling in list */
+.list-price {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+/* Mobile Responsiveness for List View */
+@media (max-width: 768px) {
+  .quartos-list-item,
+  .clientes-list-item,
+  .reservas-list-item,
+  .financeiro-list-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .list-info {
+    width: 100%;
+  }
+
+  .list-data {
+    width: 100%;
+    justify-content: flex-start;
+    gap: 16px;
+  }
+
+  .list-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .controls-row {
+    flex-direction: column;
+    gap: 15px;
+  }
 }

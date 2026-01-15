@@ -52,7 +52,7 @@ export default function Dashboard() {
       <div className="header-pages">
         <h2>Dashboard</h2>
       </div>
-      {isPending && <p>Carregando...</p>}
+      <div className="loading">{isPending && <p>Carregando...</p>}</div>
       {fetchError && <p className="error">{fetchError}</p>}
       {quartos && clientes && reservas && financeiro && (
         <div className="dashboard">
