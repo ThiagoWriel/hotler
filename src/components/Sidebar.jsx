@@ -9,10 +9,12 @@ export default function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="principal-title">
-        <i className="material-icons" style={{ fontSize: "2.5rem" }}>
+        <i className="material-icons" style={{ fontSize: "2.0rem" }}>
           holiday_village
         </i>
-        <h1>Hotler</h1>
+        <Link href="/dashboard">
+          <h1>Hotler</h1>
+        </Link>
       </div>
       <div className="links">
         <nav>

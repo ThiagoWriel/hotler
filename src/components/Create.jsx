@@ -205,6 +205,7 @@ const CriarReserva = () => {
 
   const [clientesList, setClientesList] = useState([]);
   const [quartosList, setQuartosList] = useState([]);
+  const [reservasList, setReservasList] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -215,8 +216,14 @@ const CriarReserva = () => {
 
       const { data: quartosData } = await supabase
         .from("quartos")
-        .select("numero");
+        .select("numero, estado, ocupado");
       if (quartosData) setQuartosList(quartosData);
+
+      const { data: reservasData } = await supabase
+        .from("reservas")
+        .select("quarto_reserva, checkin, checkout, estado_reserva")
+        .neq("estado_reserva", "cancelada");
+      if (reservasData) setReservasList(reservasData);
     };
     fetchData();
   }, []);
@@ -289,21 +296,6 @@ const CriarReserva = () => {
           ))}
         </select>
 
-        <label htmlFor="quarto_reserva">Quarto</label>
-        <select
-          id="quarto_reserva"
-          value={quarto_reserva}
-          onChange={(e) => setQuartoReserva(e.target.value)}
-        >
-          <option disabled value="">
-            Selecione um quarto
-          </option>
-          {quartosList.map((quarto, index) => (
-            <option key={index} value={quarto.numero}>
-              {quarto.numero}
-            </option>
-          ))}
-        </select>
         <label htmlFor="checkin">Check-in</label>
         <input
           type="date"
@@ -318,6 +310,43 @@ const CriarReserva = () => {
           value={checkout}
           onChange={(e) => setCheckout(e.target.value)}
         />
+
+        <label htmlFor="quarto_reserva">Quarto</label>
+        <select
+          id="quarto_reserva"
+          value={quarto_reserva}
+          onChange={(e) => setQuartoReserva(e.target.value)}
+        >
+          <option disabled value="">
+            Selecione um quarto
+          </option>
+          {quartosList
+            .filter((quarto) => {
+              if (quarto.estado === "em-manutencao") return false;
+
+              if (!checkin || !checkout) return true;
+
+              const isAvailable = !reservasList.some((reserva) => {
+                if (reserva.quarto_reserva !== quarto.numero) return false;
+
+                const newCheckin = new Date(checkin);
+                const newCheckout = new Date(checkout);
+                const resCheckin = new Date(reserva.checkin);
+                const resCheckout = new Date(reserva.checkout);
+
+                // Overlap condition:
+                // (StartA <= EndB) and (EndA >= StartB)
+                return newCheckin <= resCheckout && newCheckout >= resCheckin;
+              });
+
+              return isAvailable;
+            })
+            .map((quarto, index) => (
+              <option key={index} value={quarto.numero}>
+                {quarto.numero}
+              </option>
+            ))}
+        </select>
         <label htmlFor="pessoas">Pessoas</label>
         <input
           type="number"
