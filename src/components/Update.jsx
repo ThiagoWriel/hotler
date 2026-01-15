@@ -464,4 +464,146 @@ const UpdateReserva = () => {
   );
 };
 
-export { UpdateQuarto, UpdateCliente, UpdateReserva };
+const UpdateFinanceiro = () => {
+  const { id } = useParams();
+  const router = useRouter();
+
+  const [valor, setValor] = useState("");
+  const [tipo_transacao, setTipoTransacao] = useState("");
+  const [metodo, setMetodo] = useState("");
+  const [data_transacao, setDataTransacao] = useState("");
+  const [origem, setOrigem] = useState("");
+  const [formError, setFormError] = useState(null);
+  const [isPending, setIsPending] = useState(false);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!valor || !tipo_transacao || !metodo || !data_transacao || !origem) {
+      setFormError("Preencha todos os campos");
+      return;
+    }
+
+    setIsPending(true);
+
+    const { data, error } = await supabase
+      .from("financeiro")
+      .update({
+        valor,
+        tipo_transacao,
+        metodo,
+        data_transacao,
+        origem,
+      })
+      .eq("id", id)
+      .select();
+
+    if (error) {
+      setFormError("Erro ao atualizar");
+      setIsPending(false);
+    }
+    if (data) {
+      setFormError(null);
+      router.push("/financeiro");
+      router.refresh();
+      setIsPending(false);
+    }
+  };
+
+  useEffect(() => {
+    const fetchFinanceiro = async () => {
+      const { data, error } = await supabase
+        .from("financeiro")
+        .select()
+        .eq("id", id)
+        .single();
+      if (error) {
+        router.push("/financeiro");
+      }
+      if (data) {
+        setValor(data.valor);
+        setTipoTransacao(data.tipo_transacao);
+        setMetodo(data.metodo);
+        setDataTransacao(data.data_transacao);
+        setOrigem(data.origem);
+      }
+    };
+    fetchFinanceiro();
+  }, [id, router]);
+
+  return (
+    <div className="page-financeiro">
+      <h2>Editar Financeiro</h2>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="valor">Valor</label>
+        <input
+          type="number"
+          id="valor"
+          value={valor}
+          onChange={(e) => setValor(e.target.value)}
+        />
+        <label htmlFor="tipo_transacao">Tipo de Transação</label>
+        <select
+          id="tipo_transacao"
+          value={tipo_transacao}
+          onChange={(e) => setTipoTransacao(e.target.value)}
+        >
+          <option disabled value="">
+            Selecione
+          </option>
+          <option value="entrada">Entrada</option>
+          <option value="saida">Saída</option>
+        </select>
+        <label htmlFor="metodo">Método de Pagamento</label>
+        <select
+          id="metodo"
+          value={metodo}
+          onChange={(e) => setMetodo(e.target.value)}
+        >
+          <option disabled value="">
+            Selecione
+          </option>
+          <option value="dinheiro">Dinheiro</option>
+          <option value="cartao">Cartão</option>
+          <option value="pix">PIX</option>
+        </select>
+        <label htmlFor="data_transacao">Data da Transação</label>
+        <input
+          type="date"
+          id="data_transacao"
+          value={data_transacao}
+          onChange={(e) => setDataTransacao(e.target.value)}
+        />
+        <label htmlFor="origem">Origem</label>
+        <select
+          id="origem"
+          value={origem}
+          onChange={(e) => setOrigem(e.target.value)}
+        >
+          <option disabled value="">
+            Selecione
+          </option>
+          <option value="funcionarios">Funcionários</option>
+          <option value="cafe-da-manha">Café da manhã</option>
+          <option value="energia">Energia</option>
+          <option value="agua">Água</option>
+          <option value="reparos">Reparos Diversos</option>
+          <option value="limpeza">Limpeza</option>
+          <option value="produtos">Produtos</option>
+          <option value="marketing">Marketing</option>
+          <option value="impostos">Impostos</option>
+          <option value="internet">Internet</option>
+          <option value="outros">Outros</option>
+        </select>
+
+        {isPending ? (
+          <button disabled>Carregando...</button>
+        ) : (
+          <button type="submit">Atualizar Financeiro</button>
+        )}
+        {formError && <p className="error">{formError}</p>}
+      </form>
+    </div>
+  );
+};
+
+export { UpdateQuarto, UpdateCliente, UpdateReserva, UpdateFinanceiro };
