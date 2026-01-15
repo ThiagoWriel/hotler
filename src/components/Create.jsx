@@ -414,4 +414,119 @@ const CriarReserva = () => {
   );
 };
 
-export { CriarQuarto, CriarCliente, CriarReserva };
+const CriarFinanceiro = () => {
+  const router = useRouter();
+  const [valor, setValor] = useState("");
+  const [tipo_transacao, setTipoTransacao] = useState("");
+  const [metodo, setMetodo] = useState("");
+  const [data_transacao, setDataTransacao] = useState("");
+  const [origem, setOrigem] = useState("");
+  const [formError, setFormError] = useState(null);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!valor || !tipo_transacao || !metodo || !data_transacao || !origem) {
+      setFormError("Preencha todos os campos");
+      return;
+    }
+
+    const { data, error } = await supabase
+      .from("financeiro")
+      .insert({
+        valor,
+        tipo_transacao,
+        metodo,
+        data_transacao,
+        origem,
+      })
+      .select();
+
+    if (error) {
+      console.log(error);
+      setFormError("Não conseguiu criar a transição");
+      return;
+    }
+    if (data) {
+      console.log(data);
+      setFormError(null);
+      router.push("/financeiro");
+      router.refresh();
+    }
+  };
+
+  return (
+    <div className="criar-financeiro">
+      <br />
+      <h2>Criar Transação</h2>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="valor">Valor</label>
+        <input
+          type="number"
+          id="valor"
+          value={valor}
+          onChange={(e) => setValor(e.target.value)}
+        />
+        <label htmlFor="tipo_transacao">Tipo de Transação</label>
+        <select
+          id="tipo_transacao"
+          value={tipo_transacao}
+          onChange={(e) => setTipoTransacao(e.target.value)}
+        >
+          <option disabled value="">
+            Selecione
+          </option>
+          <option value="entrada">Entrada</option>
+          <option value="saida">Saída</option>
+        </select>
+        <label htmlFor="metodo">Método de Pagamento</label>
+        <select
+          id="metodo"
+          value={metodo}
+          onChange={(e) => setMetodo(e.target.value)}
+        >
+          <option disabled value="">
+            Selecione
+          </option>
+          <option value="dinheiro">Dinheiro</option>
+          <option value="cartao">Cartão</option>
+          <option value="pix">PIX</option>
+        </select>
+        <label htmlFor="data_transacao">Data da Transação</label>
+        <input
+          type="date"
+          id="data_transacao"
+          value={data_transacao}
+          onChange={(e) => setDataTransacao(e.target.value)}
+        />
+        <label htmlFor="origem">Origem</label>
+        <select
+          id="origem"
+          value={origem}
+          onChange={(e) => setOrigem(e.target.value)}
+        >
+          <option disabled value="">
+            Selecione
+          </option>
+          <option value="funcionarios">Funcionários</option>
+          <option value="cafe-da-manha">Café da manhã</option>
+          <option value="energia">Energia</option>
+          <option value="agua">Água</option>
+          <option value="reparos">Reparos Diversos</option>
+          <option value="limpeza">Limpeza</option>
+          <option value="produtos">Produtos</option>
+          <option value="marketing">Marketing</option>
+          <option value="impostos">Impostos</option>
+          <option value="internet">Internet</option>
+          <option value="outros">Outros</option>
+        </select>
+
+        <button type="submit">Criar Transação</button>
+
+        {formError && <p className="error">{formError}</p>}
+      </form>
+    </div>
+  );
+};
+
+export { CriarQuarto, CriarCliente, CriarReserva, CriarFinanceiro };

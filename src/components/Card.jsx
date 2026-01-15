@@ -184,7 +184,7 @@ export const FinanceiroCard = ({ financeiro, onDelete }) => {
           <span>{financeiro.data_transacao}</span>
         </div>
         <div className="card-row">
-          <i className="material-icons">credit_card</i>
+          <i className="material-icons">payments</i>
           <span>{financeiro.metodo}</span>
         </div>
       </div>
