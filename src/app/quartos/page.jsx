@@ -43,8 +43,12 @@ const Quartos = () => {
       <div className="loading">
         {(isPending || isPendingReservas) && <p>Carregando...</p>}
       </div>
+
       {hotler && (
         <div className="quartos">
+          <div className="search">
+            <Search value={searchTerm} onChange={setSearchTerm} />
+          </div>
           <div className="controls-row">
             <div className="order-by">
               <p>Ordenar por: </p>
@@ -74,9 +78,6 @@ const Quartos = () => {
               </button>
             </div>
             <ViewToggle viewMode={viewMode} setViewMode={setViewMode} />
-          </div>
-          <div className="search">
-            <Search value={searchTerm} onChange={setSearchTerm} />
           </div>
 
           {viewMode === "cards" ? (

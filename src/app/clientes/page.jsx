@@ -29,6 +29,9 @@ const Clientes = () => {
       <div className="loading">{isPending && <p>Carregando...</p>}</div>
       {hotler && (
         <div className="clientes">
+          <div className="search">
+            <Search value={searchTerm} onChange={setSearchTerm} />
+          </div>
           <div className="controls-row">
             <div className="order-by">
               <p>Ordenar por: </p>
@@ -37,9 +40,6 @@ const Clientes = () => {
               <button onClick={() => setOrderBy("telefone")}>Telefone</button>
             </div>
             <ViewToggle viewMode={viewMode} setViewMode={setViewMode} />
-          </div>
-          <div className="search">
-            <Search value={searchTerm} onChange={setSearchTerm} />
           </div>
 
           {viewMode === "cards" ? (

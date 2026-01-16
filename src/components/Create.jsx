@@ -48,8 +48,9 @@ const CriarQuarto = () => {
 
   return (
     <div className="criar-quarto">
-      <br />
-      <h2>Criar Quarto</h2>
+      <div className="header-pages">
+        <h2>Criar Quarto</h2>
+      </div>
       <QuartoForm
         values={values}
         onChange={handleChange}
@@ -111,8 +112,9 @@ const CriarCliente = () => {
 
   return (
     <div className="criar-cliente">
-      <br />
-      <h2>Criar Cliente</h2>
+      <div className="header-pages">
+        <h2>Criar Cliente</h2>
+      </div>
       <ClienteForm
         values={values}
         onChange={handleChange}
@@ -263,8 +265,9 @@ const CriarReserva = () => {
 
   return (
     <div className="criar-reserva">
-      <br />
-      <h2>Criar Reserva</h2>
+      <div className="header-pages">
+        <h2>Criar Reserva</h2>
+      </div>
       <ReservaForm
         values={values}
         onChange={handleChange}
@@ -324,8 +327,9 @@ const CriarFinanceiro = () => {
 
   return (
     <div className="criar-financeiro">
-      <br />
-      <h2>Criar Transação</h2>
+      <div className="header-pages">
+        <h2>Criar Transação</h2>
+      </div>
       <FinanceiroForm
         values={values}
         onChange={handleChange}

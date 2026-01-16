@@ -92,7 +92,9 @@ const UpdateQuarto = () => {
 
   return (
     <div className="page-quartos">
-      <h2>Editar Quarto</h2>
+      <div className="header-pages">
+        <h2>Editar Quarto</h2>
+      </div>
       <QuartoForm
         values={values}
         onChange={handleChange}
@@ -184,7 +186,9 @@ const UpdateCliente = () => {
 
   return (
     <div className="page-clientes">
-      <h2>Editar Cliente</h2>
+      <div className="header-pages">
+        <h2>Editar Cliente</h2>
+      </div>
       <ClienteForm
         values={values}
         onChange={handleChange}
@@ -326,7 +330,9 @@ const UpdateReserva = () => {
 
   return (
     <div className="page-reservas">
-      <h2>Editar Reserva #{id}</h2>
+      <div className="header-pages">
+        <h2>Editar Reserva #{id}</h2>
+      </div>
       <ReservaForm
         values={values}
         onChange={handleChange}
@@ -414,7 +420,9 @@ const UpdateFinanceiro = () => {
 
   return (
     <div className="page-financeiro">
-      <h2>Editar Financeiro</h2>
+      <div className="header-pages">
+        <h2>Editar Financeiro</h2>
+      </div>
       <FinanceiroForm
         values={values}
         onChange={handleChange}

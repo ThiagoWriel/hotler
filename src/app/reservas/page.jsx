@@ -40,8 +40,12 @@ const Reservas = () => {
       </div>
       {fetchError && <p className="error">{fetchError}</p>}
       <div className="loading">{isPending && <p>Carregando...</p>}</div>
+
       {hotler && (
         <div className="reservas">
+          <div className="search">
+            <Search value={searchTerm} onChange={setSearchTerm} />
+          </div>
           <div className="controls-row">
             <div className="order-by">
               <p>Ordenar por: </p>
@@ -62,9 +66,6 @@ const Reservas = () => {
                   onStartDateChange={setStartDate}
                   onEndDateChange={setEndDate}
                 />
-              </div>
-              <div className="search">
-                <Search value={searchTerm} onChange={setSearchTerm} />
               </div>
             </>
           )}

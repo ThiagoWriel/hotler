@@ -9,9 +9,30 @@ import {
 } from "../../components/Card";
 import { FinanceiroList, FinanceiroReservasList } from "../../components/List";
 import Search from "../../components/Search";
+import DateFilter from "../../components/DateFilter";
 import ViewToggle from "../../components/ViewToggle";
 import useFetch from "../../hooks/useFetch";
 import useSearch from "../../hooks/useSearch";
+import useDateFilter from "../../hooks/useDateFilter";
+
+// Função para obter primeiro e último dia do mês atual
+const getDefaultDateRange = () => {
+  const now = new Date();
+  const firstDay = new Date(now.getFullYear(), now.getMonth(), 1);
+  const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+  const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
+  return {
+    start: formatDate(firstDay),
+    end: formatDate(lastDay),
+  };
+};
 
 const Financeiro = () => {
   const {
@@ -28,21 +49,39 @@ const Financeiro = () => {
     handleDelete: handleDeleteReservas,
   } = useFetch("reservas");
 
+  const defaultRange = getDefaultDateRange();
   const [searchTerm, setSearchTerm] = useState("");
   const [viewMode, setViewMode] = useState("cards");
+  const [startDate, setStartDate] = useState(defaultRange.start);
+  const [endDate, setEndDate] = useState(defaultRange.end);
 
-  const { filteredData: filteredFinanceiro } = useSearch(
+  // Filtro de data aplicado primeiro para financeiro e reservas
+  const { filteredData: dateFilteredFinanceiro } = useDateFilter(
     financeiroData,
+    startDate,
+    endDate,
+    "data"
+  );
+  const { filteredData: dateFilteredReservas } = useDateFilter(
+    reservasData,
+    startDate,
+    endDate,
+    "checkin"
+  );
+
+  // Depois aplica o filtro de busca
+  const { filteredData: filteredFinanceiro } = useSearch(
+    dateFilteredFinanceiro,
     searchTerm
   );
   const { filteredData: filteredReservas } = useSearch(
-    reservasData,
+    dateFilteredReservas,
     searchTerm
   );
 
-  // Calculate financial metrics
+  // Calculate financial metrics usando dados filtrados por data
   const financialMetrics = useMemo(() => {
-    if (!financeiroData && !reservasData) {
+    if (!dateFilteredFinanceiro && !dateFilteredReservas) {
       return {
         totalEntradas: 0,
         totalSaidas: 0,
@@ -53,8 +92,8 @@ const Financeiro = () => {
       };
     }
 
-    const financeiro = financeiroData || [];
-    const reservas = reservasData || [];
+    const financeiro = dateFilteredFinanceiro || [];
+    const reservas = dateFilteredReservas || [];
 
     // Total de entradas (receitas)
     const totalEntradas = financeiro
@@ -97,7 +136,7 @@ const Financeiro = () => {
       mediaTransacao,
       totalTransacoes,
     };
-  }, [financeiroData, reservasData]);
+  }, [dateFilteredFinanceiro, dateFilteredReservas]);
 
   // Format currency
   const formatCurrency = (value) => {
@@ -121,68 +160,79 @@ const Financeiro = () => {
         {isPendingFinanceiro && isPendingReservas && <p>Carregando...</p>}
       </div>
 
-      {/* Financial Summary Cards */}
       {(financeiroData || reservasData) && (
-        <div className="financial-summary-cards">
-          <DashboardCard
-            dashboard={{
-              title: "Faturamento Total",
-              value: formatCurrency(
-                financialMetrics.totalEntradas +
-                  financialMetrics.receitaReservas
-              ),
-              icon: "trending_up",
-            }}
-          />
-          <DashboardCard
-            dashboard={{
-              title: "Despesas",
-              value: formatCurrency(financialMetrics.totalSaidas),
-              icon: "trending_down",
-            }}
-          />
-          <DashboardCard
-            dashboard={{
-              title: "Saldo Líquido",
-              value: formatCurrency(financialMetrics.saldoLiquido),
-              icon: "account_balance_wallet",
-            }}
-          />
-          <DashboardCard
-            dashboard={{
-              title: "Receita de Reservas",
-              value: formatCurrency(financialMetrics.receitaReservas),
-              icon: "hotel",
-            }}
-          />
-          <DashboardCard
-            dashboard={{
-              title: "Média por Transação",
-              value: formatCurrency(financialMetrics.mediaTransacao),
-              icon: "analytics",
-            }}
-          />
-          <DashboardCard
-            dashboard={{
-              title: "Total de Transações",
-              value: financialMetrics.totalTransacoes,
-              icon: "receipt_long",
-            }}
-          />
-        </div>
-      )}
+        <>
+          <div className="search">
+            <Search value={searchTerm} onChange={setSearchTerm} />
+          </div>
+          {/* Filtro de Data */}
+          <div className="filter-section">
+            <DateFilter
+              startDate={startDate}
+              endDate={endDate}
+              onStartDateChange={setStartDate}
+              onEndDateChange={setEndDate}
+            />
+          </div>
 
-      <div className="controls-row">
-        <div className="order-by">
-          <p>Ordenar por: </p>
-        </div>
-        <ViewToggle viewMode={viewMode} setViewMode={setViewMode} />
-      </div>
-      <div className="search">
-        <Search value={searchTerm} onChange={setSearchTerm} />
-      </div>
-      {(financeiroData || reservasData) && (
-        <div className="financeiro">
+          {/* Financial Summary Cards */}
+          <div className="financial-summary-cards">
+            <DashboardCard
+              dashboard={{
+                title: "Faturamento Total",
+                value: formatCurrency(
+                  financialMetrics.totalEntradas +
+                    financialMetrics.receitaReservas
+                ),
+                icon: "trending_up",
+              }}
+            />
+            <DashboardCard
+              dashboard={{
+                title: "Despesas",
+                value: formatCurrency(financialMetrics.totalSaidas),
+                icon: "trending_down",
+              }}
+            />
+            <DashboardCard
+              dashboard={{
+                title: "Saldo Líquido",
+                value: formatCurrency(financialMetrics.saldoLiquido),
+                icon: "account_balance_wallet",
+              }}
+            />
+            <DashboardCard
+              dashboard={{
+                title: "Receita de Reservas",
+                value: formatCurrency(financialMetrics.receitaReservas),
+                icon: "hotel",
+              }}
+            />
+            <DashboardCard
+              dashboard={{
+                title: "Média por Transação",
+                value: formatCurrency(financialMetrics.mediaTransacao),
+                icon: "analytics",
+              }}
+            />
+            <DashboardCard
+              dashboard={{
+                title: "Total de Transações",
+                value: financialMetrics.totalTransacoes,
+                icon: "receipt_long",
+              }}
+            />
+          </div>
+
+          <hr />
+          <br />
+          <div className="controls-row">
+            <div className="order-by">
+              <p>Ordenar por: </p>
+            </div>
+            <ViewToggle viewMode={viewMode} setViewMode={setViewMode} />
+          </div>
+
           {viewMode === "cards" ? (
             <div className="financeiro-cards">
               {filteredFinanceiro.map((financeiro) => (
@@ -218,7 +268,7 @@ const Financeiro = () => {
               ))}
             </div>
           )}
-        </div>
+        </>
       )}
     </div>
   );
