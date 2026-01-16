@@ -83,7 +83,13 @@ export default function Dashboard() {
                 title: "Receita",
                 value:
                   "R$ " +
-                  (financeiro.reduce((acc, item) => acc + item.valor, 0) +
+                  (financeiro.reduce(
+                    (acc, item) =>
+                      item.tipo_transacao === "Entrada"
+                        ? acc + item.valor
+                        : acc - item.valor,
+                    0
+                  ) +
                     reservas.reduce((acc, item) => acc + item.preco, 0)) +
                   ",00",
                 icon: "attach_money",

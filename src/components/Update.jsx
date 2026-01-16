@@ -3,20 +3,45 @@
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import supabase from "../config/supabaseClient";
+import {
+  QuartoForm,
+  ClienteForm,
+  ReservaForm,
+  FinanceiroForm,
+  formatCPF,
+  formatTelefone,
+} from "./Forms";
 
 const UpdateQuarto = () => {
   const { id } = useParams();
   const router = useRouter();
 
-  const [numero, setNumero] = useState("");
-  const [tipo, setTipo] = useState("");
-  const [estado, setEstado] = useState("");
-  const [ocupado, setOcupado] = useState("");
+  const [values, setValues] = useState({
+    numero: "",
+    tipo: "",
+    estado: "",
+    ocupado: "",
+  });
   const [formError, setFormError] = useState(null);
   const [isPending, setIsPending] = useState(false);
 
+  const handleChange = (key, value) => {
+    if (key === "ocupado") {
+      // Se mudar ocupado para "não", automaticamente coloca estado como "limpo"
+      setValues((prev) => ({
+        ...prev,
+        ocupado: value,
+        estado: value === "não" ? "limpo" : prev.estado,
+      }));
+    } else {
+      setValues((prev) => ({ ...prev, [key]: value }));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const { numero, tipo, estado, ocupado } = values;
 
     if (!numero || !tipo || !estado || !ocupado) {
       setFormError("Preencha todos os campos");
@@ -54,10 +79,12 @@ const UpdateQuarto = () => {
         router.push("/quartos");
       }
       if (data) {
-        setNumero(data.numero);
-        setTipo(data.tipo);
-        setEstado(data.estado);
-        setOcupado(data.ocupado);
+        setValues({
+          numero: data.numero,
+          tipo: data.tipo,
+          estado: data.estado,
+          ocupado: data.ocupado,
+        });
       }
     };
     fetchQuarto();
@@ -66,63 +93,14 @@ const UpdateQuarto = () => {
   return (
     <div className="page-quartos">
       <h2>Editar Quarto</h2>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="numero">Numero</label>
-        <input
-          type="number"
-          id="numero"
-          value={numero}
-          onChange={(e) => setNumero(e.target.value)}
-        />
-        <label htmlFor="tipo">Tipo</label>
-        <select
-          id="tipo"
-          value={tipo}
-          onChange={(e) => setTipo(e.target.value)}
-        >
-          <option disabled value="">
-            Selecione o tipo
-          </option>
-          <option value="individual">Solteiro</option>
-          <option value="duplo">Casal</option>
-          <option value="triplo">Triplo</option>
-          <option value="quadra">Quadra</option>
-        </select>
-
-        <label htmlFor="estado">Estado</label>
-        <select
-          id="estado"
-          value={estado}
-          onChange={(e) => setEstado(e.target.value)}
-        >
-          <option disabled value="">
-            Selecione o estado
-          </option>
-          <option value="limpo">Limpo</option>
-          <option value="sujo">Sujo</option>
-          <option value="em-manutencao">Em Manutenção</option>
-        </select>
-
-        <label htmlFor="ocupado">Ocupado</label>
-        <select
-          id="ocupado"
-          value={ocupado}
-          onChange={(e) => setOcupado(e.target.value)}
-        >
-          <option disabled value="">
-            Selecione
-          </option>
-          <option value="sim">Sim</option>
-          <option value="nao">Não</option>
-        </select>
-        {isPending ? (
-          <button disabled>Carregando...</button>
-        ) : (
-          <button type="submit">Atualizar Quarto</button>
-        )}
-
-        {formError && <p className="error">{formError}</p>}
-      </form>
+      <QuartoForm
+        values={values}
+        onChange={handleChange}
+        onSubmit={handleSubmit}
+        isUpdate={true}
+        isPending={isPending}
+        formError={formError}
+      />
     </div>
   );
 };
@@ -131,16 +109,24 @@ const UpdateCliente = () => {
   const { id } = useParams();
   const router = useRouter();
 
-  const [nome, setNome] = useState("");
-  const [cpf, setCpf] = useState("");
-  const [telefone, setTelefone] = useState("");
-  const [nascimento, setNascimento] = useState("");
-  const [obs, setObs] = useState("");
+  const [values, setValues] = useState({
+    nome: "",
+    cpf: "",
+    telefone: "",
+    nascimento: "",
+    obs: "",
+  });
   const [formError, setFormError] = useState(null);
   const [isPending, setIsPending] = useState(false);
 
+  const handleChange = (key, value) => {
+    setValues((prev) => ({ ...prev, [key]: value }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const { nome, cpf, telefone, nascimento, obs } = values;
 
     if (!nome || !cpf || !telefone || !nascimento || !obs) {
       setFormError("Preencha todos os campos");
@@ -151,7 +137,13 @@ const UpdateCliente = () => {
 
     const { data, error } = await supabase
       .from("clientes")
-      .update({ nome, cpf, telefone, nascimento, obs })
+      .update({
+        nome,
+        cpf: cpf.replace(/\D/g, ""),
+        telefone: telefone.replace(/\D/g, ""),
+        nascimento,
+        obs,
+      })
       .eq("id", id)
       .select();
 
@@ -178,11 +170,13 @@ const UpdateCliente = () => {
         router.push("/clientes");
       }
       if (data) {
-        setNome(data.nome);
-        setCpf(data.cpf);
-        setTelefone(data.telefone);
-        setNascimento(data.nascimento);
-        setObs(data.obs);
+        setValues({
+          nome: data.nome,
+          cpf: formatCPF(String(data.cpf || "")),
+          telefone: formatTelefone(String(data.telefone || "")),
+          nascimento: data.nascimento,
+          obs: data.obs,
+        });
       }
     };
     fetchCliente();
@@ -191,75 +185,59 @@ const UpdateCliente = () => {
   return (
     <div className="page-clientes">
       <h2>Editar Cliente</h2>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="nome">Nome</label>
-        <input
-          type="text"
-          id="nome"
-          value={nome}
-          onChange={(e) => setNome(e.target.value)}
-        />
-        <label htmlFor="cpf">CPF</label>
-        <input
-          type="number"
-          id="cpf"
-          value={cpf}
-          onChange={(e) => setCpf(e.target.value)}
-        />
-        <label htmlFor="telefone">Telefone</label>
-        <input
-          type="number"
-          id="telefone"
-          value={telefone}
-          onChange={(e) => setTelefone(e.target.value)}
-        />
-        <label htmlFor="nascimento">Nascimento</label>
-        <input
-          type="date"
-          id="nascimento"
-          value={nascimento}
-          onChange={(e) => setNascimento(e.target.value)}
-        />
-        <label htmlFor="obs">Observações</label>
-        <textarea
-          id="obs"
-          value={obs}
-          onChange={(e) => setObs(e.target.value)}
-        />
-
-        {isPending ? (
-          <button disabled>Carregando...</button>
-        ) : (
-          <button type="submit">Atualizar Cliente</button>
-        )}
-
-        {formError && <p className="error">{formError}</p>}
-      </form>
+      <ClienteForm
+        values={values}
+        onChange={handleChange}
+        onSubmit={handleSubmit}
+        isUpdate={true}
+        isPending={isPending}
+        formError={formError}
+      />
     </div>
   );
 };
 
 const UpdateReserva = () => {
-  const [isPending, setIsPending] = useState(false);
   const { id } = useParams();
   const router = useRouter();
-  const [quarto_reserva, setQuartoReserva] = useState("");
-  const [cliente_reserva, setClienteReserva] = useState("");
-  const [checkin, setCheckin] = useState("");
-  const [checkout, setCheckout] = useState("");
-  const [pessoas, setPessoas] = useState("");
-  const [estado_reserva, setEstadoReserva] = useState("");
-  const [preco, setPreco] = useState("");
-  const [tipo_pagamento, setTipoPagamento] = useState("");
-  const [pagamento_realizado, setPagamentoRealizado] = useState("");
-  const [obs, setObs] = useState("");
+
+  const [values, setValues] = useState({
+    quarto_reserva: "",
+    cliente_reserva: "",
+    checkin: "",
+    checkout: "",
+    pessoas: "",
+    estado_reserva: "",
+    preco: "",
+    tipo_pagamento: "",
+    pagamento_realizado: "",
+    obs: "",
+  });
   const [formError, setFormError] = useState(null);
+  const [isPending, setIsPending] = useState(false);
 
   const [clientesList, setClientesList] = useState([]);
   const [quartosList, setQuartosList] = useState([]);
 
+  const handleChange = (key, value) => {
+    setValues((prev) => ({ ...prev, [key]: value }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const {
+      quarto_reserva,
+      cliente_reserva,
+      checkin,
+      checkout,
+      pessoas,
+      estado_reserva,
+      preco,
+      tipo_pagamento,
+      pagamento_realizado,
+      obs,
+    } = values;
 
     if (
       !quarto_reserva ||
@@ -318,16 +296,18 @@ const UpdateReserva = () => {
         router.push("/reservas");
       }
       if (data) {
-        setQuartoReserva(data.quarto_reserva);
-        setClienteReserva(data.cliente_reserva);
-        setCheckin(data.checkin);
-        setCheckout(data.checkout);
-        setPessoas(data.pessoas);
-        setEstadoReserva(data.estado_reserva);
-        setPreco(data.preco);
-        setTipoPagamento(data.tipo_pagamento);
-        setPagamentoRealizado(data.pagamento_realizado);
-        setObs(data.obs || "");
+        setValues({
+          quarto_reserva: data.quarto_reserva,
+          cliente_reserva: data.cliente_reserva,
+          checkin: data.checkin,
+          checkout: data.checkout,
+          pessoas: data.pessoas,
+          estado_reserva: data.estado_reserva,
+          preco: data.preco,
+          tipo_pagamento: data.tipo_pagamento,
+          pagamento_realizado: data.pagamento_realizado,
+          obs: data.obs || "",
+        });
       }
 
       // Fetch lists for dropdowns
@@ -347,119 +327,16 @@ const UpdateReserva = () => {
   return (
     <div className="page-reservas">
       <h2>Editar Reserva #{id}</h2>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="cliente_reserva">Cliente</label>
-        <select
-          id="cliente_reserva"
-          value={cliente_reserva}
-          onChange={(e) => setClienteReserva(e.target.value)}
-        >
-          <option disabled value="">
-            Selecione um cliente
-          </option>
-          {clientesList.map((cliente, index) => (
-            <option key={index} value={cliente.nome}>
-              {cliente.nome}
-            </option>
-          ))}
-        </select>
-
-        <label htmlFor="quarto_reserva">Quarto</label>
-        <select
-          id="quarto_reserva"
-          value={quarto_reserva}
-          onChange={(e) => setQuartoReserva(e.target.value)}
-        >
-          <option disabled value="">
-            Selecione um quarto
-          </option>
-          {quartosList.map((quarto, index) => (
-            <option key={index} value={quarto.numero}>
-              {quarto.numero}
-            </option>
-          ))}
-        </select>
-        <label htmlFor="checkin">Check-in</label>
-        <input
-          type="date"
-          id="checkin"
-          value={checkin}
-          onChange={(e) => setCheckin(e.target.value)}
-        />
-        <label htmlFor="checkout">Check-out</label>
-        <input
-          type="date"
-          id="checkout"
-          value={checkout}
-          onChange={(e) => setCheckout(e.target.value)}
-        />
-        <label htmlFor="pessoas">Pessoas</label>
-        <input
-          type="number"
-          id="pessoas"
-          value={pessoas}
-          onChange={(e) => setPessoas(e.target.value)}
-        />
-        <label htmlFor="estado_reserva">Estado da Reserva</label>
-        <select
-          id="estado_reserva"
-          value={estado_reserva}
-          onChange={(e) => setEstadoReserva(e.target.value)}
-        >
-          <option disabled value="">
-            Selecione
-          </option>
-          <option value="confirmada">Confirmada</option>
-          <option value="cancelada">Cancelada</option>
-          <option value="pendente">Pendente</option>
-        </select>
-        <label htmlFor="preco">Preço</label>
-        <input
-          type="number"
-          id="preco"
-          value={preco}
-          onChange={(e) => setPreco(e.target.value)}
-        />
-        <label htmlFor="tipo_pagamento">Tipo de Pagamento</label>
-        <select
-          id="tipo_pagamento"
-          value={tipo_pagamento}
-          onChange={(e) => setTipoPagamento(e.target.value)}
-        >
-          <option disabled value="">
-            Selecione
-          </option>
-          <option value="dinheiro">Dinheiro</option>
-          <option value="cartao">Cartão</option>
-          <option value="pix">PIX</option>
-        </select>
-        <label htmlFor="pagamento_realizado">Pagamento Realizado</label>
-        <select
-          id="pagamento_realizado"
-          value={pagamento_realizado}
-          onChange={(e) => setPagamentoRealizado(e.target.value)}
-        >
-          <option disabled value="">
-            Selecione
-          </option>
-          <option value="sim">Sim</option>
-          <option value="nao">Não</option>
-        </select>
-        <label htmlFor="obs">Observações</label>
-        <textarea
-          id="obs"
-          value={obs}
-          onChange={(e) => setObs(e.target.value)}
-        />
-
-        {isPending ? (
-          <button disabled>Carregando...</button>
-        ) : (
-          <button type="submit">Atualizar Reserva</button>
-        )}
-
-        {formError && <p className="error">{formError}</p>}
-      </form>
+      <ReservaForm
+        values={values}
+        onChange={handleChange}
+        onSubmit={handleSubmit}
+        isUpdate={true}
+        isPending={isPending}
+        formError={formError}
+        clientesList={clientesList}
+        quartosList={quartosList}
+      />
     </div>
   );
 };
@@ -468,16 +345,25 @@ const UpdateFinanceiro = () => {
   const { id } = useParams();
   const router = useRouter();
 
-  const [valor, setValor] = useState("");
-  const [tipo_transacao, setTipoTransacao] = useState("");
-  const [metodo, setMetodo] = useState("");
-  const [data_transacao, setDataTransacao] = useState("");
-  const [origem, setOrigem] = useState("");
+  const [values, setValues] = useState({
+    valor: "",
+    tipo_transacao: "",
+    metodo: "",
+    data_transacao: "",
+    origem: "",
+  });
   const [formError, setFormError] = useState(null);
   const [isPending, setIsPending] = useState(false);
 
+  const handleChange = (key, value) => {
+    setValues((prev) => ({ ...prev, [key]: value }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const { valor, tipo_transacao, metodo, data_transacao, origem } = values;
+
     if (!valor || !tipo_transacao || !metodo || !data_transacao || !origem) {
       setFormError("Preencha todos os campos");
       return;
@@ -487,13 +373,7 @@ const UpdateFinanceiro = () => {
 
     const { data, error } = await supabase
       .from("financeiro")
-      .update({
-        valor,
-        tipo_transacao,
-        metodo,
-        data_transacao,
-        origem,
-      })
+      .update({ valor, tipo_transacao, metodo, data_transacao, origem })
       .eq("id", id)
       .select();
 
@@ -520,11 +400,13 @@ const UpdateFinanceiro = () => {
         router.push("/financeiro");
       }
       if (data) {
-        setValor(data.valor);
-        setTipoTransacao(data.tipo_transacao);
-        setMetodo(data.metodo);
-        setDataTransacao(data.data_transacao);
-        setOrigem(data.origem);
+        setValues({
+          valor: data.valor,
+          tipo_transacao: data.tipo_transacao,
+          metodo: data.metodo,
+          data_transacao: data.data_transacao,
+          origem: data.origem,
+        });
       }
     };
     fetchFinanceiro();
@@ -533,75 +415,14 @@ const UpdateFinanceiro = () => {
   return (
     <div className="page-financeiro">
       <h2>Editar Financeiro</h2>
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="valor">Valor</label>
-        <input
-          type="number"
-          id="valor"
-          value={valor}
-          onChange={(e) => setValor(e.target.value)}
-        />
-        <label htmlFor="tipo_transacao">Tipo de Transação</label>
-        <select
-          id="tipo_transacao"
-          value={tipo_transacao}
-          onChange={(e) => setTipoTransacao(e.target.value)}
-        >
-          <option disabled value="">
-            Selecione
-          </option>
-          <option value="entrada">Entrada</option>
-          <option value="saida">Saída</option>
-        </select>
-        <label htmlFor="metodo">Método de Pagamento</label>
-        <select
-          id="metodo"
-          value={metodo}
-          onChange={(e) => setMetodo(e.target.value)}
-        >
-          <option disabled value="">
-            Selecione
-          </option>
-          <option value="dinheiro">Dinheiro</option>
-          <option value="cartao">Cartão</option>
-          <option value="pix">PIX</option>
-        </select>
-        <label htmlFor="data_transacao">Data da Transação</label>
-        <input
-          type="date"
-          id="data_transacao"
-          value={data_transacao}
-          onChange={(e) => setDataTransacao(e.target.value)}
-        />
-        <label htmlFor="origem">Origem</label>
-        <select
-          id="origem"
-          value={origem}
-          onChange={(e) => setOrigem(e.target.value)}
-        >
-          <option disabled value="">
-            Selecione
-          </option>
-          <option value="funcionarios">Funcionários</option>
-          <option value="cafe-da-manha">Café da manhã</option>
-          <option value="energia">Energia</option>
-          <option value="agua">Água</option>
-          <option value="reparos">Reparos Diversos</option>
-          <option value="limpeza">Limpeza</option>
-          <option value="produtos">Produtos</option>
-          <option value="marketing">Marketing</option>
-          <option value="impostos">Impostos</option>
-          <option value="internet">Internet</option>
-          <option value="outros">Outros</option>
-        </select>
-
-        {isPending ? (
-          <button disabled>Carregando...</button>
-        ) : (
-          <button type="submit">Atualizar Financeiro</button>
-        )}
-        {formError && <p className="error">{formError}</p>}
-      </form>
+      <FinanceiroForm
+        values={values}
+        onChange={handleChange}
+        onSubmit={handleSubmit}
+        isUpdate={true}
+        isPending={isPending}
+        formError={formError}
+      />
     </div>
   );
 };

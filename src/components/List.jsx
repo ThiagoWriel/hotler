@@ -1,7 +1,8 @@
 import Link from "next/link";
 import supabase from "../config/supabaseClient";
+import { formatCPF, formatTelefone } from "./Forms";
 
-export const QuartosList = ({ quarto, onDelete }) => {
+export const QuartosList = ({ quarto, onDelete, reservas }) => {
   const handleDelete = async () => {
     const { data, error } = await supabase
       .from("quartos")
@@ -77,14 +78,16 @@ export const ClientesList = ({ cliente, onDelete }) => {
         </div>
         <div className="list-details">
           <span className="list-title">{cliente.nome}</span>
-          <span className="list-subtitle">CPF: {cliente.cpf}</span>
+          <span className="list-subtitle">
+            CPF: {formatCPF(String(cliente.cpf || ""))}
+          </span>
         </div>
       </div>
 
       <div className="list-data">
         <div className="list-data-item">
           <i className="material-icons">phone</i>
-          <span>{cliente.telefone}</span>
+          <span>{formatTelefone(String(cliente.telefone || ""))}</span>
         </div>
         <div className="list-data-item">
           <i className="material-icons">cake</i>

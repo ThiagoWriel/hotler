@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 //components
 import { QuartosCard } from "../../components/Card";
@@ -10,15 +10,28 @@ import Search from "../../components/Search";
 import ViewToggle from "../../components/ViewToggle";
 import useFetch from "../../hooks/useFetch";
 import useSearch from "../../hooks/useSearch";
+import { atualizarTodosQuartos } from "../../utils/quartoStatus";
 
 const Quartos = () => {
   const { isPending, fetchError, hotler, handleDelete, setOrderBy, orderBy } =
     useFetch("quartos");
 
+  const { isPending: isPendingReservas, hotler: reservas } =
+    useFetch("reservas");
+
   const [searchTerm, setSearchTerm] = useState("");
   const [viewMode, setViewMode] = useState("cards");
 
   const { filteredData } = useSearch(hotler, searchTerm);
+
+  useEffect(() => {
+    const atualizarStatus = async () => {
+      if (hotler && reservas) {
+        await atualizarTodosQuartos(hotler, reservas);
+      }
+    };
+    atualizarStatus();
+  }, [hotler, reservas]);
 
   return (
     <div className="quartos">
@@ -27,7 +40,9 @@ const Quartos = () => {
         <CreateButtonQuarto />
       </div>
       {fetchError && <p className="error">{fetchError}</p>}
-      <div className="loading">{isPending && <p>Carregando...</p>}</div>
+      <div className="loading">
+        {(isPending || isPendingReservas) && <p>Carregando...</p>}
+      </div>
       {hotler && (
         <div className="quartos">
           <div className="controls-row">
@@ -71,6 +86,7 @@ const Quartos = () => {
                   key={quarto.id}
                   quarto={quarto}
                   onDelete={handleDelete}
+                  reservas={reservas || []}
                 />
               ))}
             </div>
@@ -81,6 +97,7 @@ const Quartos = () => {
                   key={quarto.id}
                   quarto={quarto}
                   onDelete={handleDelete}
+                  reservas={reservas || []}
                 />
               ))}
             </div>
