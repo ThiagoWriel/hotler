@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
-export default function Sidebar() {
+import { signOut } from "../utils/actions";
+export default function Sidebar({ user }) {
   const pathname = usePathname();
 
   return (
@@ -54,6 +54,23 @@ export default function Sidebar() {
             Financeiro
           </Link>
         </nav>
+      </div>
+
+      <div className="sidebar-profile">
+        <div className="profile-info">
+          <div className="profile-avatar">
+            <i className="material-icons">person</i>
+          </div>
+          <span className="profile-email" title={user?.email}>
+            {user?.email}
+          </span>
+        </div>
+        <form action={signOut}>
+          <button type="submit" className="logout-button">
+            <i className="material-icons">logout</i>
+            Sair
+          </button>
+        </form>
       </div>
     </aside>
   );

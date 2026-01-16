@@ -11,5 +11,5 @@ export default async function ProtectedPage() {
     redirect("/auth/login");
   }
 
-  return redirect("/dashboard");
+  return redirect("/");
 }
