@@ -88,7 +88,7 @@ export default function Dashboard() {
                       item.tipo_transacao === "Entrada"
                         ? acc + item.valor
                         : acc - item.valor,
-                    0
+                    0,
                   ) +
                     reservas.reduce((acc, item) => acc + item.preco, 0)) +
                   ",00",
@@ -100,7 +100,7 @@ export default function Dashboard() {
                 title: "Check-in Hoje",
                 value: reservas.filter(
                   (reserva) =>
-                    reserva.checkin === new Date().toISOString().split("T")[0]
+                    reserva.checkin === new Date().toISOString().split("T")[0],
                 ).length,
                 icon: "event_note",
               }}
@@ -110,7 +110,7 @@ export default function Dashboard() {
                 title: "Check-out Hoje",
                 value: reservas.filter(
                   (reserva) =>
-                    reserva.checkout === new Date().toISOString().split("T")[0]
+                    reserva.checkout === new Date().toISOString().split("T")[0],
                 ).length,
                 icon: "event_note",
               }}
