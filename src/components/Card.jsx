@@ -1,6 +1,15 @@
 import Link from "next/link";
 import supabase from "../config/supabaseClient";
 import { formatCPF, formatTelefone } from "./Forms";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardFooter,
+} from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 export const QuartosCard = ({ quarto, onDelete, reservas }) => {
   const handleDelete = async () => {
@@ -20,35 +29,53 @@ export const QuartosCard = ({ quarto, onDelete, reservas }) => {
   };
 
   return (
-    <div className="quartos-card">
-      <div className="card-header">
-        <i className="material-icons card-icon">hotel</i>
-        <h3>{quarto.tipo}</h3>
-      </div>
+    <Card className="quartos-card relative">
+      <CardHeader>
+        <div className="flex items-center gap-3">
+          <i className="material-icons card-icon">hotel</i>
+          <CardTitle>{quarto.tipo}</CardTitle>
+        </div>
+      </CardHeader>
 
-      <div className="card-body">
+      <CardContent className="space-y-3">
         <div className="card-row">
           <i className="material-icons">cleaning_services</i>
-          <span>{quarto.estado}</span>
+          <Badge
+            variant={
+              quarto.estado === ("limpo" || "Limpo") ? "success" : "destructive"
+            }
+          >
+            {quarto.estado}
+          </Badge>
         </div>
         <div className="card-row">
           <i className="material-icons">person</i>
-          <span>{quarto.ocupado}</span>
+          <Badge variant={quarto.ocupado === "sim" ? "default" : "secondary"}>
+            {quarto.ocupado}
+          </Badge>
         </div>
-      </div>
+      </CardContent>
 
       <div className="numero">
         <p>{quarto.numero}</p>
       </div>
-      <div className="buttons">
+
+      <CardFooter className="buttons">
         <Link href={"/update-quarto/" + quarto.id}>
-          <i className="material-icons">edit</i>
+          <Button variant="outline" size="icon" className="rounded-full">
+            <i className="material-icons">edit</i>
+          </Button>
         </Link>
-        <i className="material-icons" onClick={handleDelete}>
-          delete
-        </i>
-      </div>
-    </div>
+        <Button
+          variant="outline"
+          size="icon"
+          className="rounded-full"
+          onClick={handleDelete}
+        >
+          <i className="material-icons">delete</i>
+        </Button>
+      </CardFooter>
+    </Card>
   );
 };
 
@@ -67,14 +94,17 @@ export const ClientesCard = ({ cliente, onDelete }) => {
       onDelete(cliente.id);
     }
   };
-  return (
-    <div className="clientes-card">
-      <div className="card-header">
-        <i className="material-icons card-icon">person</i>
-        <h3>{cliente.nome}</h3>
-      </div>
 
-      <div className="card-body">
+  return (
+    <Card className="clientes-card">
+      <CardHeader>
+        <div className="flex items-center gap-3">
+          <i className="material-icons card-icon">person</i>
+          <CardTitle>{cliente.nome}</CardTitle>
+        </div>
+      </CardHeader>
+
+      <CardContent className="space-y-3">
         <div className="card-row">
           <i className="material-icons">badge</i>
           <span>CPF: {formatCPF(String(cliente.cpf || ""))}</span>
@@ -87,17 +117,17 @@ export const ClientesCard = ({ cliente, onDelete }) => {
           <i className="material-icons">cake</i>
           <span>{cliente.nascimento}</span>
         </div>
-      </div>
+      </CardContent>
 
-      <div className="buttons">
+      <CardFooter className="buttons">
         <Link href={"/update-cliente/" + cliente.id}>
           <i className="material-icons">edit</i>
         </Link>
         <i className="material-icons" onClick={handleDelete}>
           delete
         </i>
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 };
 
@@ -116,14 +146,17 @@ export const ReservasCard = ({ reserva, onDelete }) => {
       onDelete(reserva.id);
     }
   };
-  return (
-    <div className="reservas-card">
-      <div className="card-header">
-        <i className="material-icons card-icon">event_note</i>
-        <h3>{reserva.cliente_reserva}</h3>
-      </div>
 
-      <div className="card-body">
+  return (
+    <Card className="reservas-card relative">
+      <CardHeader>
+        <div className="flex items-center gap-3">
+          <i className="material-icons card-icon">event_note</i>
+          <CardTitle>{reserva.cliente_reserva}</CardTitle>
+        </div>
+      </CardHeader>
+
+      <CardContent className="space-y-3">
         <div className="card-row">
           <i className="material-icons">login</i>
           <span>Check-in: {reserva.checkin}</span>
@@ -134,23 +167,33 @@ export const ReservasCard = ({ reserva, onDelete }) => {
         </div>
         <div className="card-row">
           <i className="material-icons">info</i>
-          <span>Status: {reserva.estado_reserva}</span>
+          <Badge
+            variant={
+              reserva.estado_reserva === "Confirmada"
+                ? "success"
+                : reserva.estado_reserva === "Cancelada"
+                  ? "destructive"
+                  : "warning"
+            }
+          >
+            {reserva.estado_reserva}
+          </Badge>
         </div>
-      </div>
+      </CardContent>
 
       <div className="numero">
         <p>{reserva.quarto_reserva}</p>
       </div>
 
-      <div className="buttons">
+      <CardFooter className="buttons">
         <Link href={"/update-reserva/" + reserva.id}>
           <i className="material-icons">edit</i>
         </Link>
         <i className="material-icons" onClick={handleDelete}>
           delete
         </i>
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 };
 
@@ -169,16 +212,31 @@ export const FinanceiroCard = ({ financeiro, onDelete }) => {
       onDelete(financeiro.id);
     }
   };
-  return (
-    <div className="financeiro-card">
-      <div className="card-header">
-        <i className="material-icons card-icon">attach_money</i>
-        <h3>{financeiro.origem}</h3>
-      </div>
 
-      <div className="card-body">
+  return (
+    <Card className="financeiro-card">
+      <CardHeader>
+        <div className="flex items-center gap-3">
+          <i className="material-icons card-icon">attach_money</i>
+          <CardTitle>{financeiro.origem}</CardTitle>
+        </div>
+      </CardHeader>
+
+      <CardContent className="space-y-3">
         <div className="card-row price-row">
           <span>R$ {financeiro.valor},00</span>
+        </div>
+        <div className="card-row">
+          <i className="material-icons">swap_horiz</i>
+          <Badge
+            variant={
+              financeiro.tipo_transacao === "Entrada"
+                ? "success"
+                : "destructive"
+            }
+          >
+            {financeiro.tipo_transacao}
+          </Badge>
         </div>
         <div className="card-row">
           <i className="material-icons">calendar_today</i>
@@ -188,17 +246,17 @@ export const FinanceiroCard = ({ financeiro, onDelete }) => {
           <i className="material-icons">payments</i>
           <span>{financeiro.metodo}</span>
         </div>
-      </div>
+      </CardContent>
 
-      <div className="buttons">
+      <CardFooter className="buttons">
         <Link href={"/update-financeiro/" + financeiro.id}>
           <i className="material-icons">edit</i>
         </Link>
         <i className="material-icons" onClick={handleDelete}>
           delete
         </i>
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 };
 
@@ -217,14 +275,17 @@ export const FinanceiroReservasCard = ({ reserva, onDelete }) => {
       onDelete(reserva.id);
     }
   };
-  return (
-    <div className="financeiro-card">
-      <div className="card-header">
-        <i className="material-icons card-icon">book_online</i>
-        <h3>Reserva</h3>
-      </div>
 
-      <div className="card-body">
+  return (
+    <Card className="financeiro-card">
+      <CardHeader>
+        <div className="flex items-center gap-3">
+          <i className="material-icons card-icon">book_online</i>
+          <CardTitle>Reserva</CardTitle>
+        </div>
+      </CardHeader>
+
+      <CardContent className="space-y-3">
         <div className="card-row price-row">
           <span>R$ {reserva.preco},00</span>
         </div>
@@ -236,24 +297,24 @@ export const FinanceiroReservasCard = ({ reserva, onDelete }) => {
           <i className="material-icons">payments</i>
           <span>{reserva.tipo_pagamento}</span>
         </div>
-      </div>
+      </CardContent>
 
-      <div className="buttons">
+      <CardFooter className="buttons">
         <Link href={"/update-reserva/" + reserva.id}>
           <i className="material-icons">edit</i>
         </Link>
         <i className="material-icons" onClick={handleDelete}>
           delete
         </i>
-      </div>
-    </div>
+      </CardFooter>
+    </Card>
   );
 };
 
 export const DashboardCard = ({ dashboard }) => {
   return (
-    <div className="dashboard-card">
-      <div className="dashboard-card-content">
+    <Card className="dashboard-card">
+      <CardContent className="dashboard-card-content">
         <div className="dashboard-card-info">
           <span className="dashboard-card-label">{dashboard.title}</span>
           <h3 className="dashboard-card-value">{dashboard.value}</h3>
@@ -261,7 +322,7 @@ export const DashboardCard = ({ dashboard }) => {
         <div className="dashboard-card-icon-container">
           <i className="material-icons dashboard-card-icon">{dashboard.icon}</i>
         </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };

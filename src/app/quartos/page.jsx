@@ -11,6 +11,7 @@ import ViewToggle from "../../components/ViewToggle";
 import useFetch from "../../hooks/useFetch";
 import useSearch from "../../hooks/useSearch";
 import { atualizarTodosQuartos } from "../../utils/quartoStatus";
+import { Button } from "@/components/ui/button";
 
 const Quartos = () => {
   const { isPending, fetchError, hotler, handleDelete, setOrderBy, orderBy } =
@@ -52,30 +53,34 @@ const Quartos = () => {
           <div className="controls-row">
             <div className="order-by">
               <p>Ordenar por: </p>
-              <button
-                className={orderBy === "numero" ? "active" : ""}
+              <Button
+                variant={orderBy === "numero" ? "default" : "outline"}
+                size="sm"
                 onClick={() => setOrderBy("numero")}
               >
                 Numero
-              </button>
-              <button
-                className={orderBy === "tipo" ? "active" : ""}
+              </Button>
+              <Button
+                variant={orderBy === "tipo" ? "default" : "outline"}
+                size="sm"
                 onClick={() => setOrderBy("tipo")}
               >
                 Tipo
-              </button>
-              <button
-                className={orderBy === "estado" ? "active" : ""}
+              </Button>
+              <Button
+                variant={orderBy === "estado" ? "default" : "outline"}
+                size="sm"
                 onClick={() => setOrderBy("estado")}
               >
                 Estado
-              </button>
-              <button
-                className={orderBy === "ocupado" ? "active" : ""}
+              </Button>
+              <Button
+                variant={orderBy === "ocupado" ? "default" : "outline"}
+                size="sm"
                 onClick={() => setOrderBy("ocupado")}
               >
                 Ocupado
-              </button>
+              </Button>
             </div>
             <ViewToggle viewMode={viewMode} setViewMode={setViewMode} />
           </div>

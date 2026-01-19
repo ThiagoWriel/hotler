@@ -1,42 +1,35 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const CreateButtonQuarto = () => {
   return (
-    <div className="create-button-container">
-      <Link href="/quartos/create">
-        <button className="create-button">Adicionar Quarto</button>
-      </Link>
-    </div>
+    <Link href="/quartos/create">
+      <Button>Adicionar Quarto</Button>
+    </Link>
   );
 };
 
 const CreateButtonCliente = () => {
   return (
-    <div className="create-button-container">
-      <Link href="/clientes/create">
-        <button className="create-button">Adicionar Cliente</button>
-      </Link>
-    </div>
+    <Link href="/clientes/create">
+      <Button>Adicionar Cliente</Button>
+    </Link>
   );
 };
 
 const CreateButtonReserva = () => {
   return (
-    <div className="create-button-container">
-      <Link href="/reservas/create">
-        <button className="create-button">Adicionar Reserva</button>
-      </Link>
-    </div>
+    <Link href="/reservas/create">
+      <Button>Adicionar Reserva</Button>
+    </Link>
   );
 };
 
 const CreateButtonFinanceiro = () => {
   return (
-    <div className="create-button-container">
-      <Link href="/financeiro/create">
-        <button className="create-button">Adicionar Movimentação</button>
-      </Link>
-    </div>
+    <Link href="/financeiro/create">
+      <Button>Adicionar Movimentação</Button>
+    </Link>
   );
 };
 

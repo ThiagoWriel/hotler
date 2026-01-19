@@ -804,7 +804,7 @@ h1, h2, h3 {
 }
 
 .buttons i.material-icons:last-child:hover {
-  color: #ef4444;
+  color: #ab7126;
   background: #fef2f2;
 }
 
@@ -1798,3 +1798,276 @@ form button:hover {
   }
 }
 
+/* ========================================
+   21. SELECT COMPONENT STYLES
+   ======================================== */
+/* Ensure Select component is styled properly in forms */
+form [data-slot="select"] {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+/* Higher specificity to override shadcn defaults */
+form [data-slot="select-trigger"],
+form button[data-slot="select-trigger"] {
+  width: 100% !important;
+  background-color: var(--input-background) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 12px 16px !important;
+  font-family: inherit !important;
+  font-size: 0.95rem !important;
+  color: var(--foreground) !important;
+  transition: all 0.2s ease !important;
+  cursor: pointer !important;
+  height: auto !important;
+}
+
+form [data-slot="select-trigger"]:hover,
+form button[data-slot="select-trigger"]:hover {
+  background-color: var(--card) !important;
+}
+
+form [data-slot="select-trigger"]:focus,
+form [data-slot="select-trigger"][data-state="open"],
+form button[data-slot="select-trigger"]:focus,
+form button[data-slot="select-trigger"][data-state="open"] {
+  outline: none !important;
+  border-color: var(--primary) !important;
+  background-color: var(--card) !important;
+  box-shadow: 0 0 0 4px var(--accent) !important;
+}
+
+/* Style placeholder text */
+form [data-slot="select-trigger"] [data-slot="select-value"],
+form button[data-slot="select-trigger"] [data-slot="select-value"] {
+  color: var(--foreground) !important;
+}
+
+form [data-slot="select-trigger"][data-placeholder] [data-slot="select-value"],
+form button[data-slot="select-trigger"][data-placeholder] [data-slot="select-value"] {
+  color: var(--muted-foreground) !important;
+}
+
+/* Select dropdown content */
+[data-slot="select-content"] {
+  background-color: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: 0 10px 38px -10px rgba(22, 23, 24, 0.35), 0 10px 20px -15px rgba(22, 23, 24, 0.2) !important;
+  max-height: 300px !important;
+  overflow-y: auto !important;
+}
+
+/* Select items */
+[data-slot="select-item"] {
+  padding: 8px 12px !important;
+  font-size: 0.95rem !important;
+  color: var(--foreground) !important;
+  cursor: pointer !important;
+  transition: all 0.15s ease !important;
+  outline: none !important;
+}
+
+[data-slot="select-item"]:hover,
+[data-slot="select-item"][data-highlighted] {
+  background-color: var(--accent) !important;
+  color: var(--accent-foreground) !important;
+}
+
+[data-slot="select-item"][data-state="checked"] {
+  background-color: var(--accent) !important;
+  color: var(--primary) !important;
+  font-weight: 600 !important;
+}
+
+/* Select label */
+[data-slot="select-label"] {
+  padding: 8px 12px !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  color: var(--muted-foreground) !important;
+}
+
+/* Ensure the chevron icon has the right color */
+form [data-slot="select-trigger"] svg,
+form button[data-slot="select-trigger"] svg {
+  color: var(--muted-foreground) !important;
+}
+
+/* ========================================
+   22. INPUT COMPONENT STYLES
+   ======================================== */
+form [data-slot="input"] {
+  width: 100%;
+  background-color: var(--input-background) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 12px 16px !important;
+  font-family: inherit !important;
+  font-size: 0.95rem !important;
+  color: var(--foreground) !important;
+  transition: all 0.2s ease !important;
+  margin-bottom: 16px !important;
+  height: auto !important;
+  min-height: 42px !important;
+}
+
+form [data-slot="input"]:focus {
+  outline: none !important;
+  border-color: var(--primary) !important;
+  background-color: var(--card) !important;
+  box-shadow: 0 0 0 4px var(--accent) !important;
+}
+
+/* ========================================
+   23. TEXTAREA COMPONENT STYLES
+   ======================================== */
+form [data-slot="textarea"] {
+  width: 100%;
+  background-color: var(--input-background) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 12px 16px !important;
+  font-family: inherit !important;
+  font-size: 0.95rem !important;
+  color: var(--foreground) !important;
+  transition: all 0.2s ease !important;
+  margin-bottom: 16px !important;
+  min-height: 100px !important;
+}
+
+form [data-slot="textarea"]:focus {
+  outline: none !important;
+  border-color: var(--primary) !important;
+  background-color: var(--card) !important;
+  box-shadow: 0 0 0 4px var(--accent) !important;
+}
+
+/* ========================================
+   24. BUTTON OUTLINE VARIANT (for calendars)
+   ======================================== */
+form button[data-variant="outline"] {
+  width: 100%;
+  background-color: var(--input-background) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 12px 16px !important;
+  font-family: inherit !important;
+  font-size: 0.95rem !important;
+  color: var(--foreground) !important;
+  transition: all 0.2s ease !important;
+  margin-bottom: 16px !important;
+  cursor: pointer !important;
+  text-align: left !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  height: auto !important;
+  min-height: 42px !important;
+  font-weight: 400 !important;
+}
+
+form button[data-variant="outline"]:hover {
+  background-color: var(--card) !important;
+}
+
+form button[data-variant="outline"]:focus,
+form button[data-variant="outline"][data-state="open"] {
+  outline: none !important;
+  border-color: var(--primary) !important;
+  background-color: var(--card) !important;
+  box-shadow: 0 0 0 4px var(--accent) !important;
+}
+
+/* ========================================
+   25. POPOVER STYLES
+   ======================================== */
+[data-slot="popover-content"] {
+  background-color: var(--card) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: 0 10px 38px -10px rgba(22, 23, 24, 0.35), 0 10px 20px -15px rgba(22, 23, 24, 0.2) !important;
+  z-index: 50 !important;
+}
+
+/* ========================================
+   26. CALENDAR STYLES
+   ======================================== */
+[data-slot="calendar"] {
+  background-color: var(--card) !important;
+  border-radius: var(--radius-md) !important;
+}
+
+/* Calendar navigation buttons */
+[data-slot="calendar"] button {
+  color: var(--foreground) !important;
+}
+
+[data-slot="calendar"] button:hover {
+  background-color: var(--accent) !important;
+  color: var(--accent-foreground) !important;
+}
+
+/* Calendar day buttons */
+[data-slot="calendar"] button[data-selected-single="true"] {
+  background-color: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+}
+
+[data-slot="calendar"] button[data-range-start="true"],
+[data-slot="calendar"] button[data-range-end="true"] {
+  background-color: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+}
+
+[data-slot="calendar"] button[data-range-middle="true"] {
+  background-color: var(--accent) !important;
+  color: var(--accent-foreground) !important;
+}
+
+/* Today indicator */
+[data-slot="calendar"] .rdp-today {
+  font-weight: 600 !important;
+}
+
+/* ========================================
+   27. SUBMIT BUTTON STYLES
+   ======================================== */
+/* Submit button (default variant) */
+form button[type="submit"] {
+  width: 100%;
+  background-color: var(--primary) !important;
+  color: var(--primary-foreground) !important;
+  border: none !important;
+  border-radius: var(--radius-md) !important;
+  padding: 12px 24px !important;
+  font-family: inherit !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+  margin-top: 8px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  min-height: 44px !important;
+}
+
+form button[type="submit"]:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.15) !important;
+}
+
+form button[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed !important;
+}
+
+/* Spinner inside button */
+form button[type="submit"] [data-slot="spinner"] {
+  color: var(--primary-foreground) !important;
+}
