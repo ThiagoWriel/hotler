@@ -3,8 +3,10 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "../utils/actions";
+import useUserRole from "../hooks/useRole";
 export default function Sidebar({ user }) {
   const pathname = usePathname();
+  const { role } = useUserRole();
 
   return (
     <aside className="sidebar">
@@ -46,13 +48,15 @@ export default function Sidebar({ user }) {
             <i className="material-icons">event_note</i>
             Reservas
           </Link>
-          <Link
-            href="/financeiro"
-            className={pathname.startsWith("/financeiro") ? "active" : ""}
-          >
-            <i className="material-icons">attach_money</i>
-            Financeiro
-          </Link>
+          {role === "admin" && (
+            <Link
+              href="/financeiro"
+              className={pathname.startsWith("/financeiro") ? "active" : ""}
+            >
+              <i className="material-icons">attach_money</i>
+              Financeiro
+            </Link>
+          )}
         </nav>
       </div>
 

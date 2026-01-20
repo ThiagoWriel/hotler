@@ -60,23 +60,23 @@ const Financeiro = () => {
     financeiroData,
     startDate,
     endDate,
-    "data"
+    "data_transacao",
   );
   const { filteredData: dateFilteredReservas } = useDateFilter(
     reservasData,
     startDate,
     endDate,
-    "checkin"
+    "checkin",
   );
 
   // Depois aplica o filtro de busca
   const { filteredData: filteredFinanceiro } = useSearch(
     dateFilteredFinanceiro,
-    searchTerm
+    searchTerm,
   );
   const { filteredData: filteredReservas } = useSearch(
     dateFilteredReservas,
-    searchTerm
+    searchTerm,
   );
 
   // Calculate financial metrics usando dados filtrados por data
@@ -104,14 +104,14 @@ const Financeiro = () => {
     const totalSaidas = financeiro
       .filter(
         (item) =>
-          item.tipo_transacao === "Saída" || item.tipo_transacao === "Saida"
+          item.tipo_transacao === "Saída" || item.tipo_transacao === "Saida",
       )
       .reduce((acc, item) => acc + (item.valor || 0), 0);
 
     // Receita de reservas
     const receitaReservas = reservas.reduce(
       (acc, item) => acc + (item.preco || 0),
-      0
+      0,
     );
 
     // Saldo líquido total
@@ -182,7 +182,7 @@ const Financeiro = () => {
                 title: "Faturamento Total",
                 value: formatCurrency(
                   financialMetrics.totalEntradas +
-                    financialMetrics.receitaReservas
+                    financialMetrics.receitaReservas,
                 ),
                 icon: "trending_up",
               }}
