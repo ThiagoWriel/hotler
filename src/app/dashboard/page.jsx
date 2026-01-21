@@ -64,7 +64,7 @@ export default function Dashboard() {
   return (
     <div className="dashboard">
       <div className="header-pages">
-        <h2>Dashboard</h2>
+        <h2>Início</h2>
       </div>
       <div className="loading">{isPending && <p>Carregando...</p>}</div>
       {fetchError && <p className="error">{fetchError}</p>}

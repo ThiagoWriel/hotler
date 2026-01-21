@@ -42,9 +42,13 @@ export default function Sidebar() {
   return (
     <aside className="sidebar">
       <div className="principal-title">
-        <i className="material-icons" style={{ fontSize: "2.0rem" }}>
-          holiday_village
-        </i>
+        <img
+          src="/logo.ico"
+          alt="Hotler Logo"
+          width="32"
+          height="32"
+          style={{ borderRadius: "3px" }}
+        />
         <Link href="/dashboard">
           <h1>Hotler</h1>
         </Link>
@@ -56,7 +60,7 @@ export default function Sidebar() {
             className={pathname === "/dashboard" ? "active" : ""}
           >
             <i className="material-icons">dashboard</i>
-            Dashboard
+            Início
           </Link>
           <Link
             href="/quartos"
