@@ -23,7 +23,7 @@ export default async function RootLayout({ children }) {
       </head>
       <body>
         <div className="main-layout">
-          {user && <Sidebar user={user} />}
+          <Sidebar />
           <main className="main-content">
             <div className="page">{children}</div>
           </main>

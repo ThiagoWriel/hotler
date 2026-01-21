@@ -2,11 +2,42 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
+import { createClient } from "../lib/supabase/client";
 import { signOut } from "../utils/actions";
 import useUserRole from "../hooks/useRole";
-export default function Sidebar({ user }) {
+
+export default function Sidebar() {
   const pathname = usePathname();
   const { role } = useUserRole();
+  const [user, setUser] = useState(null);
+  const supabase = createClient();
+
+  useEffect(() => {
+    // Buscar usuário atual
+    const getUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setUser(user);
+    };
+
+    getUser();
+
+    // Escutar mudanças de autenticação
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  // Não renderizar a sidebar em rotas de autenticação
+  if (!user || pathname.startsWith("/auth")) {
+    return null;
+  }
 
   return (
     <aside className="sidebar">
