@@ -28,24 +28,38 @@ export default function Dashboard() {
     setOrderBy: setOrderByReserva,
   } = useFetch("reservas");
 
-  const {
-    isPending: isPendingFinanceiro,
-    fetchError: fetchErrorFinanceiro,
-    hotler: financeiro,
-    handleDelete: handleDeleteFinanceiro,
-    setOrderBy: setOrderByFinanceiro,
-  } = useFetch("financeiro");
-
-  const isPending =
-    isPendingQuartos ||
-    isPendingClientes ||
-    isPendingReservas ||
-    isPendingFinanceiro;
+  const isPending = isPendingQuartos || isPendingClientes || isPendingReservas;
   const fetchError =
-    fetchErrorQuartos ||
-    fetchErrorClientes ||
-    fetchErrorReservas ||
-    fetchErrorFinanceiro;
+    fetchErrorQuartos || fetchErrorClientes || fetchErrorReservas;
+
+  // Calculos Dashboard
+  const pessoasHospedadas = reservas
+    ? reservas
+        .filter((r) => r.estado_reserva === "Confirmada")
+        .reduce((acc, r) => acc + (parseInt(r.pessoas) || 0), 0)
+    : 0;
+
+  const pagamentos_nao_realizados = reservas
+    ? reservas.filter((r) => r.pagamento_realizado === "Não").length
+    : 0;
+
+  const quartosDisponiveis = quartos
+    ? quartos.filter((q) => q.estado === "limpo" && q.ocupado === "não").length
+    : 0;
+
+  const quartosSujos = quartos
+    ? quartos.filter((q) => q.estado === "sujo" && q.ocupado === "sim").length
+    : 0;
+
+  const quartosOcupados = quartos
+    ? quartos.filter((q) => q.estado === "limpo" && q.ocupado === "sim").length
+    : 0;
+
+  const totalQuartos = quartos ? quartos.length : 0;
+  const ocupacao =
+    totalQuartos > 0
+      ? ((totalQuartos - quartosDisponiveis) / totalQuartos) * 100
+      : 0;
 
   return (
     <div className="dashboard">
@@ -54,21 +68,42 @@ export default function Dashboard() {
       </div>
       <div className="loading">{isPending && <p>Carregando...</p>}</div>
       {fetchError && <p className="error">{fetchError}</p>}
-      {quartos && clientes && reservas && financeiro && (
+      {quartos && clientes && reservas && (
         <div className="dashboard">
           <div className="dashboard-cards">
             <DashboardCard
               dashboard={{
-                title: "Quartos",
-                value: quartos.length,
-                icon: "hotel",
+                title: "Ocupação",
+                value: ocupacao.toFixed(0) + "%",
+                icon: "pie_chart",
               }}
             />
             <DashboardCard
               dashboard={{
-                title: "Hóspedes",
-                value: clientes.length,
-                icon: "person",
+                title: "Quartos Ocupados",
+                value: quartosOcupados,
+                icon: "meeting_room",
+              }}
+            />
+            <DashboardCard
+              dashboard={{
+                title: "Quartos Disponíveis",
+                value: quartosDisponiveis,
+                icon: "meeting_room",
+              }}
+            />
+            <DashboardCard
+              dashboard={{
+                title: "Quartos Sujos",
+                value: quartosSujos,
+                icon: "cleaning_services",
+              }}
+            />
+            <DashboardCard
+              dashboard={{
+                title: "Pessoas Hospedadas",
+                value: pessoasHospedadas,
+                icon: "groups",
               }}
             />
             <DashboardCard
@@ -80,14 +115,9 @@ export default function Dashboard() {
             />
             <DashboardCard
               dashboard={{
-                title: "Receita",
-                value:
-                  "R$ " +
-                  financeiro
-                    .filter((item) => item.tipo_transacao === "Entrada")
-                    .reduce((acc, item) => acc + item.valor, 0) +
-                  ",00",
-                icon: "attach_money",
+                title: "Pagamentos a receber",
+                value: pagamentos_nao_realizados,
+                icon: "payment",
               }}
             />
             <DashboardCard
@@ -97,7 +127,7 @@ export default function Dashboard() {
                   (reserva) =>
                     reserva.checkin === new Date().toISOString().split("T")[0],
                 ).length,
-                icon: "event_note",
+                icon: "login",
               }}
             />
             <DashboardCard
@@ -107,7 +137,7 @@ export default function Dashboard() {
                   (reserva) =>
                     reserva.checkout === new Date().toISOString().split("T")[0],
                 ).length,
-                icon: "event_note",
+                icon: "logout",
               }}
             />
           </div>
