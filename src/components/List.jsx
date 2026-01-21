@@ -168,6 +168,14 @@ export const ReservasList = ({ reserva, onDelete }) => {
 
 export const FinanceiroList = ({ financeiro, onDelete }) => {
   const handleDelete = async () => {
+    // Bloqueia exclusão se for entrada de reserva
+    if (financeiro.reserva_id) {
+      alert(
+        "Esta entrada é de uma reserva. Para excluir, delete a reserva na página de Reservas.",
+      );
+      return;
+    }
+
     const { data, error } = await supabase
       .from("financeiro")
       .delete()
@@ -209,59 +217,6 @@ export const FinanceiroList = ({ financeiro, onDelete }) => {
 
       <div className="list-actions">
         <Link href={"/update-financeiro/" + financeiro.id}>
-          <i className="material-icons">edit</i>
-        </Link>
-        <i className="material-icons" onClick={handleDelete}>
-          delete
-        </i>
-      </div>
-    </div>
-  );
-};
-
-export const FinanceiroReservasList = ({ reserva, onDelete }) => {
-  const handleDelete = async () => {
-    const { data, error } = await supabase
-      .from("reservas")
-      .delete()
-      .eq("id", reserva.id)
-      .select();
-
-    if (error) {
-      console.log(error);
-    }
-    if (data) {
-      onDelete(reserva.id);
-    }
-  };
-
-  return (
-    <div className="financeiro-list-item">
-      <div className="list-info">
-        <div className="list-icon-container">
-          <i className="material-icons">book_online</i>
-        </div>
-        <div className="list-details">
-          <span className="list-title">Reserva</span>
-          <span className="list-subtitle list-price">
-            R$ {reserva.preco},00
-          </span>
-        </div>
-      </div>
-
-      <div className="list-data">
-        <div className="list-data-item">
-          <i className="material-icons">event</i>
-          <span>{formatDate(reserva.checkout)}</span>
-        </div>
-        <div className="list-data-item">
-          <i className="material-icons">payments</i>
-          <span>{capitalize(reserva.tipo_pagamento)}</span>
-        </div>
-      </div>
-
-      <div className="list-actions">
-        <Link href={"/update-reserva/" + reserva.id}>
           <i className="material-icons">edit</i>
         </Link>
         <i className="material-icons" onClick={handleDelete}>

@@ -2,18 +2,15 @@
 
 import { useState, useMemo } from "react";
 import { CreateButtonFinanceiro } from "../../components/Botton";
-import {
-  FinanceiroCard,
-  FinanceiroReservasCard,
-  DashboardCard,
-} from "../../components/Card";
-import { FinanceiroList, FinanceiroReservasList } from "../../components/List";
+import { FinanceiroCard, DashboardCard } from "../../components/Card";
+import { FinanceiroList } from "../../components/List";
 import Search from "../../components/Search";
 import DateFilter from "../../components/DateFilter";
 import ViewToggle from "../../components/ViewToggle";
 import useFetch from "../../hooks/useFetch";
 import useSearch from "../../hooks/useSearch";
 import useDateFilter from "../../hooks/useDateFilter";
+import { Button } from "@/components/ui/button";
 
 // Função para obter primeiro e último dia do mês atual
 const getDefaultDateRange = () => {
@@ -34,54 +31,53 @@ const getDefaultDateRange = () => {
   };
 };
 
+// Hook para filtrar por origem
+const useOrigemFilter = (data, selectedOrigem) => {
+  return useMemo(() => {
+    if (!data) return [];
+    if (selectedOrigem === "Todos") return data;
+    return data.filter((item) => item.origem === selectedOrigem);
+  }, [data, selectedOrigem]);
+};
+
 const Financeiro = () => {
   const {
-    isPending: isPendingFinanceiro,
-    fetchError: fetchErrorFinanceiro,
+    isPending,
+    fetchError,
     hotler: financeiroData,
-    handleDelete: handleDeleteFinanceiro,
+    handleDelete,
   } = useFetch("financeiro");
-
-  const {
-    isPending: isPendingReservas,
-    fetchError: fetchErrorReservas,
-    hotler: reservasData,
-    handleDelete: handleDeleteReservas,
-  } = useFetch("reservas");
 
   const defaultRange = getDefaultDateRange();
   const [searchTerm, setSearchTerm] = useState("");
   const [viewMode, setViewMode] = useState("cards");
   const [startDate, setStartDate] = useState(defaultRange.start);
   const [endDate, setEndDate] = useState(defaultRange.end);
+  const [selectedOrigem, setSelectedOrigem] = useState("Todos");
 
-  // Filtro de data aplicado primeiro para financeiro e reservas
+  // Filtro de data aplicado primeiro para financeiro
   const { filteredData: dateFilteredFinanceiro } = useDateFilter(
     financeiroData,
     startDate,
     endDate,
     "data_transacao",
   );
-  const { filteredData: dateFilteredReservas } = useDateFilter(
-    reservasData,
-    startDate,
-    endDate,
-    "checkin",
+
+  // Aplica filtro de origem
+  const origemFilteredFinanceiro = useOrigemFilter(
+    dateFilteredFinanceiro,
+    selectedOrigem,
   );
 
   // Depois aplica o filtro de busca
   const { filteredData: filteredFinanceiro } = useSearch(
-    dateFilteredFinanceiro,
-    searchTerm,
-  );
-  const { filteredData: filteredReservas } = useSearch(
-    dateFilteredReservas,
+    origemFilteredFinanceiro,
     searchTerm,
   );
 
   // Calculate financial metrics usando dados filtrados por data
   const financialMetrics = useMemo(() => {
-    if (!dateFilteredFinanceiro && !dateFilteredReservas) {
+    if (!dateFilteredFinanceiro) {
       return {
         totalEntradas: 0,
         totalSaidas: 0,
@@ -93,7 +89,6 @@ const Financeiro = () => {
     }
 
     const financeiro = dateFilteredFinanceiro || [];
-    const reservas = dateFilteredReservas || [];
 
     // Total de entradas (receitas)
     const totalEntradas = financeiro
@@ -108,25 +103,23 @@ const Financeiro = () => {
       )
       .reduce((acc, item) => acc + (item.valor || 0), 0);
 
-    // Receita de reservas
-    const receitaReservas = reservas.reduce(
-      (acc, item) => acc + (item.preco || 0),
-      0,
-    );
+    // Receita de reservas (origem === "Reserva")
+    const receitaReservas = financeiro
+      .filter((item) => item.origem === "Reserva")
+      .reduce((acc, item) => acc + (item.valor || 0), 0);
 
     // Saldo líquido total
-    const saldoLiquido = totalEntradas - totalSaidas + receitaReservas;
+    const saldoLiquido = totalEntradas - totalSaidas;
 
     // Total de transações
-    const totalTransacoes = financeiro.length + reservas.length;
+    const totalTransacoes = financeiro.length;
 
-    // Média por transação
-    const valorTotal = totalEntradas + receitaReservas;
-    const transacoesEntrada =
-      financeiro.filter((item) => item.tipo_transacao === "Entrada").length +
-      reservas.length;
+    // Média por transação de entrada
+    const transacoesEntrada = financeiro.filter(
+      (item) => item.tipo_transacao === "Entrada",
+    ).length;
     const mediaTransacao =
-      transacoesEntrada > 0 ? valorTotal / transacoesEntrada : 0;
+      transacoesEntrada > 0 ? totalEntradas / transacoesEntrada : 0;
 
     return {
       totalEntradas,
@@ -136,7 +129,7 @@ const Financeiro = () => {
       mediaTransacao,
       totalTransacoes,
     };
-  }, [dateFilteredFinanceiro, dateFilteredReservas]);
+  }, [dateFilteredFinanceiro]);
 
   // Format currency
   const formatCurrency = (value) => {
@@ -154,13 +147,10 @@ const Financeiro = () => {
           <CreateButtonFinanceiro />
         </div>
       </div>
-      {fetchErrorFinanceiro && <p className="error">{fetchErrorFinanceiro}</p>}
-      {fetchErrorReservas && <p className="error">{fetchErrorReservas}</p>}
-      <div className="loading">
-        {isPendingFinanceiro && isPendingReservas && <p>Carregando...</p>}
-      </div>
+      {fetchError && <p className="error">{fetchError}</p>}
+      <div className="loading">{isPending && <p>Carregando...</p>}</div>
 
-      {(financeiroData || reservasData) && (
+      {financeiroData && (
         <>
           <div className="search">
             <Search value={searchTerm} onChange={setSearchTerm} />
@@ -180,10 +170,7 @@ const Financeiro = () => {
             <DashboardCard
               dashboard={{
                 title: "Faturamento Total",
-                value: formatCurrency(
-                  financialMetrics.totalEntradas +
-                    financialMetrics.receitaReservas,
-                ),
+                value: formatCurrency(financialMetrics.totalEntradas),
                 icon: "trending_up",
               }}
             />
@@ -228,7 +215,25 @@ const Financeiro = () => {
           <br />
           <div className="controls-row">
             <div className="order-by">
-              <p>Ordenar por: </p>
+              <p>Filtrar por origem: </p>
+              <select
+                value={selectedOrigem}
+                onChange={(e) => setSelectedOrigem(e.target.value)}
+              >
+                <option value="Todos">Todos</option>
+                <option value="Reserva">Reserva</option>
+                <option value="Funcionários">Funcionários</option>
+                <option value="Café da manhã">Café da manhã</option>
+                <option value="Energia">Energia</option>
+                <option value="Água">Água</option>
+                <option value="Reparos Diversos">Reparos Diversos</option>
+                <option value="Limpeza">Limpeza</option>
+                <option value="Produtos">Produtos</option>
+                <option value="Marketing">Marketing</option>
+                <option value="Impostos">Impostos</option>
+                <option value="Internet">Internet</option>
+                <option value="Outros">Outros</option>
+              </select>
             </div>
             <ViewToggle viewMode={viewMode} setViewMode={setViewMode} />
           </div>
@@ -239,14 +244,7 @@ const Financeiro = () => {
                 <FinanceiroCard
                   key={financeiro.id}
                   financeiro={financeiro}
-                  onDelete={handleDeleteFinanceiro}
-                />
-              ))}
-              {filteredReservas.map((reserva) => (
-                <FinanceiroReservasCard
-                  key={reserva.id}
-                  reserva={reserva}
-                  onDelete={handleDeleteReservas}
+                  onDelete={handleDelete}
                 />
               ))}
             </div>
@@ -256,14 +254,7 @@ const Financeiro = () => {
                 <FinanceiroList
                   key={financeiro.id}
                   financeiro={financeiro}
-                  onDelete={handleDeleteFinanceiro}
-                />
-              ))}
-              {filteredReservas.map((reserva) => (
-                <FinanceiroReservasList
-                  key={reserva.id}
-                  reserva={reserva}
-                  onDelete={handleDeleteReservas}
+                  onDelete={handleDelete}
                 />
               ))}
             </div>

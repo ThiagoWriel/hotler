@@ -233,7 +233,8 @@ const CriarReserva = () => {
         pagamento_realizado,
         obs,
       })
-      .select();
+      .select()
+      .single();
 
     if (error) {
       console.log(error);
@@ -248,6 +249,16 @@ const CriarReserva = () => {
         .from("quartos")
         .update({ ocupado: "sim" })
         .eq("id", quarto_id);
+
+      // Cria entrada financeira automaticamente
+      await supabase.from("financeiro").insert({
+        valor: preco,
+        tipo_transacao: "Entrada",
+        metodo: tipo_pagamento,
+        data_transacao: checkin,
+        origem: "Reserva",
+        reserva_id: data.id,
+      });
 
       setFormError(null);
       router.push("/reservas");

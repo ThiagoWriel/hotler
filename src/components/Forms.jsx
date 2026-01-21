@@ -422,6 +422,7 @@ const FinanceiroForm = ({
         <option disabled value="">
           Selecione
         </option>
+        <option value="Reserva">Reserva</option>
         <option value="Funcionários">Funcionários</option>
         <option value="Café da manhã">Café da manhã</option>
         <option value="Energia">Energia</option>

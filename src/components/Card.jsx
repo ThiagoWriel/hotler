@@ -199,6 +199,14 @@ export const ReservasCard = ({ reserva, onDelete }) => {
 
 export const FinanceiroCard = ({ financeiro, onDelete }) => {
   const handleDelete = async () => {
+    // Bloqueia exclusão se for entrada de reserva
+    if (financeiro.reserva_id) {
+      alert(
+        "Esta entrada é de uma reserva. Para excluir, delete a reserva na página de Reservas.",
+      );
+      return;
+    }
+
     const { data, error } = await supabase
       .from("financeiro")
       .delete()
@@ -250,57 +258,6 @@ export const FinanceiroCard = ({ financeiro, onDelete }) => {
 
       <CardFooter className="buttons">
         <Link href={"/update-financeiro/" + financeiro.id}>
-          <i className="material-icons">edit</i>
-        </Link>
-        <i className="material-icons" onClick={handleDelete}>
-          delete
-        </i>
-      </CardFooter>
-    </Card>
-  );
-};
-
-export const FinanceiroReservasCard = ({ reserva, onDelete }) => {
-  const handleDelete = async () => {
-    const { data, error } = await supabase
-      .from("reservas")
-      .delete()
-      .eq("id", reserva.id)
-      .select();
-
-    if (error) {
-      console.log(error);
-    }
-    if (data) {
-      onDelete(reserva.id);
-    }
-  };
-
-  return (
-    <Card className="financeiro-card">
-      <CardHeader>
-        <div className="flex items-center gap-3">
-          <i className="material-icons card-icon">book_online</i>
-          <CardTitle>Reserva</CardTitle>
-        </div>
-      </CardHeader>
-
-      <CardContent className="space-y-3">
-        <div className="card-row price-row">
-          <span>R$ {reserva.preco},00</span>
-        </div>
-        <div className="card-row">
-          <i className="material-icons">event</i>
-          <span>{formatDate(reserva.checkout)} (Checkout)</span>
-        </div>
-        <div className="card-row">
-          <i className="material-icons">payments</i>
-          <span>{capitalize(reserva.tipo_pagamento)}</span>
-        </div>
-      </CardContent>
-
-      <CardFooter className="buttons">
-        <Link href={"/update-reserva/" + reserva.id}>
           <i className="material-icons">edit</i>
         </Link>
         <i className="material-icons" onClick={handleDelete}>
