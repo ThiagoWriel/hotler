@@ -1,6 +1,6 @@
 import Link from "next/link";
 import supabase from "../config/supabaseClient";
-import { formatCPF, formatTelefone } from "./Forms";
+import { formatCPF, formatTelefone, capitalize, formatDate } from "./Forms";
 import {
   Card,
   CardHeader,
@@ -33,7 +33,7 @@ export const QuartosCard = ({ quarto, onDelete, reservas }) => {
       <CardHeader>
         <div className="flex items-center gap-3">
           <i className="material-icons card-icon">hotel</i>
-          <CardTitle>{quarto.tipo}</CardTitle>
+          <CardTitle>{capitalize(quarto.tipo)}</CardTitle>
         </div>
       </CardHeader>
 
@@ -45,13 +45,13 @@ export const QuartosCard = ({ quarto, onDelete, reservas }) => {
               quarto.estado === ("limpo" || "Limpo") ? "success" : "destructive"
             }
           >
-            {quarto.estado}
+            {capitalize(quarto.estado)}
           </Badge>
         </div>
         <div className="card-row">
           <i className="material-icons">person</i>
           <Badge variant={quarto.ocupado === "sim" ? "default" : "secondary"}>
-            {quarto.ocupado}
+            {capitalize(quarto.ocupado)}
           </Badge>
         </div>
       </CardContent>
@@ -100,7 +100,7 @@ export const ClientesCard = ({ cliente, onDelete }) => {
       <CardHeader>
         <div className="flex items-center gap-3">
           <i className="material-icons card-icon">person</i>
-          <CardTitle>{cliente.nome}</CardTitle>
+          <CardTitle>{capitalize(cliente.nome)}</CardTitle>
         </div>
       </CardHeader>
 
@@ -115,7 +115,7 @@ export const ClientesCard = ({ cliente, onDelete }) => {
         </div>
         <div className="card-row">
           <i className="material-icons">cake</i>
-          <span>{cliente.nascimento}</span>
+          <span>{formatDate(cliente.nascimento)}</span>
         </div>
       </CardContent>
 
@@ -152,18 +152,18 @@ export const ReservasCard = ({ reserva, onDelete }) => {
       <CardHeader>
         <div className="flex items-center gap-3">
           <i className="material-icons card-icon">event_note</i>
-          <CardTitle>{reserva.clientes?.nome || "N/A"}</CardTitle>
+          <CardTitle>{capitalize(reserva.clientes?.nome || "N/A")}</CardTitle>
         </div>
       </CardHeader>
 
       <CardContent className="space-y-3">
         <div className="card-row">
           <i className="material-icons">login</i>
-          <span>Check-in: {reserva.checkin}</span>
+          <span>Check-in: {formatDate(reserva.checkin)}</span>
         </div>
         <div className="card-row">
           <i className="material-icons">logout</i>
-          <span>Check-out: {reserva.checkout}</span>
+          <span>Check-out: {formatDate(reserva.checkout)}</span>
         </div>
         <div className="card-row">
           <i className="material-icons">info</i>
@@ -176,7 +176,7 @@ export const ReservasCard = ({ reserva, onDelete }) => {
                   : "warning"
             }
           >
-            {reserva.estado_reserva}
+            {capitalize(reserva.estado_reserva)}
           </Badge>
         </div>
       </CardContent>
@@ -218,7 +218,7 @@ export const FinanceiroCard = ({ financeiro, onDelete }) => {
       <CardHeader>
         <div className="flex items-center gap-3">
           <i className="material-icons card-icon">attach_money</i>
-          <CardTitle>{financeiro.origem}</CardTitle>
+          <CardTitle>{capitalize(financeiro.origem)}</CardTitle>
         </div>
       </CardHeader>
 
@@ -235,16 +235,16 @@ export const FinanceiroCard = ({ financeiro, onDelete }) => {
                 : "destructive"
             }
           >
-            {financeiro.tipo_transacao}
+            {capitalize(financeiro.tipo_transacao)}
           </Badge>
         </div>
         <div className="card-row">
           <i className="material-icons">calendar_today</i>
-          <span>{financeiro.data_transacao}</span>
+          <span>{formatDate(financeiro.data_transacao)}</span>
         </div>
         <div className="card-row">
           <i className="material-icons">payments</i>
-          <span>{financeiro.metodo}</span>
+          <span>{capitalize(financeiro.metodo)}</span>
         </div>
       </CardContent>
 
@@ -291,11 +291,11 @@ export const FinanceiroReservasCard = ({ reserva, onDelete }) => {
         </div>
         <div className="card-row">
           <i className="material-icons">event</i>
-          <span>{reserva.checkout} (Checkout)</span>
+          <span>{formatDate(reserva.checkout)} (Checkout)</span>
         </div>
         <div className="card-row">
           <i className="material-icons">payments</i>
-          <span>{reserva.tipo_pagamento}</span>
+          <span>{capitalize(reserva.tipo_pagamento)}</span>
         </div>
       </CardContent>
 

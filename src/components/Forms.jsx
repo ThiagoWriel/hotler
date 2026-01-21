@@ -30,6 +30,17 @@ export const formatTelefone = (val) => {
     .replace(/(\d)(\d{4})$/, "$1-$2");
 };
 
+export const capitalize = (str) => {
+  if (!str) return "";
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+};
+
+export const formatDate = (dateStr) => {
+  if (!dateStr) return "";
+  const [year, month, day] = dateStr.split("-");
+  return `${day}/${month}/${year}`;
+};
+
 // ================== QUARTO ==================
 const QuartoForm = ({
   values,

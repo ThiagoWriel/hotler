@@ -1,6 +1,6 @@
 import Link from "next/link";
 import supabase from "../config/supabaseClient";
-import { formatCPF, formatTelefone } from "./Forms";
+import { formatCPF, formatTelefone, capitalize, formatDate } from "./Forms";
 
 export const QuartosList = ({ quarto, onDelete, reservas }) => {
   const handleDelete = async () => {
@@ -26,7 +26,7 @@ export const QuartosList = ({ quarto, onDelete, reservas }) => {
           <i className="material-icons">hotel</i>
         </div>
         <div className="list-details">
-          <span className="list-title">{quarto.tipo}</span>
+          <span className="list-title">{capitalize(quarto.tipo)}</span>
           <span className="list-subtitle">Quarto {quarto.numero}</span>
         </div>
       </div>
@@ -34,11 +34,11 @@ export const QuartosList = ({ quarto, onDelete, reservas }) => {
       <div className="list-data">
         <div className="list-data-item">
           <i className="material-icons">cleaning_services</i>
-          <span>{quarto.estado}</span>
+          <span>{capitalize(quarto.estado)}</span>
         </div>
         <div className="list-data-item">
           <i className="material-icons">person</i>
-          <span>{quarto.ocupado}</span>
+          <span>{capitalize(quarto.ocupado)}</span>
         </div>
       </div>
 
@@ -77,7 +77,7 @@ export const ClientesList = ({ cliente, onDelete }) => {
           <i className="material-icons">person</i>
         </div>
         <div className="list-details">
-          <span className="list-title">{cliente.nome}</span>
+          <span className="list-title">{capitalize(cliente.nome)}</span>
           <span className="list-subtitle">
             CPF: {formatCPF(String(cliente.cpf || ""))}
           </span>
@@ -91,7 +91,7 @@ export const ClientesList = ({ cliente, onDelete }) => {
         </div>
         <div className="list-data-item">
           <i className="material-icons">cake</i>
-          <span>{cliente.nascimento}</span>
+          <span>{formatDate(cliente.nascimento)}</span>
         </div>
       </div>
 
@@ -130,7 +130,9 @@ export const ReservasList = ({ reserva, onDelete }) => {
           <i className="material-icons">event_note</i>
         </div>
         <div className="list-details">
-          <span className="list-title">{reserva.clientes?.nome || "N/A"}</span>
+          <span className="list-title">
+            {capitalize(reserva.clientes?.nome || "N/A")}
+          </span>
           <span className="list-subtitle">
             Quarto {reserva.quartos?.numero || "N/A"}
           </span>
@@ -140,15 +142,15 @@ export const ReservasList = ({ reserva, onDelete }) => {
       <div className="list-data">
         <div className="list-data-item">
           <i className="material-icons">login</i>
-          <span>{reserva.checkin}</span>
+          <span>{formatDate(reserva.checkin)}</span>
         </div>
         <div className="list-data-item">
           <i className="material-icons">logout</i>
-          <span>{reserva.checkout}</span>
+          <span>{formatDate(reserva.checkout)}</span>
         </div>
         <div className="list-data-item">
           <i className="material-icons">info</i>
-          <span>{reserva.estado_reserva}</span>
+          <span>{capitalize(reserva.estado_reserva)}</span>
         </div>
       </div>
 
@@ -187,7 +189,7 @@ export const FinanceiroList = ({ financeiro, onDelete }) => {
           <i className="material-icons">attach_money</i>
         </div>
         <div className="list-details">
-          <span className="list-title">{financeiro.origem}</span>
+          <span className="list-title">{capitalize(financeiro.origem)}</span>
           <span className="list-subtitle list-price">
             R$ {financeiro.valor},00
           </span>
@@ -197,11 +199,11 @@ export const FinanceiroList = ({ financeiro, onDelete }) => {
       <div className="list-data">
         <div className="list-data-item">
           <i className="material-icons">calendar_today</i>
-          <span>{financeiro.data_transacao}</span>
+          <span>{formatDate(financeiro.data_transacao)}</span>
         </div>
         <div className="list-data-item">
           <i className="material-icons">payments</i>
-          <span>{financeiro.metodo}</span>
+          <span>{capitalize(financeiro.metodo)}</span>
         </div>
       </div>
 
@@ -250,11 +252,11 @@ export const FinanceiroReservasList = ({ reserva, onDelete }) => {
       <div className="list-data">
         <div className="list-data-item">
           <i className="material-icons">event</i>
-          <span>{reserva.checkout}</span>
+          <span>{formatDate(reserva.checkout)}</span>
         </div>
         <div className="list-data-item">
           <i className="material-icons">payments</i>
-          <span>{reserva.tipo_pagamento}</span>
+          <span>{capitalize(reserva.tipo_pagamento)}</span>
         </div>
       </div>
 

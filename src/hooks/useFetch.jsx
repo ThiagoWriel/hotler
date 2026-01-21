@@ -4,7 +4,7 @@ import supabase from "../config/supabaseClient";
 const useFetch = (table) => {
   const [fetchError, setFetchError] = useState(null);
   const [hotler, setHotler] = useState(null);
-  const [orderBy, setOrderBy] = useState("id");
+  const [orderBy, setOrderBy] = useState(table === "quartos" ? "numero" : "id");
   const [isPending, setIsPending] = useState(true);
 
   const handleDelete = (id) => {
