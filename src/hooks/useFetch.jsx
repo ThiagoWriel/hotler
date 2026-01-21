@@ -15,9 +15,13 @@ const useFetch = (table) => {
 
   useEffect(() => {
     const fetchHotler = async () => {
+      // Se for tabela de reservas, fazer JOIN com clientes e quartos
+      const selectQuery =
+        table === "reservas" ? "*, clientes(nome), quartos(numero)" : "*";
+
       const { data, error } = await supabase
         .from(table)
-        .select()
+        .select(selectQuery)
         .order(orderBy, { ascending: true });
 
       if (error) {

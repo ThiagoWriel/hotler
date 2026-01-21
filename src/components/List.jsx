@@ -130,8 +130,10 @@ export const ReservasList = ({ reserva, onDelete }) => {
           <i className="material-icons">event_note</i>
         </div>
         <div className="list-details">
-          <span className="list-title">{reserva.cliente_reserva}</span>
-          <span className="list-subtitle">Quarto {reserva.quarto_reserva}</span>
+          <span className="list-title">{reserva.clientes?.nome || "N/A"}</span>
+          <span className="list-subtitle">
+            Quarto {reserva.quartos?.numero || "N/A"}
+          </span>
         </div>
       </div>
 

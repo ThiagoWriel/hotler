@@ -130,8 +130,8 @@ const CriarReserva = () => {
   const router = useRouter();
 
   const [values, setValues] = useState({
-    quarto_reserva: "",
-    cliente_reserva: "",
+    quarto_id: "",
+    cliente_id: "",
     checkin: "",
     checkout: "",
     pessoas: "",
@@ -156,7 +156,7 @@ const CriarReserva = () => {
     if (quartoParam || checkinParam) {
       setValues((prev) => ({
         ...prev,
-        ...(quartoParam && { quarto_reserva: quartoParam }),
+        ...(quartoParam && { quarto_id: quartoParam }),
         ...(checkinParam && { checkin: checkinParam }),
       }));
     }
@@ -166,17 +166,17 @@ const CriarReserva = () => {
     const fetchData = async () => {
       const { data: clientesData } = await supabase
         .from("clientes")
-        .select("nome");
+        .select("id, nome");
       if (clientesData) setClientesList(clientesData);
 
       const { data: quartosData } = await supabase
         .from("quartos")
-        .select("numero, estado, ocupado");
+        .select("id, numero, estado, ocupado");
       if (quartosData) setQuartosList(quartosData);
 
       const { data: reservasData } = await supabase
         .from("reservas")
-        .select("quarto_reserva, checkin, checkout, estado_reserva")
+        .select("quarto_id, checkin, checkout, estado_reserva")
         .neq("estado_reserva", "cancelada");
       if (reservasData) setReservasList(reservasData);
     };
@@ -191,8 +191,8 @@ const CriarReserva = () => {
     e.preventDefault();
 
     const {
-      quarto_reserva,
-      cliente_reserva,
+      quarto_id,
+      cliente_id,
       checkin,
       checkout,
       pessoas,
@@ -204,8 +204,8 @@ const CriarReserva = () => {
     } = values;
 
     if (
-      !quarto_reserva ||
-      !cliente_reserva ||
+      !quarto_id ||
+      !cliente_id ||
       !checkin ||
       !checkout ||
       !pessoas ||
@@ -222,12 +222,12 @@ const CriarReserva = () => {
     const { data, error } = await supabase
       .from("reservas")
       .insert({
-        cliente_reserva,
+        cliente_id,
         estado_reserva,
         checkin,
         checkout,
         pessoas,
-        quarto_reserva,
+        quarto_id,
         preco,
         tipo_pagamento,
         pagamento_realizado,
@@ -244,18 +244,10 @@ const CriarReserva = () => {
       console.log(data);
 
       // Atualiza o quarto para ocupado
-      const { data: quartoData } = await supabase
+      await supabase
         .from("quartos")
-        .select("id")
-        .eq("numero", quarto_reserva)
-        .single();
-
-      if (quartoData) {
-        await supabase
-          .from("quartos")
-          .update({ ocupado: "sim" })
-          .eq("id", quartoData.id);
-      }
+        .update({ ocupado: "sim" })
+        .eq("id", quarto_id);
 
       setFormError(null);
       router.push("/reservas");

@@ -206,8 +206,8 @@ const UpdateReserva = () => {
   const router = useRouter();
 
   const [values, setValues] = useState({
-    quarto_reserva: "",
-    cliente_reserva: "",
+    quarto_id: "",
+    cliente_id: "",
     checkin: "",
     checkout: "",
     pessoas: "",
@@ -231,8 +231,8 @@ const UpdateReserva = () => {
     e.preventDefault();
 
     const {
-      quarto_reserva,
-      cliente_reserva,
+      quarto_id,
+      cliente_id,
       checkin,
       checkout,
       pessoas,
@@ -244,8 +244,8 @@ const UpdateReserva = () => {
     } = values;
 
     if (
-      !quarto_reserva ||
-      !cliente_reserva ||
+      !quarto_id ||
+      !cliente_id ||
       !checkin ||
       !checkout ||
       !pessoas ||
@@ -263,8 +263,8 @@ const UpdateReserva = () => {
     const { data, error } = await supabase
       .from("reservas")
       .update({
-        quarto_reserva,
-        cliente_reserva,
+        quarto_id,
+        cliente_id,
         checkin,
         checkout,
         pessoas,
@@ -301,8 +301,8 @@ const UpdateReserva = () => {
       }
       if (data) {
         setValues({
-          quarto_reserva: data.quarto_reserva,
-          cliente_reserva: data.cliente_reserva,
+          quarto_id: data.quarto_id,
+          cliente_id: data.cliente_id,
           checkin: data.checkin,
           checkout: data.checkout,
           pessoas: data.pessoas,
@@ -317,12 +317,12 @@ const UpdateReserva = () => {
       // Fetch lists for dropdowns
       const { data: clientesData } = await supabase
         .from("clientes")
-        .select("nome");
+        .select("id, nome");
       if (clientesData) setClientesList(clientesData);
 
       const { data: quartosData } = await supabase
         .from("quartos")
-        .select("numero");
+        .select("id, numero");
       if (quartosData) setQuartosList(quartosData);
     };
     fetchReserva();

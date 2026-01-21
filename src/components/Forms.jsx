@@ -181,8 +181,8 @@ const ReservaForm = ({
   reservasList = [], // usado apenas no Create para filtrar quartos disponíveis
 }) => {
   const {
-    cliente_reserva,
-    quarto_reserva,
+    cliente_id,
+    quarto_id,
     checkin,
     checkout,
     pessoas,
@@ -207,7 +207,7 @@ const ReservaForm = ({
       if (!checkin || !checkout) return true;
 
       const isAvailable = !reservasList.some((reserva) => {
-        if (reserva.quarto_reserva !== quarto.numero) return false;
+        if (reserva.quarto_id !== quarto.id) return false;
 
         const newCheckin = new Date(checkin);
         const newCheckout = new Date(checkout);
@@ -226,17 +226,17 @@ const ReservaForm = ({
 
   return (
     <form onSubmit={onSubmit}>
-      <label htmlFor="cliente_reserva">Cliente</label>
+      <label htmlFor="cliente_id">Cliente</label>
       <select
-        id="cliente_reserva"
-        value={cliente_reserva}
-        onChange={(e) => onChange("cliente_reserva", e.target.value)}
+        id="cliente_id"
+        value={cliente_id}
+        onChange={(e) => onChange("cliente_id", e.target.value)}
       >
         <option disabled value="">
           Selecione um cliente
         </option>
-        {clientesList.map((cliente, index) => (
-          <option key={index} value={cliente.nome}>
+        {clientesList.map((cliente) => (
+          <option key={cliente.id} value={cliente.id}>
             {cliente.nome}
           </option>
         ))}
@@ -257,18 +257,18 @@ const ReservaForm = ({
         onChange={(e) => onChange("checkout", e.target.value)}
       />
 
-      <label htmlFor="quarto_reserva">Quarto</label>
+      <label htmlFor="quarto_id">Quarto</label>
       <select
-        id="quarto_reserva"
-        value={quarto_reserva}
-        onChange={(e) => onChange("quarto_reserva", e.target.value)}
+        id="quarto_id"
+        value={quarto_id}
+        onChange={(e) => onChange("quarto_id", e.target.value)}
       >
         <option disabled value="">
           Selecione um quarto
         </option>
-        {filteredQuartos.map((quarto, index) => (
-          <option key={index} value={quarto.numero}>
-            {quarto.numero}
+        {filteredQuartos.map((quarto) => (
+          <option key={quarto.id} value={quarto.id}>
+            Quarto {quarto.numero}
           </option>
         ))}
       </select>

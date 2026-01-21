@@ -152,7 +152,7 @@ export const ReservasCard = ({ reserva, onDelete }) => {
       <CardHeader>
         <div className="flex items-center gap-3">
           <i className="material-icons card-icon">event_note</i>
-          <CardTitle>{reserva.cliente_reserva}</CardTitle>
+          <CardTitle>{reserva.clientes?.nome || "N/A"}</CardTitle>
         </div>
       </CardHeader>
 
@@ -182,7 +182,7 @@ export const ReservasCard = ({ reserva, onDelete }) => {
       </CardContent>
 
       <div className="numero">
-        <p>{reserva.quarto_reserva}</p>
+        <p>{reserva.quartos?.numero || "N/A"}</p>
       </div>
 
       <CardFooter className="buttons">

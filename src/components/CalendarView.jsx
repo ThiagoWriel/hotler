@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
  * CalendarView - Componente de visualização de calendário para reservas
  *
  * Props:
- * - reservas: Array de reservas com campos (cliente_reserva, checkin, checkout, quarto_reserva, pessoas, estado_reserva)
+ * - reservas: Array de reservas com campos (cliente_id, checkin, checkout, quarto_id, pessoas, estado_reserva)
  * - quartos: Array de quartos com campos (numero, tipo, estado)
  * - daysToShow: Número de dias a exibir no futuro (padrão: 90 dias)
  * - daysPast: Número de dias no passado para exibir (padrão: 30 dias)
@@ -90,17 +90,17 @@ const CalendarView = ({
     const d = new Date(date);
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
       2,
-      "0"
+      "0",
     )}-${String(d.getDate()).padStart(2, "0")}`;
   };
 
   // Encontra reserva para um quarto/dia específico
-  const getReservationForCell = (quartoNumero, date) => {
+  const getReservationForCell = (quarto, date) => {
     const dateStr = formatDateForComparison(date);
 
     return reservas.find((reserva) => {
-      // Compara como string para garantir compatibilidade
-      if (String(reserva.quarto_reserva) !== String(quartoNumero)) return false;
+      // Compara usando ID do quarto
+      if (reserva.quarto_id !== quarto.id) return false;
       if (reserva.estado_reserva === "cancelada") return false;
 
       const checkinDate = formatDateForComparison(reserva.checkin);
@@ -125,13 +125,13 @@ const CalendarView = ({
   };
 
   // Navega para criar reserva com parâmetros pré-selecionados
-  const handleCellClick = (quartoNumero, date) => {
-    const reserva = getReservationForCell(quartoNumero, date);
+  const handleCellClick = (quarto, date) => {
+    const reserva = getReservationForCell(quarto, date);
 
     if (!reserva) {
       const formattedDate = formatDateForComparison(date);
       // Navega para criar reserva com quarto e data pré-selecionados
-      const url = `/reservas/create?quarto=${quartoNumero}&checkin=${formattedDate}`;
+      const url = `/reservas/create?quarto=${quarto.id}&checkin=${formattedDate}`;
       console.log("Navegando para:", url);
       router.push(url);
     }
@@ -181,7 +181,7 @@ const CalendarView = ({
 
   // Ordena quartos por número
   const sortedQuartos = [...(quartos || [])].sort(
-    (a, b) => a.numero - b.numero
+    (a, b) => a.numero - b.numero,
   );
 
   // Calcula os limites de data para o date picker
@@ -258,7 +258,7 @@ const CalendarView = ({
                 <span className="room-type">{quarto.tipo}</span>
               </div>
               {days.map((day, dayIndex) => {
-                const reserva = getReservationForCell(quarto.numero, day);
+                const reserva = getReservationForCell(quarto, day);
                 const isCheckin = reserva && isCheckinDay(reserva, day);
                 const isCheckout = reserva && isCheckoutDay(reserva, day);
 
@@ -275,17 +275,17 @@ const CalendarView = ({
                       ${isCheckin ? "calendar-cell-checkin" : ""}
                       ${isCheckout ? "calendar-cell-checkout" : ""}
                     `}
-                    onClick={() => handleCellClick(quarto.numero, day)}
+                    onClick={() => handleCellClick(quarto, day)}
                     title={
                       reserva
-                        ? `${reserva.cliente_reserva} - ${reserva.pessoas} pessoa(s)`
+                        ? `${reserva.clientes?.nome || "N/A"} - ${reserva.pessoas} pessoa(s)`
                         : `Disponível - Clique para reservar`
                     }
                   >
                     {isCheckin && reserva && (
                       <div className="calendar-reservation">
                         <span className="reservation-name">
-                          {reserva.cliente_reserva}
+                          {reserva.clientes?.nome || "N/A"}
                         </span>
                         <span className="reservation-guests">
                           {reserva.pessoas}p
