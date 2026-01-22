@@ -7,17 +7,18 @@ import {
   PaginationLink,
 } from "./ui/pagination";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { QuartosList } from "./List";
-import { ReservasList } from "./List";
+import { QuartosList, QuartosSujosList, ReservasList } from "./List";
 
 export const DashboardTabs = ({
   quartos,
   reservas,
   onDeleteQuarto,
   onDeleteReserva,
+  onCheckout,
+  onCleanRoom,
 }) => {
   const [currentTab, setCurrentTab] = useState(1);
-  const totalTabs = 5;
+  const totalTabs = 6;
 
   // Data de hoje para filtros de check-in e check-out
   const hoje = new Date().toISOString().split("T")[0];
@@ -25,6 +26,11 @@ export const DashboardTabs = ({
   // Filtrar quartos disponíveis (limpos e não ocupados)
   const quartosDisponiveis = quartos
     ? quartos.filter((q) => q.estado === "limpo" && q.ocupado === "não")
+    : [];
+
+  // Filtrar quartos sujos
+  const quartosSujos = quartos
+    ? quartos.filter((q) => q.estado === "sujo")
     : [];
 
   // Filtrar reservas ativas (confirmadas)
@@ -142,6 +148,18 @@ export const DashboardTabs = ({
             <PaginationItem>
               <PaginationLink
                 href="#"
+                isActive={currentTab === 6}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleTabChange(6);
+                }}
+              >
+                6
+              </PaginationLink>
+            </PaginationItem>
+            <PaginationItem>
+              <PaginationLink
+                href="#"
                 onClick={handleNext}
                 size="default"
                 className={`pagination-nav ${currentTab === totalTabs ? "pagination-disabled" : ""}`}
@@ -189,6 +207,7 @@ export const DashboardTabs = ({
                     key={reserva.id}
                     reserva={reserva}
                     onDelete={onDeleteReserva}
+                    onCheckout={onCheckout}
                   />
                 ))}
               </div>
@@ -258,6 +277,7 @@ export const DashboardTabs = ({
                     key={reserva.id}
                     reserva={reserva}
                     onDelete={onDeleteReserva}
+                    onCheckout={onCheckout}
                   />
                 ))}
               </div>
@@ -265,6 +285,29 @@ export const DashboardTabs = ({
               <p className="dashboard-tabs-empty">
                 <i className="material-icons">info</i>
                 Nenhum check-out agendado para hoje
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Aba 6 - Quartos Sujos */}
+        {currentTab === 6 && (
+          <div className="dashboard-tab-panel">
+            <h3 className="dashboard-tabs-title">Quartos Sujos</h3>
+            {quartosSujos.length > 0 ? (
+              <div className="dashboard-tabs-list">
+                {quartosSujos.map((quarto) => (
+                  <QuartosSujosList
+                    key={quarto.id}
+                    quarto={quarto}
+                    onClean={onCleanRoom}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className="dashboard-tabs-empty">
+                <i className="material-icons">info</i>
+                Nenhum quarto sujo no momento
               </p>
             )}
           </div>

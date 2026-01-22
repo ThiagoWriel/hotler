@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect } from "react";
 import useFetch from "../../hooks/useFetch";
 import { DashboardCard } from "../../components/Card";
 import { DashboardTabs } from "../../components/DashboardTabs";
@@ -7,30 +8,74 @@ export default function Dashboard() {
   const {
     isPending: isPendingQuartos,
     fetchError: fetchErrorQuartos,
-    hotler: quartos,
+    hotler: quartosData,
     handleDelete: handleDeleteQuarto,
-    setOrderBy: setOrderByQuarto,
   } = useFetch("quartos");
 
   const {
     isPending: isPendingClientes,
     fetchError: fetchErrorClientes,
     hotler: clientes,
-    handleDelete: handleDeleteCliente,
-    setOrderBy: setOrderByCliente,
   } = useFetch("clientes");
 
   const {
     isPending: isPendingReservas,
     fetchError: fetchErrorReservas,
-    hotler: reservas,
+    hotler: reservasData,
     handleDelete: handleDeleteReserva,
-    setOrderBy: setOrderByReserva,
   } = useFetch("reservas");
+
+  // Estado local para atualizações em tempo real
+  const [quartos, setQuartos] = useState(null);
+  const [reservas, setReservas] = useState(null);
+
+  // Sincronizar estados locais com dados do fetch
+  useEffect(() => {
+    if (quartosData) setQuartos(quartosData);
+  }, [quartosData]);
+
+  useEffect(() => {
+    if (reservasData) setReservas(reservasData);
+  }, [reservasData]);
 
   const isPending = isPendingQuartos || isPendingClientes || isPendingReservas;
   const fetchError =
     fetchErrorQuartos || fetchErrorClientes || fetchErrorReservas;
+
+  // Handler para checkout rápido
+  const handleCheckout = (reservaId, quartoId) => {
+    // Atualizar reserva para Finalizada
+    setReservas((prev) =>
+      prev.map((r) =>
+        r.id === reservaId ? { ...r, estado_reserva: "Finalizada" } : r,
+      ),
+    );
+    // Atualizar quarto para sujo
+    setQuartos((prev) =>
+      prev.map((q) =>
+        q.id === quartoId ? { ...q, estado: "sujo", ocupado: "não" } : q,
+      ),
+    );
+  };
+
+  // Handler para limpar quarto
+  const handleCleanRoom = (quartoId) => {
+    setQuartos((prev) =>
+      prev.map((q) => (q.id === quartoId ? { ...q, estado: "limpo" } : q)),
+    );
+  };
+
+  // Handler para delete de quarto (atualiza estado local)
+  const handleQuartoDelete = (id) => {
+    handleDeleteQuarto(id);
+    setQuartos((prev) => prev.filter((q) => q.id !== id));
+  };
+
+  // Handler para delete de reserva (atualiza estado local)
+  const handleReservaDelete = (id) => {
+    handleDeleteReserva(id);
+    setReservas((prev) => prev.filter((r) => r.id !== id));
+  };
 
   // Calculos Dashboard
   const pessoasHospedadas = reservas
@@ -145,8 +190,10 @@ export default function Dashboard() {
           <DashboardTabs
             quartos={quartos}
             reservas={reservas}
-            onDeleteQuarto={handleDeleteQuarto}
-            onDeleteReserva={handleDeleteReserva}
+            onDeleteQuarto={handleQuartoDelete}
+            onDeleteReserva={handleReservaDelete}
+            onCheckout={handleCheckout}
+            onCleanRoom={handleCleanRoom}
           />
         </div>
       )}

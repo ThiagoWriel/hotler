@@ -1,6 +1,17 @@
 import Link from "next/link";
 import supabase from "../config/supabaseClient";
 import { formatCPF, formatTelefone, capitalize, formatDate } from "./Forms";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export const QuartosList = ({ quarto, onDelete, reservas }) => {
   const handleDelete = async () => {
@@ -107,7 +118,7 @@ export const ClientesList = ({ cliente, onDelete }) => {
   );
 };
 
-export const ReservasList = ({ reserva, onDelete }) => {
+export const ReservasList = ({ reserva, onDelete, onCheckout }) => {
   const handleDelete = async () => {
     const { data, error } = await supabase
       .from("reservas")
@@ -120,6 +131,35 @@ export const ReservasList = ({ reserva, onDelete }) => {
     }
     if (data) {
       onDelete(reserva.id);
+    }
+  };
+
+  const handleCheckout = async () => {
+    // 1. Atualizar quarto para sujo e não ocupado
+    const { error: quartoError } = await supabase
+      .from("quartos")
+      .update({ estado: "sujo", ocupado: "não" })
+      .eq("id", reserva.quarto_id);
+
+    if (quartoError) {
+      console.log("Erro ao atualizar quarto:", quartoError);
+      return;
+    }
+
+    // 2. Atualizar reserva para Finalizada
+    const { error: reservaError } = await supabase
+      .from("reservas")
+      .update({ estado_reserva: "Finalizada" })
+      .eq("id", reserva.id);
+
+    if (reservaError) {
+      console.log("Erro ao finalizar reserva:", reservaError);
+      return;
+    }
+
+    // 3. Callback para atualizar UI
+    if (onCheckout) {
+      onCheckout(reserva.id, reserva.quarto_id);
     }
   };
 
@@ -155,12 +195,94 @@ export const ReservasList = ({ reserva, onDelete }) => {
       </div>
 
       <div className="list-actions">
+        {onCheckout && reserva.estado_reserva === "Confirmada" && (
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <i className="material-icons" title="Checkout rápido">
+                logout
+              </i>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Confirmar Checkout</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Tem certeza que deseja realizar o checkout desta reserva? O
+                  quarto ficará marcado como sujo.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                <AlertDialogAction onClick={handleCheckout}>
+                  Confirmar
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        )}
         <Link href={"/update-reserva/" + reserva.id}>
           <i className="material-icons">edit</i>
         </Link>
         <i className="material-icons" onClick={handleDelete}>
           delete
         </i>
+      </div>
+    </div>
+  );
+};
+
+export const QuartosSujosList = ({ quarto, onClean }) => {
+  const handleClean = async () => {
+    // Atualizar quarto para limpo
+    const { error } = await supabase
+      .from("quartos")
+      .update({ estado: "limpo" })
+      .eq("id", quarto.id);
+
+    if (error) {
+      console.log("Erro ao limpar quarto:", error);
+      return;
+    }
+
+    // Callback para atualizar UI
+    if (onClean) {
+      onClean(quarto.id);
+    }
+  };
+
+  return (
+    <div className="quartos-list-item">
+      <div className="list-info">
+        <div className="list-icon-container">
+          <i className="material-icons">hotel</i>
+        </div>
+        <div className="list-details">
+          <span className="list-title">{capitalize(quarto.tipo)}</span>
+          <span className="list-subtitle">Quarto {quarto.numero}</span>
+        </div>
+      </div>
+
+      <div className="list-data">
+        <div className="list-data-item">
+          <i className="material-icons">cleaning_services</i>
+          <span>{capitalize(quarto.estado)}</span>
+        </div>
+        <div className="list-data-item">
+          <i className="material-icons">person</i>
+          <span>{capitalize(quarto.ocupado)}</span>
+        </div>
+      </div>
+
+      <div className="list-actions">
+        <i
+          className="material-icons"
+          onClick={handleClean}
+          title="Marcar como limpo"
+        >
+          cleaning_services
+        </i>
+        <Link href={"/update-quarto/" + quarto.id}>
+          <i className="material-icons">edit</i>
+        </Link>
       </div>
     </div>
   );
