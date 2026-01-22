@@ -1,5 +1,5 @@
 import Link from "next/link";
-import supabase from "../config/supabaseClient";
+import { createClient } from "@/lib/supabase/client";
 import { formatCPF, formatTelefone, capitalize, formatDate } from "./Forms";
 import {
   AlertDialog,
@@ -15,6 +15,7 @@ import {
 
 export const QuartosList = ({ quarto, onDelete, reservas }) => {
   const handleDelete = async () => {
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("quartos")
       .delete()
@@ -67,6 +68,7 @@ export const QuartosList = ({ quarto, onDelete, reservas }) => {
 
 export const ClientesList = ({ cliente, onDelete }) => {
   const handleDelete = async () => {
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("clientes")
       .delete()
@@ -120,6 +122,7 @@ export const ClientesList = ({ cliente, onDelete }) => {
 
 export const ReservasList = ({ reserva, onDelete, onCheckout }) => {
   const handleDelete = async () => {
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("reservas")
       .delete()
@@ -135,6 +138,7 @@ export const ReservasList = ({ reserva, onDelete, onCheckout }) => {
   };
 
   const handleCheckout = async () => {
+    const supabase = createClient();
     // 1. Atualizar quarto para sujo e não ocupado
     const { error: quartoError } = await supabase
       .from("quartos")
@@ -232,6 +236,7 @@ export const ReservasList = ({ reserva, onDelete, onCheckout }) => {
 
 export const QuartosSujosList = ({ quarto, onClean }) => {
   const handleClean = async () => {
+    const supabase = createClient();
     // Atualizar quarto para limpo
     const { error } = await supabase
       .from("quartos")
@@ -298,6 +303,7 @@ export const FinanceiroList = ({ financeiro, onDelete }) => {
       return;
     }
 
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("financeiro")
       .delete()

@@ -30,8 +30,6 @@ const useUserRole = () => {
     getRole();
   }, []);
 
-  if (!role) return <p>Carregando...</p>;
-
   return { role, loading };
 };
 

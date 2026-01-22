@@ -1,4 +1,4 @@
-import supabase from "../config/supabaseClient";
+import { createClient } from "@/lib/supabase/client";
 
 // Verifica se o quarto tem reserva no dia atual
 const verificarReservaAtual = (quarto, reservas) => {
@@ -48,6 +48,7 @@ export const atualizarStatusQuarto = async (quarto, reservas) => {
 
   // Só atualiza se houver mudança
   if (quarto.ocupado !== ocupadoNovo || quarto.estado !== estadoNovo) {
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("quartos")
       .update({
@@ -83,7 +84,7 @@ export const processarStatusQuarto = (quarto, reservas) => {
 // Atualiza todos os quartos baseado nas reservas
 export const atualizarTodosQuartos = async (quartos, reservas) => {
   const promises = quartos.map((quarto) =>
-    atualizarStatusQuarto(quarto, reservas)
+    atualizarStatusQuarto(quarto, reservas),
   );
   return await Promise.all(promises);
 };

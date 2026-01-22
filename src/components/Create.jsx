@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import supabase from "../config/supabaseClient";
+import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { QuartoForm, ClienteForm, ReservaForm, FinanceiroForm } from "./Forms";
 
@@ -29,6 +29,7 @@ const CriarQuarto = () => {
       return;
     }
 
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("quartos")
       .insert({ numero, estado, ocupado, tipo })
@@ -87,6 +88,7 @@ const CriarCliente = () => {
       return;
     }
 
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("clientes")
       .insert({
@@ -164,6 +166,7 @@ const CriarReserva = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      const supabase = createClient();
       const { data: clientesData } = await supabase
         .from("clientes")
         .select("id, nome");
@@ -219,6 +222,7 @@ const CriarReserva = () => {
       return;
     }
 
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("reservas")
       .insert({
@@ -310,6 +314,7 @@ const CriarFinanceiro = () => {
       return;
     }
 
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("financeiro")
       .insert({ valor, tipo_transacao, metodo, data_transacao, origem })

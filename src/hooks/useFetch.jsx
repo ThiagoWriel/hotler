@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
-import supabase from "../config/supabaseClient";
+import { createClient } from "@/lib/supabase/client";
 
 const useFetch = (table) => {
+  const supabase = createClient();
   const [fetchError, setFetchError] = useState(null);
   const [hotler, setHotler] = useState(null);
   const [orderBy, setOrderBy] = useState(table === "quartos" ? "numero" : "id");

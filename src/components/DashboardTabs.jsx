@@ -196,8 +196,31 @@ export const DashboardTabs = ({
           </div>
         )}
 
-        {/* Aba 2 - Reservas Ativas */}
+        {/* Aba 2 - Quartos Sujos */}
         {currentTab === 2 && (
+          <div className="dashboard-tab-panel">
+            <h3 className="dashboard-tabs-title">Quartos Sujos</h3>
+            {quartosSujos.length > 0 ? (
+              <div className="dashboard-tabs-list">
+                {quartosSujos.map((quarto) => (
+                  <QuartosSujosList
+                    key={quarto.id}
+                    quarto={quarto}
+                    onClean={onCleanRoom}
+                  />
+                ))}
+              </div>
+            ) : (
+              <p className="dashboard-tabs-empty">
+                <i className="material-icons">info</i>
+                Nenhum quarto sujo no momento
+              </p>
+            )}
+          </div>
+        )}
+
+        {/* Aba 3 - Reservas Ativas */}
+        {currentTab === 3 && (
           <div className="dashboard-tab-panel">
             <h3 className="dashboard-tabs-title">Reservas Ativas</h3>
             {reservasAtivas.length > 0 ? (
@@ -220,8 +243,8 @@ export const DashboardTabs = ({
           </div>
         )}
 
-        {/* Aba 3 - Pagamentos a Receber */}
-        {currentTab === 3 && (
+        {/* Aba 4 - Pagamentos a Receber */}
+        {currentTab === 4 && (
           <div className="dashboard-tab-panel">
             <h3 className="dashboard-tabs-title">Pagamentos a Receber</h3>
             {pagamentosAReceber.length > 0 ? (
@@ -243,8 +266,8 @@ export const DashboardTabs = ({
           </div>
         )}
 
-        {/* Aba 4 - Check-in Hoje */}
-        {currentTab === 4 && (
+        {/* Aba 5 - Check-in Hoje */}
+        {currentTab === 5 && (
           <div className="dashboard-tab-panel">
             <h3 className="dashboard-tabs-title">Check-in Hoje</h3>
             {checkInsHoje.length > 0 ? (
@@ -266,8 +289,8 @@ export const DashboardTabs = ({
           </div>
         )}
 
-        {/* Aba 5 - Check-out Hoje */}
-        {currentTab === 5 && (
+        {/* Aba 6 - Check-out Hoje */}
+        {currentTab === 6 && (
           <div className="dashboard-tab-panel">
             <h3 className="dashboard-tabs-title">Check-out Hoje</h3>
             {checkOutsHoje.length > 0 ? (
@@ -285,29 +308,6 @@ export const DashboardTabs = ({
               <p className="dashboard-tabs-empty">
                 <i className="material-icons">info</i>
                 Nenhum check-out agendado para hoje
-              </p>
-            )}
-          </div>
-        )}
-
-        {/* Aba 6 - Quartos Sujos */}
-        {currentTab === 6 && (
-          <div className="dashboard-tab-panel">
-            <h3 className="dashboard-tabs-title">Quartos Sujos</h3>
-            {quartosSujos.length > 0 ? (
-              <div className="dashboard-tabs-list">
-                {quartosSujos.map((quarto) => (
-                  <QuartosSujosList
-                    key={quarto.id}
-                    quarto={quarto}
-                    onClean={onCleanRoom}
-                  />
-                ))}
-              </div>
-            ) : (
-              <p className="dashboard-tabs-empty">
-                <i className="material-icons">info</i>
-                Nenhum quarto sujo no momento
               </p>
             )}
           </div>

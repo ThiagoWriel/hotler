@@ -1,5 +1,5 @@
 import Link from "next/link";
-import supabase from "../config/supabaseClient";
+import { createClient } from "@/lib/supabase/client";
 import { formatCPF, formatTelefone, capitalize, formatDate } from "./Forms";
 import {
   Card,
@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 
 export const QuartosCard = ({ quarto, onDelete, reservas }) => {
   const handleDelete = async () => {
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("quartos")
       .delete()
@@ -81,6 +82,7 @@ export const QuartosCard = ({ quarto, onDelete, reservas }) => {
 
 export const ClientesCard = ({ cliente, onDelete }) => {
   const handleDelete = async () => {
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("clientes")
       .delete()
@@ -133,6 +135,7 @@ export const ClientesCard = ({ cliente, onDelete }) => {
 
 export const ReservasCard = ({ reserva, onDelete }) => {
   const handleDelete = async () => {
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("reservas")
       .delete()
@@ -207,6 +210,7 @@ export const FinanceiroCard = ({ financeiro, onDelete }) => {
       return;
     }
 
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("financeiro")
       .delete()

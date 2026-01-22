@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { CreateButtonFinanceiro } from "../../components/Botton";
 import { FinanceiroCard, DashboardCard } from "../../components/Card";
 import { FinanceiroList } from "../../components/List";
@@ -10,6 +11,7 @@ import ViewToggle from "../../components/ViewToggle";
 import useFetch from "../../hooks/useFetch";
 import useSearch from "../../hooks/useSearch";
 import useDateFilter from "../../hooks/useDateFilter";
+import useUserRole from "../../hooks/useRole";
 import { Button } from "@/components/ui/button";
 
 // Função para obter primeiro e último dia do mês atual
@@ -41,6 +43,9 @@ const useOrigemFilter = (data, selectedOrigem) => {
 };
 
 const Financeiro = () => {
+  const router = useRouter();
+  const { role, loading: roleLoading } = useUserRole();
+
   const {
     isPending,
     fetchError,
@@ -54,6 +59,13 @@ const Financeiro = () => {
   const [startDate, setStartDate] = useState(defaultRange.start);
   const [endDate, setEndDate] = useState(defaultRange.end);
   const [selectedOrigem, setSelectedOrigem] = useState("Todos");
+
+  // Proteção de rota: redireciona não-admins para o dashboard
+  useEffect(() => {
+    if (!roleLoading && role !== "admin") {
+      router.push("/dashboard");
+    }
+  }, [role, roleLoading, router]);
 
   // Filtro de data aplicado primeiro para financeiro
   const { filteredData: dateFilteredFinanceiro } = useDateFilter(
@@ -138,6 +150,20 @@ const Financeiro = () => {
       currency: "BRL",
     }).format(value);
   };
+
+  // Mostra loading enquanto verifica o role
+  if (roleLoading) {
+    return (
+      <div className="financeiro">
+        <p>Verificando permissões...</p>
+      </div>
+    );
+  }
+
+  // Se não for admin, não renderiza nada (será redirecionado)
+  if (role !== "admin") {
+    return null;
+  }
 
   return (
     <div className="financeiro">

@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
-import supabase from "../config/supabaseClient";
+import { createClient } from "@/lib/supabase/client";
 import {
   QuartoForm,
   ClienteForm,
@@ -50,6 +50,7 @@ const UpdateQuarto = () => {
 
     setIsPending(true);
 
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("quartos")
       .update({ numero, tipo, estado, ocupado })
@@ -70,6 +71,7 @@ const UpdateQuarto = () => {
 
   useEffect(() => {
     const fetchQuarto = async () => {
+      const supabase = createClient();
       const { data, error } = await supabase
         .from("quartos")
         .select()
@@ -137,6 +139,7 @@ const UpdateCliente = () => {
 
     setIsPending(true);
 
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("clientes")
       .update({
@@ -163,6 +166,7 @@ const UpdateCliente = () => {
 
   useEffect(() => {
     const fetchCliente = async () => {
+      const supabase = createClient();
       const { data, error } = await supabase
         .from("clientes")
         .select()
@@ -260,6 +264,7 @@ const UpdateReserva = () => {
 
     setIsPending(true);
 
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("reservas")
       .update({
@@ -291,6 +296,7 @@ const UpdateReserva = () => {
 
   useEffect(() => {
     const fetchReserva = async () => {
+      const supabase = createClient();
       const { data, error } = await supabase
         .from("reservas")
         .select()
@@ -377,6 +383,7 @@ const UpdateFinanceiro = () => {
 
     setIsPending(true);
 
+    const supabase = createClient();
     const { data, error } = await supabase
       .from("financeiro")
       .update({ valor, tipo_transacao, metodo, data_transacao, origem })
@@ -397,6 +404,7 @@ const UpdateFinanceiro = () => {
 
   useEffect(() => {
     const fetchFinanceiro = async () => {
+      const supabase = createClient();
       const { data, error } = await supabase
         .from("financeiro")
         .select()
