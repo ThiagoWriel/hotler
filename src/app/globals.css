@@ -2105,3 +2105,111 @@ form button[type="submit"]:disabled {
 form button[type="submit"] [data-slot="spinner"] {
   color: var(--primary-foreground) !important;
 }
+
+/* ========================================
+   25. DASHBOARD TABS - Pagination Component
+   ======================================== */
+.dashboard-tabs {
+  margin-top: 24px;
+  background: var(--card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.dashboard-tabs-header {
+  display: flex;
+  justify-content: center;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, var(--card) 0%, var(--accent) 100%);
+  border-bottom: 1px solid var(--border);
+}
+
+.dashboard-tabs-header nav[data-slot="pagination"] {
+  margin: 0;
+}
+
+.dashboard-tabs-content {
+  padding: 24px;
+}
+
+.dashboard-tab-panel {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.dashboard-tabs-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--foreground);
+  margin: 0 0 28px 0;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  letter-spacing: -0.3px;
+}
+
+.dashboard-tabs-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 8px;
+}
+
+.dashboard-tabs-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 40px 20px;
+  color: var(--muted-foreground);
+  font-size: 0.95rem;
+  background: var(--muted);
+  border-radius: var(--radius-md);
+}
+
+.dashboard-tabs-empty i {
+  font-size: 20px;
+}
+
+/* Pagination link styles within dashboard tabs */
+.dashboard-tabs-header a[data-slot="pagination-link"] {
+  transition: all 0.2s ease;
+}
+
+.dashboard-tabs-header a[data-slot="pagination-link"][data-active="true"] {
+  background: var(--primary);
+  color: var(--primary-foreground);
+  border-color: var(--primary);
+}
+
+.dashboard-tabs-header a[data-slot="pagination-link"]:hover:not([data-active="true"]) {
+  background: var(--accent);
+  color: var(--primary);
+}
+
+/* Disabled pagination buttons */
+.pagination-disabled {
+  opacity: 0.4;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+/* Custom pagination nav buttons */
+.pagination-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px !important;
+}
+
+.pagination-nav span {
+  font-size: 0.875rem;
+}
+
+.pagination-icon {
+  width: 16px;
+  height: 16px;
+}

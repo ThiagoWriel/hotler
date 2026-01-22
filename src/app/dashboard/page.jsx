@@ -1,7 +1,7 @@
 "use client";
 import useFetch from "../../hooks/useFetch";
-import { ReservasCard } from "../../components/Card";
 import { DashboardCard } from "../../components/Card";
+import { DashboardTabs } from "../../components/DashboardTabs";
 
 export default function Dashboard() {
   const {
@@ -141,19 +141,13 @@ export default function Dashboard() {
               }}
             />
           </div>
-          <br />
-          <hr />
-          <div className="reservas">
-            <div className="reservas-cards">
-              {reservas.map((reserva) => (
-                <ReservasCard
-                  key={reserva.id}
-                  reserva={reserva}
-                  onDelete={handleDeleteReserva}
-                />
-              ))}
-            </div>
-          </div>
+
+          <DashboardTabs
+            quartos={quartos}
+            reservas={reservas}
+            onDeleteQuarto={handleDeleteQuarto}
+            onDeleteReserva={handleDeleteReserva}
+          />
         </div>
       )}
     </div>
