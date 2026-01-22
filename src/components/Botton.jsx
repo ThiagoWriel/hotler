@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 const CreateButtonQuarto = () => {
   return (
     <Link href="/quartos/create">
-      <Button>Adicionar Quarto</Button>
+      <Button className="create-button">Adicionar Quarto</Button>
     </Link>
   );
 };
@@ -12,7 +12,7 @@ const CreateButtonQuarto = () => {
 const CreateButtonCliente = () => {
   return (
     <Link href="/clientes/create">
-      <Button>Adicionar Cliente</Button>
+      <Button className="create-button">Adicionar Cliente</Button>
     </Link>
   );
 };
@@ -20,7 +20,7 @@ const CreateButtonCliente = () => {
 const CreateButtonReserva = () => {
   return (
     <Link href="/reservas/create">
-      <Button>Adicionar Reserva</Button>
+      <Button className="create-button">Adicionar Reserva</Button>
     </Link>
   );
 };
@@ -28,7 +28,7 @@ const CreateButtonReserva = () => {
 const CreateButtonFinanceiro = () => {
   return (
     <Link href="/financeiro/create">
-      <Button>Adicionar Movimentação</Button>
+      <Button className="create-button">Adicionar Movimentação</Button>
     </Link>
   );
 };

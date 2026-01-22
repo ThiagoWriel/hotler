@@ -2,6 +2,10 @@
 import { useState, useEffect } from "react";
 import useFetch from "../../hooks/useFetch";
 import { DashboardCard } from "../../components/Card";
+import {
+  CreateButtonReserva,
+  CreateButtonCliente,
+} from "../../components/Botton";
 import { DashboardTabs } from "../../components/DashboardTabs";
 
 export default function Dashboard() {
@@ -110,6 +114,10 @@ export default function Dashboard() {
     <div className="dashboard">
       <div className="header-pages">
         <h2>Início</h2>
+        <div style={{ display: "flex", gap: "10px" }}>
+          <CreateButtonCliente />
+          <CreateButtonReserva />
+        </div>
       </div>
       <div className="loading">{isPending && <p>Carregando...</p>}</div>
       {fetchError && <p className="error">{fetchError}</p>}
