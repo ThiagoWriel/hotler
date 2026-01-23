@@ -108,20 +108,45 @@ const CalendarView = ({
     )}-${String(d.getDate()).padStart(2, "0")}`;
   };
 
-  // Encontra reserva para um quarto/dia específico
-  const getReservationForCell = (quarto, date) => {
+  // Encontra reservas para um quarto/dia específico
+  // Retorna objeto com reserva de checkout (terminando) e/ou checkin (começando)
+  const getReservationsForCell = (quarto, date) => {
     const dateStr = formatDateForComparison(date);
 
-    return reservas.find((reserva) => {
-      // Compara usando ID do quarto
-      if (reserva.quarto_id !== quarto.id) return false;
-      if (reserva.estado_reserva === "cancelada") return false;
+    let checkoutReserva = null; // Reserva que termina neste dia
+    let checkinReserva = null; // Reserva que começa neste dia
+    let midReserva = null; // Reserva que passa por este dia (não começa nem termina)
+
+    reservas.forEach((reserva) => {
+      if (reserva.quarto_id !== quarto.id) return;
+      if (reserva.estado_reserva === "cancelada") return;
 
       const checkinDate = formatDateForComparison(reserva.checkin);
       const checkoutDate = formatDateForComparison(reserva.checkout);
 
-      return dateStr >= checkinDate && dateStr <= checkoutDate;
+      if (dateStr === checkoutDate && dateStr !== checkinDate) {
+        // Dia de checkout (não é single-day)
+        checkoutReserva = reserva;
+      } else if (dateStr === checkinDate && dateStr !== checkoutDate) {
+        // Dia de checkin (não é single-day)
+        checkinReserva = reserva;
+      } else if (dateStr === checkinDate && dateStr === checkoutDate) {
+        // Reserva de um único dia
+        checkinReserva = reserva;
+      } else if (dateStr > checkinDate && dateStr < checkoutDate) {
+        // Dia no meio da reserva
+        midReserva = reserva;
+      }
     });
+
+    return { checkoutReserva, checkinReserva, midReserva };
+  };
+
+  // Mantém compatibilidade - retorna a primeira reserva encontrada
+  const getReservationForCell = (quarto, date) => {
+    const { checkoutReserva, checkinReserva, midReserva } =
+      getReservationsForCell(quarto, date);
+    return checkinReserva || midReserva || checkoutReserva || null;
   };
 
   // Verifica se é o primeiro dia da reserva (check-in)
@@ -272,39 +297,95 @@ const CalendarView = ({
                 <span className="room-type">{quarto.tipo}</span>
               </div>
               {days.map((day, dayIndex) => {
-                const reserva = getReservationForCell(quarto, day);
-                const isCheckin = reserva && isCheckinDay(reserva, day);
-                const isCheckout = reserva && isCheckoutDay(reserva, day);
+                const { checkoutReserva, checkinReserva, midReserva } =
+                  getReservationsForCell(quarto, day);
+
+                // Determina o que mostrar
+                const hasCheckout = !!checkoutReserva;
+                const hasCheckin = !!checkinReserva;
+                const hasMid = !!midReserva;
+
+                // Célula precisa ser dividida se tem checkout OU checkin (não meio)
+                const needsSplit = (hasCheckout || hasCheckin) && !hasMid;
+
+                // Classes base
+                let cellClasses = `calendar-cell ${isToday(day) ? "calendar-cell-today" : ""}`;
+
+                if (hasMid) {
+                  // Dia no meio da reserva - célula inteira reservada
+                  cellClasses += " calendar-cell-reserved";
+                } else if (needsSplit) {
+                  // Dia de checkout e/ou checkin - célula dividida
+                  cellClasses += " calendar-cell-split";
+                } else {
+                  // Dia disponível
+                  cellClasses += " calendar-cell-available";
+                }
+
+                // Título do tooltip
+                let titleText = "Disponível - Clique para reservar";
+                if (hasMid) {
+                  titleText = `${midReserva.clientes?.nome || "N/A"} - ${midReserva.pessoas} pessoa(s)`;
+                } else if (hasCheckout && hasCheckin) {
+                  titleText = `Checkout: ${checkoutReserva.clientes?.nome || "N/A"} | Checkin: ${checkinReserva.clientes?.nome || "N/A"}`;
+                } else if (hasCheckout) {
+                  titleText = `Checkout: ${checkoutReserva.clientes?.nome || "N/A"}`;
+                } else if (hasCheckin) {
+                  titleText = `Checkin: ${checkinReserva.clientes?.nome || "N/A"} - ${checkinReserva.pessoas} pessoa(s)`;
+                }
 
                 return (
                   <div
                     key={dayIndex}
-                    className={`calendar-cell 
-                      ${isToday(day) ? "calendar-cell-today" : ""} 
-                      ${
-                        reserva
-                          ? "calendar-cell-reserved"
-                          : "calendar-cell-available"
-                      }
-                      ${isCheckin ? "calendar-cell-checkin" : ""}
-                      ${isCheckout ? "calendar-cell-checkout" : ""}
-                    `}
-                    onClick={() => handleCellClick(quarto, day)}
-                    title={
-                      reserva
-                        ? `${reserva.clientes?.nome || "N/A"} - ${reserva.pessoas} pessoa(s)`
-                        : `Disponível - Clique para reservar`
-                    }
+                    className={cellClasses}
+                    onClick={() => !hasMid && handleCellClick(quarto, day)}
+                    title={titleText}
                   >
-                    {isCheckin && reserva && (
-                      <div className="calendar-reservation">
-                        <span className="reservation-name">
-                          {reserva.clientes?.nome || "N/A"}
-                        </span>
-                        <span className="reservation-guests">
-                          {reserva.pessoas}p
-                        </span>
-                      </div>
+                    {/* Dia no meio da reserva */}
+                    {hasMid && null}
+
+                    {/* Dia com checkout e/ou checkin - sempre dividido */}
+                    {needsSplit && (
+                      <>
+                        {/* Metade esquerda - Checkout (ou vazia) */}
+                        <div
+                          className={`calendar-cell-half calendar-cell-half-left ${hasCheckout ? "half-occupied" : "half-empty"}`}
+                          title={
+                            hasCheckout
+                              ? `Checkout: ${checkoutReserva.clientes?.nome || "N/A"}`
+                              : ""
+                          }
+                        >
+                          {hasCheckout && <span className="half-label">↑</span>}
+                        </div>
+
+                        {/* Metade direita - Checkin (ou vazia) */}
+                        <div
+                          className={`calendar-cell-half calendar-cell-half-right ${hasCheckin ? "half-occupied" : "half-empty"}`}
+                          title={
+                            hasCheckin
+                              ? `Checkin: ${checkinReserva.clientes?.nome || "N/A"}`
+                              : ""
+                          }
+                          onClick={(e) => {
+                            if (!hasCheckin) {
+                              e.stopPropagation();
+                              handleCellClick(quarto, day);
+                            }
+                          }}
+                        >
+                          {hasCheckin && (
+                            <div className="calendar-reservation">
+                              <span className="reservation-name">
+                                {checkinReserva.clientes?.nome || "N/A"}
+                              </span>
+                              <span className="reservation-guests">
+                                {checkinReserva.pessoas}p
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      </>
                     )}
                   </div>
                 );

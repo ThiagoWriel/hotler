@@ -213,7 +213,8 @@ h1, h2, h3 {
   margin-top: 40px;
 }
 
-.sidebar nav a {
+.sidebar nav a,
+.sidebar nav button {
   color: var(--muted-foreground);
   text-decoration: none;
   font-size: 1rem;
@@ -223,11 +224,19 @@ h1, h2, h3 {
   display: flex;
   align-items: center;
   gap: 12px;
+  gap: 12px;
   font-weight: 500;
+  background: transparent;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  text-align: left;
 }
 
 .sidebar nav a:hover,
-.sidebar nav a.active {
+.sidebar nav a.active,
+.sidebar nav button:hover,
+.sidebar nav button.active {
   background: var(--sidebar-accent);
   color: var(--sidebar-accent-foreground);
   transform: translateX(4px);
@@ -1806,6 +1815,67 @@ form button:hover {
 .calendar-reservation .reservation-guests {
   font-size: 0.65rem;
   color: rgba(255, 255, 255, 0.85);
+}
+
+/* Célula dividida - checkout à esquerda, checkin à direita */
+.calendar-cell-split {
+  display: flex;
+  padding: 0;
+  background: var(--card);
+  cursor: default;
+}
+
+.calendar-cell-half {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 4px;
+}
+
+/* Metade vazia - disponível para reservar */
+.calendar-cell-half.half-empty {
+  background: var(--card);
+  cursor: pointer;
+}
+
+.calendar-cell-half.half-empty:hover {
+  background: var(--muted);
+}
+
+/* Metade esquerda ocupada (checkout) */
+.calendar-cell-half-left.half-occupied {
+  background: var(--primary);
+  border-top-left-radius: var(--radius-sm);
+  border-bottom-left-radius: var(--radius-sm);
+  opacity: 0.7;
+}
+
+.calendar-cell-half-left .half-label {
+  color: var(--primary-foreground);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* Metade direita ocupada (checkin) */
+.calendar-cell-half-right.half-occupied {
+  background: var(--primary);
+  border-top-right-radius: var(--radius-sm);
+  border-bottom-right-radius: var(--radius-sm);
+}
+
+.calendar-cell-half-right .calendar-reservation {
+  align-items: flex-start;
+}
+
+.calendar-cell-half-right .reservation-name {
+  max-width: 35px;
+  font-size: 0.6rem;
+}
+
+.calendar-cell-half-right .reservation-guests {
+  font-size: 0.55rem;
 }
 
 /* Responsivo para calendário */

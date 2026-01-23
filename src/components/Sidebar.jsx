@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { signOut } from "../utils/actions";
 import useUserRole from "../hooks/useRole";
+import FeedbackDialog from "./FeedbackDialog";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -92,6 +93,7 @@ export default function Sidebar() {
               Financeiro
             </Link>
           )}
+          <FeedbackDialog />
         </nav>
       </div>
 

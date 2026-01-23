@@ -1,6 +1,7 @@
 import { createClient } from "../lib/supabase/server";
 import "./globals.css";
 import Sidebar from "../components/Sidebar";
+import { Toaster } from "@/components/ui/sonner";
 
 export const metadata = {
   title: "Hotler",
@@ -27,6 +28,7 @@ export default async function RootLayout({ children }) {
           <main className="main-content">
             <div className="page">{children}</div>
           </main>
+          <Toaster />
         </div>
       </body>
     </html>

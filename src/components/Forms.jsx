@@ -225,8 +225,9 @@ const ReservaForm = ({
         const resCheckin = new Date(reserva.checkin);
         const resCheckout = new Date(reserva.checkout);
 
-        // Overlap condition: (StartA <= EndB) and (EndA >= StartB)
-        return newCheckin <= resCheckout && newCheckout >= resCheckin;
+        // Overlap condition: permite checkout no mesmo dia do checkin de outra reserva
+        // (StartA < EndB) and (EndA > StartB)
+        return newCheckin < resCheckout && newCheckout > resCheckin;
       });
 
       return isAvailable;
