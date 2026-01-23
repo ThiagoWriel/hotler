@@ -82,7 +82,7 @@ const Financeiro = () => {
     "data_transacao",
   );
 
-  // Aplica filtro de origem
+  // Aplica filtro de origem [useOrigemFilter]
   const origemFilteredFinanceiro = useOrigemFilter(
     dateFilteredFinanceiro,
     selectedOrigem,
