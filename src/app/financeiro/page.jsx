@@ -74,7 +74,7 @@ const Financeiro = () => {
     }
   }, [role, roleLoading, router]);
 
-  // Filtro de data aplicado primeiro para financeiro
+  // Filtro de data aplicado primeiro para financeiro //
   const { filteredData: dateFilteredFinanceiro } = useDateFilter(
     financeiroData,
     startDate,
