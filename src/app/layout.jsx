@@ -2,6 +2,7 @@ import { createClient } from "../lib/supabase/server";
 import "./globals.css";
 import Sidebar from "../components/Sidebar";
 import { Toaster } from "@/components/ui/sonner";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata = {
   title: "Hotler",
@@ -30,6 +31,7 @@ export default async function RootLayout({ children }) {
           </main>
           <Toaster />
         </div>
+        <SpeedInsights />
       </body>
     </html>
   );
