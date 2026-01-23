@@ -120,7 +120,7 @@ export const ClientesList = ({ cliente, onDelete }) => {
   );
 };
 
-export const ReservasList = ({ reserva, onDelete, onCheckout }) => {
+export const ReservasList = ({ reserva, onDelete, onCheckout, onPagou }) => {
   const handleDelete = async () => {
     const supabase = createClient();
     const { data, error } = await supabase
@@ -167,6 +167,25 @@ export const ReservasList = ({ reserva, onDelete, onCheckout }) => {
     }
   };
 
+  const handlePagou = async () => {
+    const supabase = createClient();
+    // 1. Atualizar reserva para pagamento efetuado
+    const { error: pagamentoError } = await supabase
+      .from("reservas")
+      .update({ pagamento_realizado: "Sim" })
+      .eq("id", reserva.id);
+
+    if (pagamentoError) {
+      console.log("Erro ao atualizar pagamento:", pagamentoError);
+      return;
+    }
+
+    // 2. Callback para atualizar UI
+    if (onPagou) {
+      onPagou(reserva.id, reserva.quarto_id);
+    }
+  };
+
   return (
     <div className="reservas-list-item">
       <div className="list-info">
@@ -196,6 +215,11 @@ export const ReservasList = ({ reserva, onDelete, onCheckout }) => {
           <i className="material-icons">info</i>
           <span>{capitalize(reserva.estado_reserva)}</span>
         </div>
+        <div className="list-data-item">
+          <i className="material-icons">credit_card</i>
+          <span>{capitalize(reserva.pagamento_realizado)}</span>
+          <br />
+        </div>
       </div>
 
       <div className="list-actions">
@@ -223,6 +247,16 @@ export const ReservasList = ({ reserva, onDelete, onCheckout }) => {
             </AlertDialogContent>
           </AlertDialog>
         )}
+        {onPagou && reserva.pagamento_realizado === "Não" && (
+          <i
+            className="material-icons"
+            title="Pagamento rápido"
+            onClick={handlePagou}
+          >
+            credit_card
+          </i>
+        )}
+
         <Link href={"/update-reserva/" + reserva.id}>
           <i className="material-icons">edit</i>
         </Link>

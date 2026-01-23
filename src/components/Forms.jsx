@@ -233,7 +233,9 @@ const ReservaForm = ({
     });
   };
 
-  const filteredQuartos = getFilteredQuartos();
+  const filteredQuartos = [...getFilteredQuartos()].sort(
+    (a, b) => Number(a.numero) - Number(b.numero),
+  );
 
   return (
     <form onSubmit={onSubmit}>
@@ -303,6 +305,7 @@ const ReservaForm = ({
         </option>
         <option value="Confirmada">Confirmada</option>
         <option value="Cancelada">Cancelada</option>
+        <option value="Finalizada">Finalizada</option>
         <option value="Pendente">Pendente</option>
       </select>
 

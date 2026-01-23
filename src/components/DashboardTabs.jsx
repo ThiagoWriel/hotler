@@ -14,6 +14,7 @@ export const DashboardTabs = ({
   reservas,
   onDeleteQuarto,
   onDeleteReserva,
+  onPagou,
   onCheckout,
   onCleanRoom,
 }) => {
@@ -30,7 +31,7 @@ export const DashboardTabs = ({
 
   // Filtrar quartos sujos
   const quartosSujos = quartos
-    ? quartos.filter((q) => q.estado === "sujo")
+    ? quartos.filter((q) => q.estado === "sujo" || q.estado === "Sujo")
     : [];
 
   // Filtrar reservas ativas (confirmadas)
@@ -254,6 +255,7 @@ export const DashboardTabs = ({
                     key={reserva.id}
                     reserva={reserva}
                     onDelete={onDeleteReserva}
+                    onPagou={onPagou}
                   />
                 ))}
               </div>

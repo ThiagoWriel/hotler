@@ -13,6 +13,13 @@ import useSearch from "../../hooks/useSearch";
 import useDateFilter from "../../hooks/useDateFilter";
 import useUserRole from "../../hooks/useRole";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 // Função para obter primeiro e último dia do mês atual
 const getDefaultDateRange = () => {
@@ -242,24 +249,28 @@ const Financeiro = () => {
           <div className="controls-row">
             <div className="order-by">
               <p>Filtrar por origem: </p>
-              <select
-                value={selectedOrigem}
-                onChange={(e) => setSelectedOrigem(e.target.value)}
-              >
-                <option value="Todos">Todos</option>
-                <option value="Reserva">Reserva</option>
-                <option value="Funcionários">Funcionários</option>
-                <option value="Café da manhã">Café da manhã</option>
-                <option value="Energia">Energia</option>
-                <option value="Água">Água</option>
-                <option value="Reparos Diversos">Reparos Diversos</option>
-                <option value="Limpeza">Limpeza</option>
-                <option value="Produtos">Produtos</option>
-                <option value="Marketing">Marketing</option>
-                <option value="Impostos">Impostos</option>
-                <option value="Internet">Internet</option>
-                <option value="Outros">Outros</option>
-              </select>
+              <Select value={selectedOrigem} onValueChange={setSelectedOrigem}>
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Selecione a origem" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="Todos">Todos</SelectItem>
+                  <SelectItem value="Reserva">Reserva</SelectItem>
+                  <SelectItem value="Funcionários">Funcionários</SelectItem>
+                  <SelectItem value="Café da manhã">Café da manhã</SelectItem>
+                  <SelectItem value="Energia">Energia</SelectItem>
+                  <SelectItem value="Água">Água</SelectItem>
+                  <SelectItem value="Reparos Diversos">
+                    Reparos Diversos
+                  </SelectItem>
+                  <SelectItem value="Limpeza">Limpeza</SelectItem>
+                  <SelectItem value="Produtos">Produtos</SelectItem>
+                  <SelectItem value="Marketing">Marketing</SelectItem>
+                  <SelectItem value="Impostos">Impostos</SelectItem>
+                  <SelectItem value="Internet">Internet</SelectItem>
+                  <SelectItem value="Outros">Outros</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <ViewToggle viewMode={viewMode} setViewMode={setViewMode} />
           </div>

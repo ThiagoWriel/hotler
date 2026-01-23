@@ -249,10 +249,18 @@ const CriarReserva = () => {
       console.log(data);
 
       // Atualiza o quarto para ocupado
-      await supabase
-        .from("quartos")
-        .update({ ocupado: "sim" })
-        .eq("id", quarto_id);
+      const hoje = new Date().toISOString().split("T")[0];
+      if (hoje >= checkin && hoje <= checkout) {
+        await supabase
+          .from("quartos")
+          .update({ ocupado: "sim" })
+          .eq("id", quarto_id);
+      } else {
+        await supabase
+          .from("quartos")
+          .update({ ocupado: "nao" })
+          .eq("id", quarto_id);
+      }
 
       // Cria entrada financeira automaticamente
       await supabase.from("financeiro").insert({

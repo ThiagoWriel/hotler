@@ -97,18 +97,33 @@ export default function Dashboard() {
     : 0;
 
   const quartosSujos = quartos
-    ? quartos.filter((q) => q.estado === "sujo" && q.ocupado === "sim").length
+    ? quartos.filter((q) => q.estado === "sujo" || q.estado === "Sujo").length
+    : 0;
+
+  const quartosNaoOcupados = quartos
+    ? quartos.filter((q) => q.ocupado === "não" || q.ocupado === "Não").length
     : 0;
 
   const quartosOcupados = quartos
-    ? quartos.filter((q) => q.estado === "limpo" && q.ocupado === "sim").length
+    ? quartos.filter((q) => q.ocupado === "sim").length
+    : 0;
+
+  const reservasAtivas = reservas
+    ? reservas.filter((r) => r.estado_reserva === "Confirmada").length
     : 0;
 
   const totalQuartos = quartos ? quartos.length : 0;
   const ocupacao =
-    totalQuartos > 0
-      ? ((totalQuartos - quartosDisponiveis) / totalQuartos) * 100
-      : 0;
+    totalQuartos > 0 ? (quartosOcupados / totalQuartos) * 100 : 0;
+
+  // Handler para pagamento (atualiza estado local)
+  const handlePagou = (reservaId) => {
+    setReservas((prev) =>
+      prev.map((r) =>
+        r.id === reservaId ? { ...r, pagamento_realizado: "Sim" } : r,
+      ),
+    );
+  };
 
   return (
     <div className="dashboard">
@@ -162,7 +177,7 @@ export default function Dashboard() {
             <DashboardCard
               dashboard={{
                 title: "Reservas Ativas",
-                value: reservas.length,
+                value: reservasAtivas,
                 icon: "event_note",
               }}
             />
@@ -202,6 +217,7 @@ export default function Dashboard() {
             onDeleteReserva={handleReservaDelete}
             onCheckout={handleCheckout}
             onCleanRoom={handleCleanRoom}
+            onPagou={handlePagou}
           />
         </div>
       )}

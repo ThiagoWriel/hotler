@@ -6,8 +6,9 @@ const verificarReservaAtual = (quarto, reservas) => {
 
   return reservas.some((reserva) => {
     if (
-      reserva.quarto_reserva === quarto.numero &&
-      reserva.estado_reserva !== "cancelada"
+      reserva.quarto_id === quarto.id &&
+      reserva.estado_reserva !== "Cancelada" &&
+      reserva.estado_reserva !== "Finalizada"
     ) {
       const checkin = reserva.checkin;
       const checkout = reserva.checkout;
@@ -24,19 +25,8 @@ const calcularOcupado = (quarto, reservas) => {
 };
 
 // Calcula o estado (limpo/sujo) baseado no ocupado e nas reservas
-const calcularEstado = (quarto, reservas, ocupadoAtual) => {
+const calcularEstado = (quarto, reservas) => {
   const temReservaAtual = verificarReservaAtual(quarto, reservas);
-
-  // Se não tem reserva atual E está ocupado = sujo
-  if (!temReservaAtual && ocupadoAtual === "sim") {
-    return "sujo";
-  }
-
-  // Se está não ocupado = limpo
-  if (ocupadoAtual === "não") {
-    return "limpo";
-  }
-
   // Mantém o estado atual se tiver reserva ativa
   return quarto.estado;
 };
@@ -44,7 +34,7 @@ const calcularEstado = (quarto, reservas, ocupadoAtual) => {
 // Atualiza o status do quarto no banco
 export const atualizarStatusQuarto = async (quarto, reservas) => {
   const ocupadoNovo = calcularOcupado(quarto, reservas);
-  const estadoNovo = calcularEstado(quarto, reservas, ocupadoNovo);
+  const estadoNovo = calcularEstado(quarto, reservas);
 
   // Só atualiza se houver mudança
   if (quarto.ocupado !== ocupadoNovo || quarto.estado !== estadoNovo) {
@@ -72,7 +62,7 @@ export const atualizarStatusQuarto = async (quarto, reservas) => {
 // Processa o status de display para visualização (não salva no banco)
 export const processarStatusQuarto = (quarto, reservas) => {
   const ocupadoNovo = calcularOcupado(quarto, reservas);
-  const estadoNovo = calcularEstado(quarto, reservas, ocupadoNovo);
+  const estadoNovo = calcularEstado(quarto, reservas);
 
   return {
     ...quarto,

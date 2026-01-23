@@ -86,7 +86,21 @@ const CalendarView = ({
   };
 
   // Formata data para comparação
+  // Formata data para comparação
   const formatDateForComparison = (date) => {
+    // Se for string, tenta extrair a parte da data YYYY-MM-DD
+    if (typeof date === "string") {
+      // Se for formato YYYY-MM-DD, retorna direto (evita conversão para UTC e problema de timezone)
+      if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+        return date;
+      }
+      // Se for ISO string (ex: YYYY-MM-DDT...), pega a primeira parte
+      if (date.includes("T")) {
+        return date.split("T")[0];
+      }
+    }
+
+    // Para objetos Date (como os dias gerados no calendário) ou strings não tratadas acima
     const d = new Date(date);
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(
       2,
