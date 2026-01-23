@@ -10,8 +10,8 @@ const CriarQuarto = () => {
   const [values, setValues] = useState({
     numero: "",
     tipo: "",
-    estado: "",
-    ocupado: "",
+    estado: "Limpo",
+    ocupado: "Não",
   });
   const [formError, setFormError] = useState(null);
 
@@ -67,10 +67,10 @@ const CriarCliente = () => {
   const router = useRouter();
   const [values, setValues] = useState({
     nome: "",
-    cpf: "",
-    telefone: "",
-    nascimento: "",
-    obs: "",
+    cpf: "000.000.000-00",
+    telefone: "(00)00000-0000",
+    nascimento: "2000-01-01",
+    obs: "Sem observações",
   });
   const [formError, setFormError] = useState(null);
 
@@ -83,8 +83,8 @@ const CriarCliente = () => {
 
     const { nome, cpf, telefone, nascimento, obs } = values;
 
-    if (!nome || !cpf || !telefone || !nascimento || !obs) {
-      setFormError("Preencha todos os campos");
+    if (!nome) {
+      setFormError("Preencha pelo menos o nome");
       return;
     }
 
@@ -137,9 +137,9 @@ const CriarReserva = () => {
     checkin: "",
     checkout: "",
     pessoas: "",
-    estado_reserva: "",
+    estado_reserva: "Confirmada",
     preco: "",
-    tipo_pagamento: "",
+    tipo_pagamento: "Dinheiro",
     pagamento_realizado: "",
     obs: "",
   });
@@ -283,6 +283,7 @@ const CriarReserva = () => {
       <div className="header-pages">
         <h2>Criar Reserva</h2>
       </div>
+      <p className="text-center">Preencha o fomulário seguindo a ordem:</p>
       <ReservaForm
         values={values}
         onChange={handleChange}

@@ -72,6 +72,7 @@ const QuartoForm = ({
         </option>
         <option value="Solteiro">Solteiro</option>
         <option value="Casal">Casal</option>
+        <option value="Casal e Solteiro">Casal e Solteiro</option>
         <option value="Duplo">Duplo</option>
         <option value="Triplo">Triplo</option>
       </select>
@@ -427,6 +428,7 @@ const FinanceiroForm = ({
           Selecione
         </option>
         <option value="Reserva">Reserva</option>
+        <option value="Aluguel Piscina">Aluguel Piscina</option>
         <option value="Funcionários">Funcionários</option>
         <option value="Café da manhã">Café da manhã</option>
         <option value="Energia">Energia</option>
