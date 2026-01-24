@@ -36,7 +36,7 @@ const CriarQuarto = () => {
       .select();
 
     if (error) {
-      setFormError("Nao conseguiu criar o quarto");
+      setFormError("Não conseguiu criar o quarto");
       return;
     }
     if (data) {
