@@ -20,6 +20,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 
 // Função para obter primeiro e último dia do mês atual
 const getDefaultDateRange = () => {
@@ -58,7 +59,11 @@ const Financeiro = () => {
     fetchError,
     hotler: financeiroData,
     handleDelete,
+    setOrderBy,
+    orderBy,
   } = useFetch("financeiro");
+
+  const { hotler: reservasData } = useFetch("reservas");
 
   const defaultRange = getDefaultDateRange();
   const [searchTerm, setSearchTerm] = useState("");
@@ -135,11 +140,31 @@ const Financeiro = () => {
           </div>
 
           {/* Financial Summary Cards using new component */}
-          <FinanceiroCards financeiroData={dateFilteredFinanceiro} />
+          <FinanceiroCards
+            financeiroData={dateFilteredFinanceiro}
+            reservasData={reservasData}
+          />
 
           <hr />
           <br />
           <div className="controls-row">
+            <div className="order-by">
+              <p>Ordenar por: </p>
+              <Button
+                variant={orderBy === "valor" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setOrderBy("valor")}
+              >
+                Valor
+              </Button>
+              <Button
+                variant={orderBy === "tipo_transacao" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setOrderBy("tipo_transacao")}
+              >
+                Tipo
+              </Button>
+            </div>
             <div className="order-by">
               <p>Filtrar por origem: </p>
               <Select value={selectedOrigem} onValueChange={setSelectedOrigem}>

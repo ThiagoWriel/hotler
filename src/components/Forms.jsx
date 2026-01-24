@@ -1,5 +1,7 @@
 "use client";
 
+import { useState, useEffect } from "react";
+
 /**
  * Componentes de formulário reutilizáveis para Create e Update.
  *
@@ -205,6 +207,68 @@ const ReservaForm = ({
     obs,
   } = values;
 
+  // Estado para controlar o tipo de preço (total ou por diária)
+  const [tipoPreco, setTipoPreco] = useState("total");
+  const [valorDigitado, setValorDigitado] = useState("");
+
+  // Inicializar valorDigitado com o valor de preco no modo de edição
+  useEffect(() => {
+    if (isUpdate && preco && valorDigitado === "") {
+      setValorDigitado(String(preco));
+    }
+  }, [isUpdate, preco]);
+
+  // Função para calcular o número de diárias
+  const calcularDiarias = (dataCheckin, dataCheckout) => {
+    if (!dataCheckin || !dataCheckout) return 0;
+    const checkinDate = new Date(dataCheckin);
+    const checkoutDate = new Date(dataCheckout);
+    const diffTime = checkoutDate - checkinDate;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return diffDays > 0 ? diffDays : 0;
+  };
+
+  // Função para calcular o preço total quando o tipo é por diária
+  const calcularPrecoTotal = (valorDiaria, dataCheckin, dataCheckout) => {
+    const diarias = calcularDiarias(dataCheckin, dataCheckout);
+    if (diarias === 0 || !valorDiaria) return valorDiaria;
+    return Number(valorDiaria) * diarias;
+  };
+
+  // Handler para mudança no valor digitado
+  const handleValorChange = (e) => {
+    const valor = e.target.value;
+    setValorDigitado(valor);
+
+    if (tipoPreco === "diaria" && checkin && checkout) {
+      const precoTotal = calcularPrecoTotal(valor, checkin, checkout);
+      onChange("preco", precoTotal);
+    } else {
+      onChange("preco", valor);
+    }
+  };
+
+  // Handler para mudança no tipo de preço
+  const handleTipoPrecoChange = (e) => {
+    const novoTipo = e.target.value;
+    setTipoPreco(novoTipo);
+
+    if (novoTipo === "diaria" && valorDigitado && checkin && checkout) {
+      const precoTotal = calcularPrecoTotal(valorDigitado, checkin, checkout);
+      onChange("preco", precoTotal);
+    } else if (novoTipo === "total") {
+      onChange("preco", valorDigitado);
+    }
+  };
+
+  // Recalcular preço quando as datas mudam (se tipo for por diária)
+  useEffect(() => {
+    if (tipoPreco === "diaria" && valorDigitado && checkin && checkout) {
+      const precoTotal = calcularPrecoTotal(valorDigitado, checkin, checkout);
+      onChange("preco", precoTotal);
+    }
+  }, [checkin, checkout]);
+
   // Filtra quartos disponíveis no Create (considera reservas existentes)
   const getFilteredQuartos = () => {
     if (isUpdate) {
@@ -238,6 +302,9 @@ const ReservaForm = ({
   const filteredQuartos = [...getFilteredQuartos()].sort(
     (a, b) => Number(a.numero) - Number(b.numero),
   );
+
+  // Calcula o número de diárias para exibição
+  const numDiarias = calcularDiarias(checkin, checkout);
 
   return (
     <form onSubmit={onSubmit}>
@@ -311,13 +378,40 @@ const ReservaForm = ({
         <option value="Pendente">Pendente</option>
       </select>
 
-      <label htmlFor="preco">Preço</label>
-      <input
-        type="number"
-        id="preco"
-        value={preco}
-        onChange={(e) => onChange("preco", e.target.value)}
-      />
+      <label htmlFor="preco">
+        Preço{" "}
+        {tipoPreco === "diaria" &&
+          numDiarias > 0 &&
+          `(${numDiarias} diária${numDiarias > 1 ? "s" : ""})`}
+      </label>
+      <div className="preco-input-wrapper">
+        <input
+          type="number"
+          id="preco"
+          value={valorDigitado}
+          onChange={handleValorChange}
+          placeholder={
+            tipoPreco === "diaria" ? "Valor por diária" : "Valor total"
+          }
+        />
+        <select
+          id="tipo_preco"
+          className="preco-tipo-select"
+          value={tipoPreco}
+          onChange={handleTipoPrecoChange}
+        >
+          <option value="total">Total</option>
+          <option value="diaria">Por Diária</option>
+        </select>
+      </div>
+      {tipoPreco === "diaria" && valorDigitado && numDiarias > 0 && (
+        <small className="preco-total-info">
+          Total: R${" "}
+          {calcularPrecoTotal(valorDigitado, checkin, checkout).toFixed(2)}
+        </small>
+      )}
+
+      <br />
 
       <label htmlFor="tipo_pagamento">Tipo de Pagamento</label>
       <select
@@ -374,6 +468,8 @@ const FinanceiroForm = ({
   isUpdate = false,
   isPending = false,
   formError,
+  recorrencia = null,
+  onRecorrenciaChange = null,
 }) => {
   const { valor, tipo_transacao, metodo, data_transacao, origem } = values;
 
@@ -441,6 +537,85 @@ const FinanceiroForm = ({
         <option value="Internet">Internet</option>
         <option value="Outros">Outros</option>
       </select>
+
+      {/* Seção de Recorrência - apenas no Create */}
+      {!isUpdate && recorrencia && onRecorrenciaChange && (
+        <>
+          <div className="recorrencia-switch">
+            <label htmlFor="recorrencia_ativa">Pagamento Recorrente</label>
+            <input
+              type="checkbox"
+              id="recorrencia_ativa"
+              checked={recorrencia.ativa}
+              onChange={(e) => onRecorrenciaChange("ativa", e.target.checked)}
+            />
+          </div>
+
+          {recorrencia.ativa && (
+            <div className="recorrencia-campos">
+              <label>Repetir a cada</label>
+              <div className="recorrencia-intervalo">
+                <input
+                  type="number"
+                  id="recorrencia_intervalo"
+                  value={recorrencia.intervalo}
+                  min="1"
+                  max="365"
+                  onChange={(e) =>
+                    onRecorrenciaChange("intervalo", e.target.value)
+                  }
+                />
+                <select
+                  id="recorrencia_periodo"
+                  value={recorrencia.periodo}
+                  onChange={(e) =>
+                    onRecorrenciaChange("periodo", e.target.value)
+                  }
+                >
+                  <option value="dias">Dias</option>
+                  <option value="semanas">Semanas</option>
+                  <option value="meses">Meses</option>
+                  <option value="anos">Anos</option>
+                </select>
+              </div>
+
+              <label htmlFor="recorrencia_termino">Término</label>
+              <select
+                id="recorrencia_termino"
+                value={recorrencia.termino}
+                onChange={(e) => onRecorrenciaChange("termino", e.target.value)}
+              >
+                <option value="nunca">Nunca termina</option>
+                <option value="repetir">Repetir até X vezes</option>
+              </select>
+
+              {recorrencia.termino === "repetir" && (
+                <>
+                  <label htmlFor="recorrencia_vezes">
+                    Quantidade de repetições
+                  </label>
+                  <input
+                    type="number"
+                    id="recorrencia_vezes"
+                    value={recorrencia.vezes}
+                    min="2"
+                    max="36"
+                    onChange={(e) =>
+                      onRecorrenciaChange("vezes", e.target.value)
+                    }
+                  />
+                </>
+              )}
+
+              {recorrencia.termino === "nunca" && (
+                <small className="recorrencia-aviso">
+                  ⚠️ Serão criadas 12 transações (limite padrão)
+                </small>
+              )}
+            </div>
+          )}
+        </>
+      )}
 
       {isPending ? (
         <button disabled>Carregando...</button>

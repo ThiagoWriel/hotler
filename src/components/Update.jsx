@@ -132,8 +132,8 @@ const UpdateCliente = () => {
 
     const { nome, cpf, telefone, nascimento, obs } = values;
 
-    if (!nome || !cpf || !telefone || !nascimento || !obs) {
-      setFormError("Preencha todos os campos");
+    if (!nome) {
+      setFormError("Preencha o nome do cliente");
       return;
     }
 
@@ -144,10 +144,10 @@ const UpdateCliente = () => {
       .from("clientes")
       .update({
         nome,
-        cpf: cpf.replace(/\D/g, ""),
-        telefone: telefone.replace(/\D/g, ""),
-        nascimento,
-        obs,
+        cpf: cpf ? cpf.replace(/\D/g, "") : null,
+        telefone: telefone ? telefone.replace(/\D/g, "") : null,
+        nascimento: nascimento || null,
+        obs: obs || null,
       })
       .eq("id", id)
       .select();

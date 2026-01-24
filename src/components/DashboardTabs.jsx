@@ -26,7 +26,10 @@ export const DashboardTabs = ({
 
   // Filtrar quartos disponíveis (limpos e não ocupados)
   const quartosDisponiveis = quartos
-    ? quartos.filter((q) => q.estado === "limpo" && q.ocupado === "não")
+    ? quartos.filter(
+        (q) =>
+          (q.estado === "limpo" || q.estado === "Limpo") && q.ocupado === "não",
+      )
     : [];
 
   // Filtrar quartos sujos
@@ -39,9 +42,18 @@ export const DashboardTabs = ({
     ? reservas.filter((r) => r.estado_reserva === "Confirmada")
     : [];
 
-  // Filtrar pagamentos a receber (pagamento não realizado)
+  // Função para ordenar por checkout (mais próximo primeiro)
+  const ordenarPorCheckout = (lista) => {
+    return [...lista].sort(
+      (a, b) => new Date(a.checkout) - new Date(b.checkout),
+    );
+  };
+
+  // Filtrar pagamentos a receber (pagamento não realizado) e ordenar por checkout
   const pagamentosAReceber = reservas
-    ? reservas.filter((r) => r.pagamento_realizado === "Não")
+    ? ordenarPorCheckout(
+        reservas.filter((r) => r.pagamento_realizado === "Não"),
+      )
     : [];
 
   // Filtrar check-ins de hoje

@@ -141,7 +141,7 @@ const CriarReserva = () => {
     preco: "",
     tipo_pagamento: "Dinheiro",
     pagamento_realizado: "",
-    obs: "",
+    obs: "-",
   });
   const [formError, setFormError] = useState(null);
 
@@ -308,9 +308,46 @@ const CriarFinanceiro = () => {
     origem: "",
   });
   const [formError, setFormError] = useState(null);
+  const [isPending, setIsPending] = useState(false);
+
+  // Estado de recorrência
+  const [recorrencia, setRecorrencia] = useState({
+    ativa: false,
+    intervalo: 1,
+    periodo: "meses",
+    termino: "repetir",
+    vezes: 12,
+  });
 
   const handleChange = (key, value) => {
     setValues((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const handleRecorrenciaChange = (key, value) => {
+    setRecorrencia((prev) => ({ ...prev, [key]: value }));
+  };
+
+  // Função para calcular a próxima data
+  const calcularProximaData = (dataBase, intervalo, periodo, multiplicador) => {
+    const data = new Date(dataBase);
+    const intervaloTotal = intervalo * multiplicador;
+
+    switch (periodo) {
+      case "dias":
+        data.setDate(data.getDate() + intervaloTotal);
+        break;
+      case "semanas":
+        data.setDate(data.getDate() + intervaloTotal * 7);
+        break;
+      case "meses":
+        data.setMonth(data.getMonth() + intervaloTotal);
+        break;
+      case "anos":
+        data.setFullYear(data.getFullYear() + intervaloTotal);
+        break;
+    }
+
+    return data.toISOString().split("T")[0];
   };
 
   const handleSubmit = async (e) => {
@@ -323,22 +360,67 @@ const CriarFinanceiro = () => {
       return;
     }
 
+    setIsPending(true);
     const supabase = createClient();
-    const { data, error } = await supabase
-      .from("financeiro")
-      .insert({ valor, tipo_transacao, metodo, data_transacao, origem })
-      .select();
 
-    if (error) {
-      console.log(error);
-      setFormError("Não conseguiu criar a transição");
-      return;
-    }
-    if (data) {
-      console.log(data);
-      setFormError(null);
-      router.push("/financeiro");
-      router.refresh();
+    // Se recorrência ativa, cria múltiplas transações
+    if (recorrencia.ativa) {
+      const quantidade =
+        recorrencia.termino === "nunca" ? 12 : Number(recorrencia.vezes);
+      const transacoes = [];
+
+      for (let i = 0; i < quantidade; i++) {
+        const novaData = calcularProximaData(
+          data_transacao,
+          Number(recorrencia.intervalo),
+          recorrencia.periodo,
+          i,
+        );
+        transacoes.push({
+          valor,
+          tipo_transacao,
+          metodo,
+          data_transacao: novaData,
+          origem,
+        });
+      }
+
+      const { data, error } = await supabase
+        .from("financeiro")
+        .insert(transacoes)
+        .select();
+
+      if (error) {
+        console.log(error);
+        setFormError("Não conseguiu criar as transações");
+        setIsPending(false);
+        return;
+      }
+      if (data) {
+        console.log(`${data.length} transações criadas`);
+        setFormError(null);
+        router.push("/financeiro");
+        router.refresh();
+      }
+    } else {
+      // Criação única (comportamento original)
+      const { data, error } = await supabase
+        .from("financeiro")
+        .insert({ valor, tipo_transacao, metodo, data_transacao, origem })
+        .select();
+
+      if (error) {
+        console.log(error);
+        setFormError("Não conseguiu criar a transição");
+        setIsPending(false);
+        return;
+      }
+      if (data) {
+        console.log(data);
+        setFormError(null);
+        router.push("/financeiro");
+        router.refresh();
+      }
     }
   };
 
@@ -352,7 +434,10 @@ const CriarFinanceiro = () => {
         onChange={handleChange}
         onSubmit={handleSubmit}
         isUpdate={false}
+        isPending={isPending}
         formError={formError}
+        recorrencia={recorrencia}
+        onRecorrenciaChange={handleRecorrenciaChange}
       />
     </div>
   );

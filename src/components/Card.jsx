@@ -43,7 +43,9 @@ export const QuartosCard = ({ quarto, onDelete, reservas }) => {
           <i className="material-icons">cleaning_services</i>
           <Badge
             variant={
-              quarto.estado === ("limpo" || "Limpo") ? "success" : "destructive"
+              quarto.estado === "Limpo" || quarto.estado === "limpo"
+                ? "success"
+                : "destructive"
             }
           >
             {capitalize(quarto.estado)}

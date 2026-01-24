@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { DashboardCard } from "./Card";
 
-export default function FinanceiroCards({ financeiroData }) {
+export default function FinanceiroCards({ financeiroData, reservasData }) {
   // Calculate financial metrics using filtered data
   const financialMetrics = useMemo(() => {
     if (!financeiroData) {
@@ -10,12 +10,13 @@ export default function FinanceiroCards({ financeiroData }) {
         totalSaidas: 0,
         saldoLiquido: 0,
         receitaReservas: 0,
-        mediaTransacao: 0,
-        totalTransacoes: 0,
+        dinheiroAReceber: 0,
+        dinheiroRecebido: 0,
       };
     }
 
     const financeiro = financeiroData || [];
+    const reservas = reservasData || [];
 
     // Total de entradas (receitas)
     const totalEntradas = financeiro
@@ -38,25 +39,23 @@ export default function FinanceiroCards({ financeiroData }) {
     // Saldo líquido total
     const saldoLiquido = totalEntradas - totalSaidas;
 
-    // Total de transações
-    const totalTransacoes = financeiro.length;
+    // Dinheiro a receber (reservas com pagamento_realizado === "Não")
+    const dinheiroAReceber = reservas
+      .filter((reserva) => reserva.pagamento_realizado === "Não")
+      .reduce((acc, reserva) => acc + (Number(reserva.preco) || 0), 0);
 
-    // Média por transação de entrada
-    const transacoesEntrada = financeiro.filter(
-      (item) => item.tipo_transacao === "Entrada",
-    ).length;
-    const mediaTransacao =
-      transacoesEntrada > 0 ? totalEntradas / transacoesEntrada : 0;
+    // Dinheiro recebido (faturamento total - dinheiro a receber)
+    const dinheiroRecebido = totalEntradas - dinheiroAReceber;
 
     return {
       totalEntradas,
       totalSaidas,
       saldoLiquido,
       receitaReservas,
-      mediaTransacao,
-      totalTransacoes,
+      dinheiroAReceber,
+      dinheiroRecebido,
     };
-  }, [financeiroData]);
+  }, [financeiroData, reservasData]);
 
   // Format currency
   const formatCurrency = (value) => {
@@ -98,16 +97,16 @@ export default function FinanceiroCards({ financeiroData }) {
       />
       <DashboardCard
         dashboard={{
-          title: "Média por Transação",
-          value: formatCurrency(financialMetrics.mediaTransacao),
-          icon: "analytics",
+          title: "Dinheiro a Receber",
+          value: formatCurrency(financialMetrics.dinheiroAReceber),
+          icon: "pending_actions",
         }}
       />
       <DashboardCard
         dashboard={{
-          title: "Total de Transações",
-          value: financialMetrics.totalTransacoes,
-          icon: "receipt_long",
+          title: "Dinheiro Recebido",
+          value: formatCurrency(financialMetrics.dinheiroRecebido),
+          icon: "payments",
         }}
       />
     </div>

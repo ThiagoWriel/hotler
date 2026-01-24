@@ -966,13 +966,102 @@ form button:hover {
   color: var(--text-main);
 }
 
+/* Preco Input com Selector de Tipo */
+.preco-input-wrapper {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.preco-input-wrapper input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.preco-tipo-select {
+  width: auto !important;
+  min-width: 120px;
+  margin-bottom: 0 !important;
+}
+
+.preco-total-info {
+  color: var(--muted-foreground);
+  margin-top: 4px;
+  margin-bottom: 3px;
+  display: block;
+  font-size: 0.85rem;
+}
+
+/* Recorrência - Formulário Financeiro */
+.recorrencia-switch {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.recorrencia-switch label {
+  margin-bottom: 0;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.recorrencia-switch input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: var(--primary);
+  margin-top: 20px;
+}
+
+.recorrencia-campos {
+  padding: 16px;
+  background: var(--input-background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  margin-bottom: 24px;
+}
+
+.recorrencia-campos label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: var(--foreground);
+  font-size: 0.95rem;
+}
+
+.recorrencia-intervalo {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.recorrencia-intervalo input {
+  width: 80px;
+  margin-bottom: 0;
+}
+
+.recorrencia-intervalo select {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.recorrencia-aviso {
+  display: block;
+  color: var(--muted-foreground);
+  font-size: 0.85rem;
+  margin-top: -16px;
+  margin-bottom: 24px;
+}
+
 /* ========================================
    12. SEARCH BAR
    ======================================== */
 .search-bar {
   position: relative;
-  max-width: 400px;
-  margin: 0 auto 30px;
+  max-width: 200px;
+  margin: 0 auto 10px;
 }
 
 .search-input {
