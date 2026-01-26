@@ -6,16 +6,18 @@ import { useState } from "react";
 import { ReservasCard } from "../../components/Card";
 import { ReservasList } from "../../components/List";
 import CalendarView from "../../components/CalendarView";
-import { CreateButtonReserva } from "../../components/Botton";
+import { CreateButtonReserva } from "../../components/ActionButtons";
 import Search from "../../components/Search";
 import DateFilter from "../../components/DateFilter";
 import ViewToggle from "../../components/ViewToggle";
+import { Button } from "@/components/ui/button";
 import useFetch from "../../hooks/useFetch";
 import useSearch from "../../hooks/useSearch";
 import useDateFilter from "../../hooks/useDateFilter";
 
 const Reservas = () => {
-  const { isPending, fetchError, hotler, handleDelete } = useFetch("reservas");
+  const { isPending, fetchError, hotler, handleDelete, orderBy, setOrderBy } =
+    useFetch("reservas");
   const { hotler: quartosData } = useFetch("quartos");
 
   const [searchTerm, setSearchTerm] = useState("");
@@ -28,7 +30,7 @@ const Reservas = () => {
     hotler,
     startDate,
     endDate,
-    "checkin"
+    "checkin",
   );
   const { filteredData } = useSearch(dateFiltered, searchTerm);
 
@@ -49,6 +51,27 @@ const Reservas = () => {
           <div className="controls-row">
             <div className="order-by">
               <p>Ordenar por: </p>
+              <Button
+                variant={orderBy === "estado_reserva" ? "default" : "outline"}
+                onClick={() => setOrderBy("estado_reserva")}
+                size="sm"
+              >
+                Estado
+              </Button>
+              <Button
+                variant={orderBy === "checkin" ? "default" : "outline"}
+                onClick={() => setOrderBy("checkin")}
+                size="sm"
+              >
+                Check-in
+              </Button>
+              <Button
+                variant={orderBy === "checkout" ? "default" : "outline"}
+                onClick={() => setOrderBy("checkout")}
+                size="sm"
+              >
+                Check-out
+              </Button>
             </div>
             <ViewToggle
               viewMode={viewMode}

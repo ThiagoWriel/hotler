@@ -4,7 +4,7 @@ import { useState } from "react";
 //components
 import { ClientesCard } from "../../components/Card";
 import { ClientesList } from "../../components/List";
-import { CreateButtonCliente } from "../../components/Botton";
+import { CreateButtonCliente } from "../../components/ActionButtons";
 import Search from "../../components/Search";
 import ViewToggle from "../../components/ViewToggle";
 import useFetch from "../../hooks/useFetch";

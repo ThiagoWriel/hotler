@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 //components
 import { QuartosCard } from "../../components/Card";
 import { QuartosList } from "../../components/List";
-import { CreateButtonQuarto } from "../../components/Botton";
+import { CreateButtonQuarto } from "../../components/ActionButtons";
 import Search from "../../components/Search";
 import ViewToggle from "../../components/ViewToggle";
 import useFetch from "../../hooks/useFetch";

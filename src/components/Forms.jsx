@@ -232,32 +232,32 @@ const ReservaForm = ({
   const calcularPrecoTotal = (valorDiaria, dataCheckin, dataCheckout) => {
     const diarias = calcularDiarias(dataCheckin, dataCheckout);
     if (diarias === 0 || !valorDiaria) return valorDiaria;
-    return Number(valorDiaria) * diarias;
+    return Math.abs(Number(valorDiaria)) * diarias;
   };
 
   // Handler para mudança no valor digitado
   const handleValorChange = (e) => {
-    const valor = e.target.value;
+    const valor = Math.abs(e.target.value);
     setValorDigitado(valor);
 
     if (tipoPreco === "diaria" && checkin && checkout) {
       const precoTotal = calcularPrecoTotal(valor, checkin, checkout);
-      onChange("preco", precoTotal);
+      onChange("preco", Math.abs(precoTotal));
     } else {
-      onChange("preco", valor);
+      onChange("preco", Math.abs(valor));
     }
   };
 
   // Handler para mudança no tipo de preço
   const handleTipoPrecoChange = (e) => {
-    const novoTipo = e.target.value;
+    const novoTipo = Math.abs(e.target.value);
     setTipoPreco(novoTipo);
 
     if (novoTipo === "diaria" && valorDigitado && checkin && checkout) {
       const precoTotal = calcularPrecoTotal(valorDigitado, checkin, checkout);
-      onChange("preco", precoTotal);
+      onChange("preco", Math.abs(precoTotal));
     } else if (novoTipo === "total") {
-      onChange("preco", valorDigitado);
+      onChange("preco", Math.abs(valorDigitado));
     }
   };
 
@@ -265,7 +265,7 @@ const ReservaForm = ({
   useEffect(() => {
     if (tipoPreco === "diaria" && valorDigitado && checkin && checkout) {
       const precoTotal = calcularPrecoTotal(valorDigitado, checkin, checkout);
-      onChange("preco", precoTotal);
+      onChange("preco", Math.abs(precoTotal));
     }
   }, [checkin, checkout]);
 
@@ -360,7 +360,7 @@ const ReservaForm = ({
         type="number"
         id="pessoas"
         value={pessoas}
-        onChange={(e) => onChange("pessoas", e.target.value)}
+        onChange={(e) => onChange("pessoas", Math.abs(e.target.value))}
       />
 
       <label htmlFor="estado_reserva">Estado da Reserva</label>
@@ -480,7 +480,7 @@ const FinanceiroForm = ({
         type="number"
         id="valor"
         value={valor}
-        onChange={(e) => onChange("valor", e.target.value)}
+        onChange={(e) => onChange("valor", Math.abs(e.target.value))}
       />
       <label htmlFor="tipo_transacao">Tipo de Transação</label>
       <select

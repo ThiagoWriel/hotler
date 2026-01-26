@@ -13,7 +13,10 @@ export function DashboardCards({ quartos, reservas }) {
     : 0;
 
   const quartosDisponiveis = quartos
-    ? quartos.filter((q) => q.estado === "limpo" && q.ocupado === "não").length
+    ? quartos.filter(
+        (q) =>
+          (q.estado === "limpo" || q.estado === "Limpo") && q.ocupado === "não",
+      ).length
     : 0;
 
   const quartosSujos = quartos

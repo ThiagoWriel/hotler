@@ -5,7 +5,7 @@ import { DashboardCards } from "../../components/DashboardCards";
 import {
   CreateButtonReserva,
   CreateButtonCliente,
-} from "../../components/Botton";
+} from "../../components/ActionButtons";
 import { DashboardTabs } from "../../components/DashboardTabs";
 
 export default function Dashboard() {
