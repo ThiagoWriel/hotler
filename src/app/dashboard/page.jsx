@@ -7,6 +7,7 @@ import {
   CreateButtonCliente,
 } from "../../components/ActionButtons";
 import { DashboardTabs } from "../../components/DashboardTabs";
+import { NotificationsButton } from "../../components/NotificationsButton";
 
 export default function Dashboard() {
   const {
@@ -95,6 +96,10 @@ export default function Dashboard() {
       <div className="header-pages">
         <h2>Início</h2>
         <div style={{ display: "flex", gap: "10px" }}>
+          <NotificationsButton
+            reservas={reservas}
+            onCheckout={handleCheckout}
+          />
           <CreateButtonCliente />
           <CreateButtonReserva />
         </div>

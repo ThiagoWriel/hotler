@@ -54,7 +54,7 @@ export const QuartosCard = ({ quarto, onDelete, reservas }) => {
         <div className="card-row">
           <i className="material-icons">person</i>
           <Badge variant={quarto.ocupado === "sim" ? "default" : "secondary"}>
-            {capitalize(quarto.ocupado)}
+            {quarto.ocupado === "sim" ? "Ocupado" : "Não ocupado"}
           </Badge>
         </div>
       </CardContent>
