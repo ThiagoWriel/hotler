@@ -11,6 +11,16 @@ import {
   formatCPF,
   formatTelefone,
 } from "./Forms";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 const UpdateQuarto = () => {
   const { id } = useParams();
@@ -221,8 +231,13 @@ const UpdateReserva = () => {
     pagamento_realizado: "",
     obs: "",
   });
+  const [originalDates, setOriginalDates] = useState({
+    checkin: "",
+    checkout: "",
+  });
   const [formError, setFormError] = useState(null);
   const [isPending, setIsPending] = useState(false);
+  const [showDateAlert, setShowDateAlert] = useState(false);
 
   const [clientesList, setClientesList] = useState([]);
   const [quartosList, setQuartosList] = useState([]);
@@ -231,9 +246,16 @@ const UpdateReserva = () => {
     setValues((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Verifica se as datas foram alteradas
+  const datesChanged = () => {
+    return (
+      values.checkin !== originalDates.checkin ||
+      values.checkout !== originalDates.checkout
+    );
+  };
 
+  // Função que realmente faz o submit
+  const doSubmit = async () => {
     const {
       quarto_id,
       cliente_id,
@@ -246,21 +268,6 @@ const UpdateReserva = () => {
       pagamento_realizado,
       obs,
     } = values;
-
-    if (
-      !quarto_id ||
-      !cliente_id ||
-      !checkin ||
-      !checkout ||
-      !pessoas ||
-      !estado_reserva ||
-      !preco ||
-      !tipo_pagamento ||
-      !pagamento_realizado
-    ) {
-      setFormError("Preencha todos os campos");
-      return;
-    }
 
     setIsPending(true);
 
@@ -294,6 +301,46 @@ const UpdateReserva = () => {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const {
+      quarto_id,
+      cliente_id,
+      checkin,
+      checkout,
+      pessoas,
+      estado_reserva,
+      preco,
+      tipo_pagamento,
+      pagamento_realizado,
+    } = values;
+
+    if (
+      !quarto_id ||
+      !cliente_id ||
+      !checkin ||
+      !checkout ||
+      !pessoas ||
+      !estado_reserva ||
+      !preco ||
+      !tipo_pagamento ||
+      !pagamento_realizado
+    ) {
+      setFormError("Preencha todos os campos");
+      return;
+    }
+
+    // Se as datas foram alteradas, mostra o alerta
+    if (datesChanged()) {
+      setShowDateAlert(true);
+      return;
+    }
+
+    // Se não mudou, faz o submit normal
+    await doSubmit();
+  };
+
   useEffect(() => {
     const fetchReserva = async () => {
       const supabase = createClient();
@@ -317,6 +364,11 @@ const UpdateReserva = () => {
           tipo_pagamento: data.tipo_pagamento,
           pagamento_realizado: data.pagamento_realizado,
           obs: data.obs || "",
+        });
+        // Guarda os valores originais das datas
+        setOriginalDates({
+          checkin: data.checkin,
+          checkout: data.checkout,
         });
       }
 
@@ -349,6 +401,25 @@ const UpdateReserva = () => {
         clientesList={clientesList}
         quartosList={quartosList}
       />
+
+      {/* AlertDialog para confirmar alteração de datas */}
+      <AlertDialog open={showDateAlert} onOpenChange={setShowDateAlert}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Datas Alteradas</AlertDialogTitle>
+            <AlertDialogDescription>
+              Você alterou as datas de check-in ou check-out. Tem certeza que
+              atualizou o preço da reserva antes de confirmar?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={doSubmit}>
+              Sim, confirmar
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

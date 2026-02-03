@@ -163,15 +163,15 @@ const CalendarView = ({
     return dateStr === checkoutDate;
   };
 
-  // Navega para criar reserva com parâmetros pré-selecionados
-  const handleCellClick = (quarto, date) => {
-    const reserva = getReservationForCell(quarto, date);
-
-    if (!reserva) {
+  // Navega para criar reserva com parâmetros pré-selecionados ou editar reserva existente
+  const handleCellClick = (quarto, date, reserva = null) => {
+    if (reserva) {
+      // Se há reserva, navega para editar
+      router.push(`/update-reserva/${reserva.id}`);
+    } else {
       const formattedDate = formatDateForComparison(date);
       // Navega para criar reserva com quarto e data pré-selecionados
       const url = `/reservas/create?quarto=${quarto.id}&checkin=${formattedDate}`;
-      console.log("Navegando para:", url);
       router.push(url);
     }
   };
@@ -338,8 +338,13 @@ const CalendarView = ({
                   <div
                     key={dayIndex}
                     className={cellClasses}
-                    onClick={() => !hasMid && handleCellClick(quarto, day)}
+                    onClick={() =>
+                      hasMid
+                        ? handleCellClick(quarto, day, midReserva)
+                        : handleCellClick(quarto, day)
+                    }
                     title={titleText}
+                    style={{ cursor: "pointer" }}
                   >
                     {/* Dia no meio da reserva */}
                     {hasMid && null}
@@ -355,6 +360,15 @@ const CalendarView = ({
                               ? `Checkout: ${checkoutReserva.clientes?.nome || "N/A"}`
                               : ""
                           }
+                          onClick={(e) => {
+                            if (hasCheckout) {
+                              e.stopPropagation();
+                              handleCellClick(quarto, day, checkoutReserva);
+                            }
+                          }}
+                          style={{
+                            cursor: hasCheckout ? "pointer" : "default",
+                          }}
                         >
                           {hasCheckout && <span className="half-label">↑</span>}
                         </div>
@@ -368,11 +382,14 @@ const CalendarView = ({
                               : ""
                           }
                           onClick={(e) => {
-                            if (!hasCheckin) {
-                              e.stopPropagation();
+                            e.stopPropagation();
+                            if (hasCheckin) {
+                              handleCellClick(quarto, day, checkinReserva);
+                            } else {
                               handleCellClick(quarto, day);
                             }
                           }}
+                          style={{ cursor: "pointer" }}
                         >
                           {hasCheckin && (
                             <div className="calendar-reservation">

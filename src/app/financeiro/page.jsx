@@ -87,6 +87,14 @@ const Financeiro = () => {
     "data_transacao",
   );
 
+  // Filtro de data aplicado para reservas (usa checkin como referência)
+  const { filteredData: dateFilteredReservas } = useDateFilter(
+    reservasData,
+    startDate,
+    endDate,
+    "checkin",
+  );
+
   // Aplica filtro de origem
   const origemFilteredFinanceiro = useOrigemFilter(
     dateFilteredFinanceiro,
@@ -142,7 +150,7 @@ const Financeiro = () => {
           {/* Financial Summary Cards using new component */}
           <FinanceiroCards
             financeiroData={dateFilteredFinanceiro}
-            reservasData={reservasData}
+            reservasData={dateFilteredReservas}
           />
 
           <hr />
