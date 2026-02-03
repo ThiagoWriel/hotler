@@ -250,7 +250,7 @@ const ReservaForm = ({
 
   // Handler para mudança no tipo de preço
   const handleTipoPrecoChange = (e) => {
-    const novoTipo = Math.abs(e.target.value);
+    const novoTipo = e.target.value;
     setTipoPreco(novoTipo);
 
     if (novoTipo === "diaria" && valorDigitado && checkin && checkout) {
@@ -317,11 +317,13 @@ const ReservaForm = ({
         <option disabled value="">
           Selecione um cliente
         </option>
-        {clientesList.map((cliente) => (
-          <option key={cliente.id} value={cliente.id}>
-            {cliente.nome}
-          </option>
-        ))}
+        {[...clientesList]
+          .sort((a, b) => a.nome.localeCompare(b.nome))
+          .map((cliente) => (
+            <option key={cliente.id} value={cliente.id}>
+              {cliente.nome}
+            </option>
+          ))}
       </select>
 
       <label htmlFor="checkin">Check-in</label>
