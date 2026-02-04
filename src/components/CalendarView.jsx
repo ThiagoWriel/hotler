@@ -208,12 +208,15 @@ const CalendarView = ({
   useEffect(() => {
     if (scrollContainerRef.current) {
       setTimeout(() => {
-        // Scroll para o dia atual (que está na posição daysPast do array)
-        const scrollPosition = daysPast * 80 - 200;
-        scrollContainerRef.current.scrollTo({
-          left: Math.max(0, scrollPosition),
-          behavior: "instant",
-        });
+        // Verificação adicional dentro do timeout, pois o ref pode ter mudado
+        if (scrollContainerRef.current) {
+          // Scroll para o dia atual (que está na posição daysPast do array)
+          const scrollPosition = daysPast * 80 - 200;
+          scrollContainerRef.current.scrollTo({
+            left: Math.max(0, scrollPosition),
+            behavior: "instant",
+          });
+        }
       }, 100);
     }
   }, [daysPast]);

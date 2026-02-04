@@ -799,6 +799,7 @@ h1, h2, h3 {
 .list-actions {
   display: flex;
   gap: 8px;
+  margin-left: 10px;
 }
 
 .list-actions i {
@@ -813,10 +814,12 @@ h1, h2, h3 {
 .list-actions i:hover {
   background: var(--accent);
   transform: scale(1.1);
+  color: var(--primary);
 }
 
 .list-actions i.material-icons:first-child:hover {
-  color: var(--secondary);
+  color: var(--primary);
+  background: var(--accent);
 }
 
 .list-actions i.material-icons:last-child:hover {
@@ -849,15 +852,16 @@ h1, h2, h3 {
 .buttons i:hover {
   background: var(--accent);
   transform: scale(1.1);
+  color: var(--primary);
 }
 
 .buttons i.material-icons:first-child:hover {
-  color: var(--secondary);
+  color: var(--primary);
   background: var(--accent);
 }
 
 .buttons i.material-icons:last-child:hover {
-  color: #ab7126;
+  color: #ef4444;
   background: #fef2f2;
 }
 
@@ -953,6 +957,54 @@ form button:hover {
   opacity: 0.9;
   transform: translateY(-2px);
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Botão de excluir reserva */
+.delete-reserva-container {
+  max-width: 500px;
+  margin: 20px auto;
+  display: flex;
+  justify-content: center;
+}
+
+.delete-reserva-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: #ef4444;
+  border: 1px solid #ef4444;
+  border-radius: var(--radius-md);
+  padding: 10px 20px;
+  font-family: "Inter", sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.delete-reserva-button:hover {
+  background: #fef2f2;
+  border-color: #dc2626;
+  color: #dc2626;
+}
+
+.delete-reserva-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.delete-reserva-button i {
+  font-size: 18px;
+}
+
+/* Estilo do botão de ação destrutiva no AlertDialog */
+.delete-action {
+  background: #ef4444 !important;
+}
+
+.delete-action:hover {
+  background: #dc2626 !important;
 }
 
 .form-group {

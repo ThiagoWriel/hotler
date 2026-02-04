@@ -21,7 +21,7 @@ const Reservas = () => {
   const { hotler: quartosData } = useFetch("quartos");
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [viewMode, setViewMode] = useState("cards");
+  const [viewMode, setViewMode] = useState("calendar");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
@@ -93,6 +93,10 @@ const Reservas = () => {
             </>
           )}
 
+          {viewMode === "calendar" && quartosData && (
+            <CalendarView reservas={hotler} quartos={quartosData} />
+          )}
+
           {viewMode === "cards" && (
             <div className="reservas-cards">
               {filteredData.map((reserva) => (
@@ -115,10 +119,6 @@ const Reservas = () => {
                 />
               ))}
             </div>
-          )}
-
-          {viewMode === "calendar" && quartosData && (
-            <CalendarView reservas={hotler} quartos={quartosData} />
           )}
         </div>
       )}

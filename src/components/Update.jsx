@@ -238,6 +238,7 @@ const UpdateReserva = () => {
   const [formError, setFormError] = useState(null);
   const [isPending, setIsPending] = useState(false);
   const [showDateAlert, setShowDateAlert] = useState(false);
+  const [showDeleteAlert, setShowDeleteAlert] = useState(false);
 
   const [clientesList, setClientesList] = useState([]);
   const [quartosList, setQuartosList] = useState([]);
@@ -341,6 +342,22 @@ const UpdateReserva = () => {
     await doSubmit();
   };
 
+  // Função para excluir a reserva
+  const handleDelete = async () => {
+    setIsPending(true);
+    const supabase = createClient();
+    const { error } = await supabase.from("reservas").delete().eq("id", id);
+
+    if (error) {
+      setFormError("Erro ao excluir reserva");
+      setIsPending(false);
+      return;
+    }
+
+    router.push("/reservas");
+    router.refresh();
+  };
+
   useEffect(() => {
     const fetchReserva = async () => {
       const supabase = createClient();
@@ -420,6 +437,38 @@ const UpdateReserva = () => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* AlertDialog para confirmar exclusão */}
+      <AlertDialog open={showDeleteAlert} onOpenChange={setShowDeleteAlert}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Excluir Reserva</AlertDialogTitle>
+            <AlertDialogDescription>
+              Tem certeza que deseja excluir esta reserva? Esta ação não pode
+              ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancelar</AlertDialogCancel>
+            <AlertDialogAction onClick={handleDelete} className="delete-action">
+              Sim, excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Botão de excluir reserva */}
+      <div className="delete-reserva-container">
+        <button
+          type="button"
+          className="delete-reserva-button"
+          onClick={() => setShowDeleteAlert(true)}
+          disabled={isPending}
+        >
+          <i className="material-icons">delete</i>
+          Excluir Reserva
+        </button>
+      </div>
     </div>
   );
 };

@@ -12,6 +12,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Badge } from "@/components/ui/badge";
 
 export const QuartosList = ({ quarto, onDelete, reservas }) => {
   const handleDelete = async () => {
@@ -46,11 +47,21 @@ export const QuartosList = ({ quarto, onDelete, reservas }) => {
       <div className="list-data">
         <div className="list-data-item">
           <i className="material-icons">cleaning_services</i>
-          <span>{capitalize(quarto.estado)}</span>
+          <Badge
+            variant={
+              quarto.estado === "Limpo" || quarto.estado === "limpo"
+                ? "success"
+                : "destructive"
+            }
+          >
+            {capitalize(quarto.estado)}
+          </Badge>
         </div>
         <div className="list-data-item">
           <i className="material-icons">person</i>
-          <span>{capitalize(quarto.ocupado)}</span>
+          <Badge variant={quarto.ocupado === "sim" ? "default" : "secondary"}>
+            {quarto.ocupado === "sim" ? "Ocupado" : "Não ocupado"}
+          </Badge>
         </div>
       </div>
 
@@ -213,12 +224,27 @@ export const ReservasList = ({ reserva, onDelete, onCheckout, onPagou }) => {
         </div>
         <div className="list-data-item">
           <i className="material-icons">info</i>
-          <span>{capitalize(reserva.estado_reserva)}</span>
+          <Badge
+            variant={
+              reserva.estado_reserva === "Confirmada"
+                ? "success"
+                : reserva.estado_reserva === "Cancelada"
+                  ? "destructive"
+                  : "warning"
+            }
+          >
+            {capitalize(reserva.estado_reserva)}
+          </Badge>
         </div>
         <div className="list-data-item">
           <i className="material-icons">credit_card</i>
-          <span>{capitalize(reserva.pagamento_realizado)}</span>
-          <br />
+          <Badge
+            variant={
+              reserva.pagamento_realizado === "Sim" ? "success" : "destructive"
+            }
+          >
+            {reserva.pagamento_realizado === "Sim" ? "Pago" : "Não pago"}
+          </Badge>
         </div>
       </div>
 
@@ -303,11 +329,21 @@ export const QuartosSujosList = ({ quarto, onClean }) => {
       <div className="list-data">
         <div className="list-data-item">
           <i className="material-icons">cleaning_services</i>
-          <span>{capitalize(quarto.estado)}</span>
+          <Badge
+            variant={
+              quarto.estado === "Limpo" || quarto.estado === "limpo"
+                ? "success"
+                : "destructive"
+            }
+          >
+            {capitalize(quarto.estado)}
+          </Badge>
         </div>
         <div className="list-data-item">
           <i className="material-icons">person</i>
-          <span>{capitalize(quarto.ocupado)}</span>
+          <Badge variant={quarto.ocupado === "sim" ? "default" : "secondary"}>
+            {quarto.ocupado === "sim" ? "Ocupado" : "Não ocupado"}
+          </Badge>
         </div>
       </div>
 
