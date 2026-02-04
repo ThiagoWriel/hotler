@@ -11,6 +11,8 @@ import {
   formatCPF,
   formatTelefone,
 } from "./Forms";
+import FinanceiroSummaryCard from "./FinanceiroSummaryCard";
+import ReservaSummaryCard from "./ReservaSummaryCard";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -408,16 +410,23 @@ const UpdateReserva = () => {
       <div className="header-pages">
         <h2>Editar Reserva #{id}</h2>
       </div>
-      <ReservaForm
-        values={values}
-        onChange={handleChange}
-        onSubmit={handleSubmit}
-        isUpdate={true}
-        isPending={isPending}
-        formError={formError}
-        clientesList={clientesList}
-        quartosList={quartosList}
-      />
+      <div className="form-with-summary">
+        <ReservaForm
+          values={values}
+          onChange={handleChange}
+          onSubmit={handleSubmit}
+          isUpdate={true}
+          isPending={isPending}
+          formError={formError}
+          clientesList={clientesList}
+          quartosList={quartosList}
+        />
+        <ReservaSummaryCard
+          values={values}
+          clientesList={clientesList}
+          quartosList={quartosList}
+        />
+      </div>
 
       {/* AlertDialog para confirmar alteração de datas */}
       <AlertDialog open={showDateAlert} onOpenChange={setShowDateAlert}>
@@ -551,14 +560,17 @@ const UpdateFinanceiro = () => {
       <div className="header-pages">
         <h2>Editar Financeiro</h2>
       </div>
-      <FinanceiroForm
-        values={values}
-        onChange={handleChange}
-        onSubmit={handleSubmit}
-        isUpdate={true}
-        isPending={isPending}
-        formError={formError}
-      />
+      <div className="form-with-summary">
+        <FinanceiroForm
+          values={values}
+          onChange={handleChange}
+          onSubmit={handleSubmit}
+          isUpdate={true}
+          isPending={isPending}
+          formError={formError}
+        />
+        <FinanceiroSummaryCard values={values} />
+      </div>
     </div>
   );
 };

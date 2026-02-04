@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { QuartoForm, ClienteForm, ReservaForm, FinanceiroForm } from "./Forms";
+import FinanceiroSummaryCard from "./FinanceiroSummaryCard";
+import ReservaSummaryCard from "./ReservaSummaryCard";
 
 const CriarQuarto = () => {
   const router = useRouter();
@@ -284,16 +286,23 @@ const CriarReserva = () => {
         <h2>Criar Reserva</h2>
       </div>
       <p className="text-center">Preencha o fomulário seguindo a ordem:</p>
-      <ReservaForm
-        values={values}
-        onChange={handleChange}
-        onSubmit={handleSubmit}
-        isUpdate={false}
-        formError={formError}
-        clientesList={clientesList}
-        quartosList={quartosList}
-        reservasList={reservasList}
-      />
+      <div className="form-with-summary">
+        <ReservaForm
+          values={values}
+          onChange={handleChange}
+          onSubmit={handleSubmit}
+          isUpdate={false}
+          formError={formError}
+          clientesList={clientesList}
+          quartosList={quartosList}
+          reservasList={reservasList}
+        />
+        <ReservaSummaryCard
+          values={values}
+          clientesList={clientesList}
+          quartosList={quartosList}
+        />
+      </div>
     </div>
   );
 };
@@ -429,16 +438,19 @@ const CriarFinanceiro = () => {
       <div className="header-pages">
         <h2>Criar Transação</h2>
       </div>
-      <FinanceiroForm
-        values={values}
-        onChange={handleChange}
-        onSubmit={handleSubmit}
-        isUpdate={false}
-        isPending={isPending}
-        formError={formError}
-        recorrencia={recorrencia}
-        onRecorrenciaChange={handleRecorrenciaChange}
-      />
+      <div className="form-with-summary">
+        <FinanceiroForm
+          values={values}
+          onChange={handleChange}
+          onSubmit={handleSubmit}
+          isUpdate={false}
+          isPending={isPending}
+          formError={formError}
+          recorrencia={recorrencia}
+          onRecorrenciaChange={handleRecorrenciaChange}
+        />
+        <FinanceiroSummaryCard values={values} />
+      </div>
     </div>
   );
 };
