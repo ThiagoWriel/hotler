@@ -23,7 +23,10 @@ const useFetch = (table) => {
       const { data, error } = await supabase
         .from(table)
         .select(selectQuery)
-        .order(orderBy, { ascending: true });
+        .order(orderBy, {
+          ascending: !(table === "reservas" && orderBy === "id"),
+        })
+        .limit(2000);
 
       if (error) {
         setFetchError("Nao conseguiu acessar os dados da tabela");
