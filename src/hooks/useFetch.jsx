@@ -20,10 +20,17 @@ const useFetch = (table) => {
       const selectQuery =
         table === "reservas" ? "*, clientes(nome), quartos(numero)" : "*";
 
+      // Para reservas (e demais tabelas), busca os registros mais recentes primeiro
+      // quando ordenado por 'id'. Isso evita o limite padrão de 1000 linhas do
+      // Supabase esconder novos registros que ficam no final da fila.
+      const isDefaultIdOrder = orderBy === "id";
+      const ascending = isDefaultIdOrder ? false : true;
+
       const { data, error } = await supabase
         .from(table)
         .select(selectQuery)
-        .order(orderBy, { ascending: true });
+        .order(orderBy, { ascending })
+        .limit(2000);
 
       if (error) {
         setFetchError("Nao conseguiu acessar os dados da tabela");
