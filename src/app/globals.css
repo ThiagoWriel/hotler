@@ -1108,6 +1108,138 @@ form button:hover {
 }
 
 /* ========================================
+   11.1 SUMMARY CARD - Card de Resumo em Formulários
+   ======================================== */
+/* Layout de duas colunas para formulário + summary card */
+.form-with-summary {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .form-with-summary {
+    grid-template-columns: 1fr;
+    max-width: 500px;
+  }
+}
+
+.form-with-summary form {
+  margin: 0;
+}
+
+/* Summary Card Base */
+.summary-card {
+  position: sticky;
+  top: 40px;
+  background: linear-gradient(135deg, var(--card) 0%, var(--accent) 100%);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.summary-card-header {
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+
+.summary-card-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.summary-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--foreground);
+}
+
+.summary-card-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 16px;
+}
+
+/* Summary Card Row - cada linha de dados */
+.summary-card-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.summary-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.summary-card-icon i {
+  color: #ffffff;
+  font-size: 22px;
+}
+
+.summary-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.summary-card-label {
+  color: var(--muted-foreground);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.summary-card-value {
+  color: var(--foreground);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+/* Divisor */
+.summary-card-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 8px 0;
+}
+
+/* Total */
+.summary-card-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: var(--input-background);
+  border-radius: var(--radius-md);
+  margin-top: 4px;
+}
+
+.summary-card-total-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.summary-card-total-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+/* ========================================
    12. SEARCH BAR
    ======================================== */
 .search-bar {
