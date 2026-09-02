@@ -104,7 +104,7 @@ export default function Dashboard() {
           <CreateButtonReserva />
         </div>
       </div>
-      <div className="loading">{isPending && <p>Carregando...</p>}</div>
+      <div className="loading">{isPending && <p>Carregando... </p>}</div>
       {fetchError && <p className="error">{fetchError}</p>}
       {quartos && clientes && reservas && (
         <div className="dashboard">
